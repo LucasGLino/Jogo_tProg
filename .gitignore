@@ -1,0 +1,80 @@
+# =========================================
+#   GERAL
+# =========================================
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs e temporários
+*.log
+*.tmp
+*.bak
+*.swp
+
+# =========================================
+#   COMPILADORES E BINÁRIOS
+# =========================================
+# Executáveis e objetos compilados
+*.exe
+*.out
+*.obj
+*.o
+*.a
+*.lib
+*.dll
+*.so
+*.dylib
+*.pdb
+*.idb
+*.exp
+
+# =========================================
+#   CMAKE / BUILD
+# =========================================
+# Diretórios de build
+/build/
+/build-debug/
+/build-release/
+/bin/
+/lib/
+/CMakeFiles/
+
+# Arquivos gerados pelo CMake
+cmake_install.cmake
+Makefile
+*.cmake
+compile_commands.json
+
+# =========================================
+#   VISUAL STUDIO CODE / IDEs
+# =========================================
+.vscode/
+.vs/
+.idea/
+*.suo
+*.user
+*.sln
+*.VC.db
+
+# =========================================
+#   SFML
+# =========================================
+# Bibliotecas locais (não versionar)
+SFML-*/lib/
+SFML-*/bin/
+
+# =========================================
+#   OUTROS
+# =========================================
+# Arquivos de dados temporários ou locais
+*.dat
+*.json
+*.ini
+*.cfg
+*.db
+
+# =========================================
+#   BACKUPS DE SISTEMA
+# =========================================
+*~
