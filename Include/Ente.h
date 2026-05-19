@@ -7,5 +7,6 @@ using namespace std;
 
 class Ent{
     private:
+        
     public:
 }
