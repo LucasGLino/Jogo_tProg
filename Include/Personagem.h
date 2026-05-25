@@ -14,9 +14,12 @@ namespace Entidades{
                 Vector2f velo;
 
                 bool esq;
+
+                const float gravidade;
                 
             public:
                 Personagem(ID i, RectangleShape b, Vector2f p, Vector2f tam, int life, float velx, float vely,bool eo);
+                
                 virtual ~Personagem(){}
 
                 int getVida(){return vida;}

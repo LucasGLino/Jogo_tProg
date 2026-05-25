@@ -38,7 +38,6 @@ namespace Entidades{
 
                 bool getPular(){return pulo;}
 
-
                 const int getPontos()const {return pontos;}
 
                 void colisao(Entidade* ent,sf::Vector2f inter);
