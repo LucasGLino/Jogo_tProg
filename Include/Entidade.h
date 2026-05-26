@@ -8,7 +8,6 @@ enum ID{
     jogador,
     inimigo,
     Plataforma,
-    lava,
     Projetil
 }; //tirada do codigo do monitor https://github.com/MatheusBurda/Desert/blob/master/include/Entities/Entity.h 
 

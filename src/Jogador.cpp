@@ -18,8 +18,7 @@ void Entidades::Personagens::Jogador::carregar()
 
 void Entidades::Personagens::Jogador::move(float dt)
 {
-    // const float gravidade = 1000.f; se torna algo global para todos os personagens
-    // const float velocidadePulo = -500.f; vai ser uma variavel global para personagens
+
     const float velocidadeCorrida = 200.f;
 
     sf::Vector2f velocidade = getVel();
@@ -148,7 +147,7 @@ void Entidades::Personagens::Jogador::danificar(float dt)
             tempo -= dt;
         }else if(tempo <= 0.f){
 
-            vida -= dano_a_tomar;
+            // vida -= dano_a_tomar;
             tempo = cdAtaque;
 
         }
