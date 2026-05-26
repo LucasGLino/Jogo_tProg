@@ -7,12 +7,12 @@ Entidades::Personagens::Jogador::Jogador(RectangleShape b, Vector2f pos, Vector2
 
 void Entidades::Personagens::Jogador::carregar()
 {
-    if (!textura.loadFromFile(JogadorAndar)) {
-        std::cout << "ERRO: Não foi possível carregar: " << JogadorAndar << std::endl;
-        return;
-    }
+    // if (!textura.loadFromFile(JogadorAndar)) {
+    //     std::cout << "ERRO: Não foi possível carregar: " << JogadorAndar << std::endl;
+    //     return;
+    // }
         
-    this->setFiguraAnimada(&textura, 8, body);
+    // this->setFiguraAnimada(&textura, 8, body); dependendo de como funcionar subir essa função para Entidade
     
 }
 
@@ -20,7 +20,7 @@ void Entidades::Personagens::Jogador::move(float dt)
 {
     // const float gravidade = 1000.f; se torna algo global para todos os personagens
     // const float velocidadePulo = -500.f; vai ser uma variavel global para personagens
-    // const float velocidadeCorrida = 200.f; a decidir
+    const float velocidadeCorrida = 200.f;
 
     sf::Vector2f velocidade = getVel();
         velocidade.y += gravidade * dt;
@@ -41,7 +41,7 @@ void Entidades::Personagens::Jogador::move(float dt)
 
     if (pulo && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
 
-        velocidade.y = velocidadePulo;
+        velocidade.y = pulo;
 
         setPular(false);
     }

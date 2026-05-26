@@ -8,8 +8,11 @@ namespace Gerenciadores{
     class GerenciadorGrafico{
         private:
             RenderWindow* window;
+
             View view;
+            
             unsigned int largura;
+            
             unsigned int altura; 
 
             static GerenciadorGrafico* pInstancia;

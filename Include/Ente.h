@@ -21,6 +21,5 @@ class Ent{
 
         Gerenciadores::GerenciadorGrafico* getPGG(){return pGraf;}
 
-
         virtual void executar() = 0;
 }
