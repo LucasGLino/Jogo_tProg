@@ -14,7 +14,7 @@ namespace Entidades{
                                 
                 float tempoTotal;
 
-                int dano_a_tomar;
+                // int dano_a_tomar;
 
                 float cdDano;
                 
@@ -50,3 +50,4 @@ namespace Entidades{
 
         };
     }
+}

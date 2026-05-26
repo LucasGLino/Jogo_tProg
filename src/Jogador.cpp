@@ -1,6 +1,6 @@
 #include"../include/Jogador.h"
 
-Entidades::Personagens::Jogador::Jogador(RectangleShape b, Vector2f pos, Vector2f tam, int life, int p): Personagem(ID::jogador, b, pos, tam, life, 100.0f, 200.f, false), pontos(p),pulo(false),tempoTotal(0),dano_a_tomar(0) 
+Entidades::Personagens::Jogador::Jogador(RectangleShape b, Vector2f pos, Vector2f tam, int life, int p): Personagem(ID::jogador, b, pos, tam, life, 100.0f, 200.f, false), pontos(p),pulo(false),tempoTotal(0)//dano_a_tomar(0) 
 {
     carregar();    
 }
@@ -50,11 +50,11 @@ void Entidades::Personagens::Jogador::move(float dt)
     setPos(getPos() + velocidade * dt);
 }
 
-void Entidades::Personagens::Jogador::setDanoPorSegundo(float tempo, int dano)
-{
-    tempoTotal = tempo;
-    dano_a_tomar = dano;
-}
+// void Entidades::Personagens::Jogador::setDanoPorSegundo(float tempo, int dano)
+// {
+//     tempoTotal = tempo;
+//     dano_a_tomar = dano;
+//}
 
 void Entidades::Personagens::Jogador::colisao(Entidade *ent, sf::Vector2f inter)
 {
@@ -120,9 +120,9 @@ void Entidades::Personagens::Jogador::colisao(Entidade *ent, float dt)
         tempo -= dt;
     }else if(tempo <= 0.f){
         if(ent->getId() == inimigo){
-            Entidades::Personagens::Fogo* pFire = static_cast<Entidades::Personagens::Fogo*>(ent);
+            // Entidades::Personagens::Fogo* pFire = static_cast<Entidades::Personagens::Fogo*>(ent);
 
-            pFire->atacar(this);
+            // pFire->atacar(this);
 
         }
 
