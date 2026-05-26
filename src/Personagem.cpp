@@ -1,6 +1,6 @@
 #include"../include/Personagem.h"
 
-Entidades::Personagens::Personagem::Personagem(ID i, RectangleShape b, Vector2f p, Vector2f tam, int life, float velx, float vely, bool e): Entidade(i,p,b,tam), esq(e),vida(life), gravidade(1000.f), pulo(-500.f)
+Entidades::Personagens::Personagem::Personagem(RectangleShape b, Vector2f p, Vector2f tam, int life, float velx, float vely, bool e): Entidade(p,b,tam), esq(e),vida(life), gravidade(1000.f), pulo(-500.f)
 {
     setVel({velx,vely});
 }

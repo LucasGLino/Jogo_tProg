@@ -1,6 +1,6 @@
 #include"../include/Entidade.h"
 
-Entidades::Entidade::Entidade(ID i, Vector2f p, RectangleShape corpo,Vector2f tam): Ent(), id(i), body(corpo), pos(p), size(tam)
+Entidades::Entidade::Entidade(Vector2f p, RectangleShape corpo,Vector2f tam): Ent(), body(corpo), pos(p), size(tam)
 {
     this->body.setSize(tam);
 }

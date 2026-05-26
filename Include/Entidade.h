@@ -3,21 +3,11 @@
 using namespace std;
 using namespace sf;
 
-enum ID{ 
-    vazio,
-    jogador,
-    inimigo,
-    Plataforma,
-    Projetil
-}; //tirada do codigo do monitor https://github.com/MatheusBurda/Desert/blob/master/include/Entities/Entity.h 
-
 namespace Entidades 
 {
     
     class Entidade: public Ente{
         protected:
-            ID id;
-
             RectangleShape body;
 
             Vector2f pos;
@@ -26,7 +16,7 @@ namespace Entidades
         
             Texture textura;
         public:
-            Entidade(ID i, Vector2f p, RectangleShape corpo, Vector2f tam);
+            Entidade(Vector2f p, RectangleShape corpo, Vector2f tam);
             
             virtual ~Entidade(){}
 

@@ -20,7 +20,7 @@ namespace Entidades{
                 const float pulo; // velocidade do pulo
                 
             public:
-                Personagem(ID i, RectangleShape b, Vector2f p, Vector2f tam, int life, float velx, float vely,bool eo);
+                Personagem(RectangleShape b, Vector2f p, Vector2f tam, int life, float velx, float vely,bool eo);
                 
                 virtual ~Personagem(){}
 

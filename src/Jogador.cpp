@@ -1,6 +1,6 @@
 #include"../include/Jogador.h"
 
-Entidades::Personagens::Jogador::Jogador(RectangleShape b, Vector2f pos, Vector2f tam, int life, int p): Personagem(ID::jogador, b, pos, tam, life, 100.0f, 200.f, false), pontos(p),pulo(false),tempoTotal(0)//dano_a_tomar(0) 
+Entidades::Personagens::Jogador::Jogador(RectangleShape b, Vector2f pos, Vector2f tam, int life, int p): Personagemb, pos, tam, life, 100.0f, 200.f, false), pontos(p),pulo(false),tempoTotal(0)//dano_a_tomar(0) 
 {
     carregar();    
 }
@@ -106,7 +106,7 @@ void Entidades::Personagens::Jogador::colisao(Entidade *ent, sf::Vector2f inter)
 
     //         setVel(sf::Vector2f(0.0f, getVel().y));
     //     }
-    // } a ser definido
+    // a ser definido
 }
 void Entidades::Personagens::Jogador::colisao(Entidade *ent, float dt)
 {
