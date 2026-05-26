@@ -16,6 +16,8 @@ namespace Entidades{
                 bool esq;
 
                 const float gravidade;
+
+                const float pulo; // velocidade do pulo
                 
             public:
                 Personagem(ID i, RectangleShape b, Vector2f p, Vector2f tam, int life, float velx, float vely,bool eo);

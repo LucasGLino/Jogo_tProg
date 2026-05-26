@@ -32,9 +32,9 @@ void Gerenciadores::GerenciadorGrafico::desenhar(Sprite* corpo)
     window->draw(*corpo);
 }
 
-void Gerenciadores::GerenciadorGrafico::desenhar(RectangleShape aux)
+void Gerenciadores::GerenciadorGrafico::desenhar(RectangleShape rect)
 {
-    window->draw(aux);
+    window->draw(rect);
 }
 
 void Gerenciadores::GerenciadorGrafico::desenhar(Text* texto)
