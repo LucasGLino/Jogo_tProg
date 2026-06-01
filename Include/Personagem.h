@@ -15,8 +15,6 @@ namespace Entidades{
 
                 bool esq;
 
-                const float gravidade;
-
                 const float pulo; // velocidade do pulo
                 
             public:
@@ -44,7 +42,6 @@ namespace Entidades{
                 
                 virtual void executar(float dt) = 0;
 
-                void setPos(Vector2f p);
         };
     }
 }

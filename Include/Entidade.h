@@ -6,7 +6,7 @@ using namespace sf;
 namespace Entidades 
 {
     
-    class Entidade: public Ente{
+    class Entidade: public Ent{
         protected:
             RectangleShape body;
 
@@ -15,6 +15,8 @@ namespace Entidades
             Vector2f size;
         
             Texture textura;
+            
+            const float gravidade;
         public:
             Entidade(Vector2f p, RectangleShape corpo, Vector2f tam);
             
@@ -22,7 +24,7 @@ namespace Entidades
 
             RectangleShape getBody(){return body;}
             
-            virtual void setPos(Vector2f p) = 0;
+            void setPos(Vector2f p);
 
             ID getId()const{return id;}
 

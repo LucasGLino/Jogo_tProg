@@ -9,6 +9,8 @@ using namespace std;
 
 class Ent{
     private:
+
+        int id;
         // ponteiro parar a sprite
         // e os ids de classes bases
 
