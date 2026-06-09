@@ -107,7 +107,7 @@ std::vector<Projetil*>* Capitao::get_Vetor_De_Projetis(){
 
 void Capitao::Executar() {
 
-	Desenhar();
+	desenhar();
 
 	disparou = false;
 

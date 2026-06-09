@@ -5,7 +5,9 @@ using namespace Entidades;
 using namespace Obstaculos;
 using namespace Personagens;
 
-Fase::Fase(): Ente(0) {
+int base_Id(0);
+
+Fase::Fase(): Ente(base_Id) {
 
 	//srand(static_cast<unsigned int>(time(0)));
 	static bool sorteio_iniciado = false;

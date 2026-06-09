@@ -55,7 +55,7 @@ Pirata::~Pirata() {
 
 void Pirata::Executar() {
 
-	Desenhar();
+	desenhar();
 	setar_Pos(pos.x, pos.y);
 
 	if(!parar){
@@ -110,7 +110,7 @@ void Pirata::verifica_Acao_de_Colisao(int lado, Jogador* pJogador) {
 void Pirata::bonus_De_Irritabilidade(){
 
 	dano += raiva;
-	setar_Vitalidade(get_Vitalidade() + (5 * raiva));
+	set_Vitalidade(get_Vitalidade() + (5 * raiva));
 	//velocidade.x += (nivel_maldade*0,1);
 	velocidade.x += (nivel_maldade * 0.1f);
 

@@ -141,7 +141,7 @@ void Projetil::Executar() {
 			pos.y += velocidade.y;
 		}
 
-		Desenhar();
+		desenhar();
 	}
 	else {
 

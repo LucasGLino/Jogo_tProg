@@ -22,7 +22,7 @@ Ente::~Ente(){
 	}
 }
 
-void Ente::Desenhar() { 
+void Ente::desenhar() { 
 	pGG->getJanela()->draw(*pFigura); 
 }
 

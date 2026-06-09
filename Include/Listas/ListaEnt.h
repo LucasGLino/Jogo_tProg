@@ -6,7 +6,7 @@
 namespace Listas {
 	class ListaEnt {
 	private:
-		Lista<Entidades::Entidade> pLista;
+		Lista<Entidades::Entidade> listaEntidades;
 	public:
 		ListaEnt() {};
 		~ListaEnt() {
@@ -14,7 +14,7 @@ namespace Listas {
 		}
 		void limpar() {
 			//pLista.clear();
-			pLista.limpar();
+			listaEntidades.limpar();
 		}
 		//void add(Entidades::Entidade* pEntidade);
 		void adicionar(Entidades::Entidade* pEntidade);
@@ -25,7 +25,7 @@ namespace Listas {
 		//void remove(int i);
 		void remover(int i);
 
-		Entidades::Entidade* getPrimeiro(){ return (pLista.getTamanho() > 0) ? pLista[0] : nullptr;;}
+		Entidades::Entidade* getPrimeiro(){ return (listaEntidades.getTamanho() > 0) ? listaEntidades[0] : nullptr;;}
 
 		Entidades::Entidade* operator[](int i);
 
@@ -34,13 +34,13 @@ namespace Listas {
 		//int size() const {
 		int getTamanho() const {
 			//return pLista.size();
-			return pLista.getTamanho();
+			return listaEntidades.getTamanho();
 		};
 
 		//Lista<Entidades::Entidade>::Iterator* CreateIterator() {
 		Lista<Entidades::Entidade>::Iterador* criarIterador() {
             //return pLista.CreateIterator(); 
-            return pLista.criarIterador(); 
+            return listaEntidades.criarIterador(); 
 		};
 
 		//void push_back(Entidades::Entidade* pEntidade) {

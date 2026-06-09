@@ -9,7 +9,7 @@ void ListaEnt::adicionar(Entidade* pEntidade)
 {
 	if (pEntidade) {
 		//pLista.push(pEntidade);
-		pLista.adicionar(pEntidade);
+		listaEntidades.adicionar(pEntidade);
 	}
 	else {
 		cout << "Ponteiro Nulo/adicionar" << endl;
@@ -21,7 +21,7 @@ void ListaEnt::remover(Entidade* pEntidade)
 {
 	if (pEntidade) {
 		//Entidades::Entidade* aux = pLista.pop(pEntidade);
-		Entidade* auxiliar = pLista.remover(pEntidade);
+		Entidade* auxiliar = listaEntidades.remover(pEntidade);
 		if(auxiliar != nullptr){
 			delete(auxiliar);
 		}
@@ -36,9 +36,9 @@ void ListaEnt::remover(Entidade* pEntidade)
 void ListaEnt::remover(int i)
 {
 	//if (i >= 0 && i < pLista.size()) {
-	if (i >= 0 && i < pLista.getTamanho()) {
+	if (i >= 0 && i < listaEntidades.getTamanho()) {
 		//Entidades::Entidade* aux = pLista.pop(i);
-		Entidade* auxiliar = pLista.remover(i);
+		Entidade* auxiliar = listaEntidades.remover(i);
 		if(auxiliar != nullptr){
 			delete(auxiliar);
 		}
@@ -51,8 +51,8 @@ void ListaEnt::remover(int i)
 Entidade* ListaEnt::operator[](int i)
 {
 	//if (i >= 0 && i < pLista.size()) {
-	if (i >= 0 && i < pLista.getTamanho()) {
-		return pLista[i];
+	if (i >= 0 && i < listaEntidades.getTamanho()) {
+		return listaEntidades[i];
 	}
 	else {
 		cout << "Indice Invalido" << endl;

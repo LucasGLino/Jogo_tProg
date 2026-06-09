@@ -14,6 +14,7 @@ namespace Fases {
 	class Fase : public Ente
 	{
 		protected:
+			static int base_Id;
 
 			//tem como a lista_Entidades passar parametros a classe que n�o necess�riamente entidades?
 			bool ganhou;

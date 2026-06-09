@@ -54,7 +54,7 @@ void Plataforma::Executar() {
 
 		}
 
-		Desenhar();
+		desenhar();
 	}
 	
 }

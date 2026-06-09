@@ -60,8 +60,6 @@ namespace Entidades{
 				void executar();
 				void salvar();
 
-				void Executar();
-				void Salvar();
 		};
 	}
 }

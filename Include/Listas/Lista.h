@@ -138,7 +138,7 @@ namespace Listas {
         //Elemento<TL>* current = pPrimeiro;
         Elemento<TL>* atual = pPrimeiro;
         while (atual != nullptr) {
-            //Elemento<TL>* next = current->getProximo();
+            //Elemento<TL>* next = current->getProximo();   
             Elemento<TL>* proximo = atual->getProximo();
             //delete current->getInfo();
             //delete atual->getInfo();

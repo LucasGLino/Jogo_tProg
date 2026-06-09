@@ -25,15 +25,15 @@ namespace Entidades{
 
                 virtual ~Personagem();
 
-                int getVida();
+                //int getVida();
 
                 void set_Vitalidade(int vida);
 
-                virtual void diminuir_Vida(int dano);
+                //virtual void diminuir_Vida(int dano);
 
                 int get_Vitalidade();
 
-                void setar_Vitalidade(int vida);
+                //void setar_Vitalidade(int vida);
 
                 virtual void diminuir_Vitalidade(int dano);
 

@@ -25,23 +25,9 @@ Personagem::~Personagem()
 {
 }
 
-int Personagem::getVida()
-{
-    return vitalidade;
-}
-
 void Personagem::set_Vitalidade(int vida)
 {
     vitalidade = vida;
-}
-
-void Personagem::diminuir_Vida(int dano){
-
-    vitalidade -= dano;
-    if(vitalidade <= 0){
-        vitalidade = 0;
-        eliminado = true;
-    }
 }
 
 int Personagem::get_Vitalidade()
@@ -49,14 +35,13 @@ int Personagem::get_Vitalidade()
     return vitalidade;
 }
 
-void Personagem::setar_Vitalidade(int vida)
-{
-    set_Vitalidade(vida);
-}
-
 void Personagem::diminuir_Vitalidade(int dano)
 {
-    diminuir_Vida(dano);
+    vitalidade -= dano;
+    if(vitalidade <= 0){
+        vitalidade = 0;
+        eliminado = true;
+    }
 }
 
 bool Personagem::get_Eliminado() const

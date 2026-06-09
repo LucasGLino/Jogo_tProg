@@ -24,7 +24,7 @@ protected:
 	Ente(int semente);
 	virtual ~Ente();
 	virtual void executar() = 0;
-	void Desenhar();
+	void desenhar();
 	
 public:
 	int getId() const;

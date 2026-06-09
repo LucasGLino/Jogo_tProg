@@ -88,14 +88,14 @@ Jogador::~Jogador() {
 
 }
 
-void Jogador::Executar() {
+void Jogador::executar() {
 
 
 	if (!eliminado) {
 
 		executar_Gravidade();
 
-		Desenhar();
+		desenhar();
 		setar_Pos(pos.x, pos.y);
 
 		if (!segundo_jogador) {
@@ -206,22 +206,14 @@ void Entidades::Personagens::Jogador::executando_Pulo()
 	}
 }
 
-void Jogador::Salvar(){
-
-}
-
 void Jogador::salvar(){
-	Salvar();
-}
 
-void Jogador::executar(){
-	Executar();
 }
 
 
 void Jogador::danificar(Personagem* pAtacado) {
 
-	pAtacado->diminuir_Vida(dano);
+	pAtacado->diminuir_Vitalidade(dano);
 	setar_Estado_Pulando(false);
 	setar_No_Ar(false);
 	executando_Pulo();
