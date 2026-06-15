@@ -53,7 +53,7 @@ Pirata::~Pirata() {
 
 }
 
-void Pirata::Executar() {
+void Pirata::executar() {
 
 	desenhar();
 	setar_Pos(pos.x, pos.y);
@@ -87,7 +87,7 @@ void Pirata::andar_ate(float em_x, float em_y){
 	
 }
 
-void Pirata::Salvar() {
+void Pirata::salvar() {
 
 }
 

@@ -120,7 +120,7 @@ void Projetil::executar_Gravidade() {
 	pos.y -= gravidade;
 }
 
-void Projetil::Executar() {
+void Projetil::executar() {
 
 	setar_Pos(pos.x, pos.y);
 
@@ -156,16 +156,7 @@ void Projetil::Executar() {
 	*/
 }
 
-void Projetil::Salvar() {
-
-}
-
-void Projetil::executar() {
-	Executar();
-}
-
 void Projetil::salvar() {
-	Salvar();
 }
 
 void Projetil::Atingiu_Jogador(Entidades::Personagens::Jogador* pJogador)

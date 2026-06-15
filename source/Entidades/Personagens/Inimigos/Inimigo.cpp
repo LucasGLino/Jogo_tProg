@@ -47,6 +47,7 @@ void Inimigo::andar_ate(float em_x, float em_y){
 	pos_final.y = em_y;
 }
 
+/*
 void Inimigo::Executar() {
 
 	
@@ -55,10 +56,7 @@ void Inimigo::Executar() {
 void Inimigo::salvar() {
 	Salvar();
 }
-
-void Inimigo::executar() {
-	Executar();
-}
+*/
 
 void Inimigo::setar_direcao() {
 

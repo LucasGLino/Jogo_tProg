@@ -29,7 +29,7 @@ namespace Gerenciadores{
             static Gerenciador_Grafico* getInstancia();
 
             void desenhar(sf::Sprite* corpo);
-            void desenhar(sf::RectangleShape aux);
+            void desenhar(sf::RectangleShape* aux);
             void desenhar(sf::Text* texto);
 
             sf::RenderWindow* getJanela()const;

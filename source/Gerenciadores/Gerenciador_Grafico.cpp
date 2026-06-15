@@ -39,9 +39,9 @@ void Gerenciadores::Gerenciador_Grafico::desenhar(Sprite* corpo)
     janela->draw(*corpo);
 }
 
-void Gerenciadores::Gerenciador_Grafico::desenhar(RectangleShape rect)
+void Gerenciadores::Gerenciador_Grafico::desenhar(RectangleShape* aux)
 {
-    janela->draw(rect);
+    janela->draw(*aux);
 }
 
 void Gerenciadores::Gerenciador_Grafico::desenhar(Text* texto)

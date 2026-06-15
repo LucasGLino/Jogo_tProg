@@ -105,7 +105,7 @@ std::vector<Projetil*>* Capitao::get_Vetor_De_Projetis(){
 	return &disparos;
 }
 
-void Capitao::Executar() {
+void Capitao::executar() {
 
 	desenhar();
 
@@ -154,7 +154,7 @@ void Capitao::imprime_Projeteis_Ids_Ativos_e_Pos() {
 }
 
 
-void Capitao::Salvar() {
+void Capitao::salvar() {
 
 }
 

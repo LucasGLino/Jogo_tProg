@@ -56,26 +56,38 @@ Fases::Fase_2::Fase_2() {
 		std::cout << "Erro ao carregar textura do fundo da fase 2." << std::endl;
 	}
 	else {
-		sf::Vector2u tam_fundo = textura_fundo.getSize();
-
 		fundo.setTexture(textura_fundo);
-		fundo.setPosition(0.f, -tam_Piso_Fase.y);
-
-		if (tam_fundo.x > 0 && tam_fundo.y > 0) {
-			fundo.setScale(tam_Piso_Fase.x / static_cast<float>(tam_fundo.x), (tam_Piso_Fase.y * 2.5f) / static_cast<float>(tam_fundo.y));
-		}
-
 		fundo_carregado = true;
 	}
 	
 	
 	setar_Camera_Fase();
+	ajustar_Fundo_A_Camera();
 	Cria_Obstaculos();
 
 	// precisa ser antes que Cria Obstaculos, justamente pq precisa ser setado os inimigos nas plataformas primeiro.
 	Cria_Inimigos();
 
 	//lista_Entidades.imprimir_Ids();
+}
+
+void Fases::Fase_2::ajustar_Fundo_A_Camera()
+{
+	if (!fundo_carregado) {
+		return;
+	}
+
+	sf::Vector2u tam_fundo = textura_fundo.getSize();
+
+	if (tam_fundo.x == 0 || tam_fundo.y == 0) {
+		return;
+	}
+
+	sf::Vector2f tam_camera = pGG->getCamera()->getSize();
+	sf::Vector2f centro_camera = pGG->getCamera()->getCenter();
+
+	fundo.setPosition(centro_camera.x - (tam_camera.x / 2.f), centro_camera.y - (tam_camera.y / 2.f));
+	fundo.setScale(tam_camera.x / static_cast<float>(tam_fundo.x), tam_camera.y / static_cast<float>(tam_fundo.y));
 }
 
 Fases::Fase_2::~Fase_2(){
@@ -252,6 +264,7 @@ void Fases::Fase_2::atualiza_Camera_Fase(Jogador* p_jogador1, Jogador* p_jogador
 
 	//trava a camera;
 	pGG->getCamera()->setCenter(pos_camera);
+	ajustar_Fundo_A_Camera();
 
 }
 

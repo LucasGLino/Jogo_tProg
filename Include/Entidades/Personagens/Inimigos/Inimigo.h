@@ -35,11 +35,11 @@ namespace Entidades {
 				void setar_direcao();
 
 				virtual void andar_ate(float em_x, float em_y);
-				virtual void salvar();
-				virtual void executar();
-				virtual void Salvar() = 0;
+				//virtual void salvar();
+				virtual void executar() = 0;
+				virtual void salvar() = 0;
 
-				virtual void Executar();
+				//virtual void Executar();
 				virtual void verifica_Acao_de_Colisao(int lado, Entidades::Personagens::Jogador* pJogador);
 
 				virtual void setar_Pontos_Por_Eliminacao(int pontos) = 0;

@@ -107,7 +107,7 @@ void Jogador::executar() {
 				pos.x -= velocidade.x;
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-
+				//pos.y -=2.f;
 				executando_Pulo();
 			}
 

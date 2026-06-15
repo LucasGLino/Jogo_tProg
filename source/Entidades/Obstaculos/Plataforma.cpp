@@ -49,10 +49,8 @@ void Plataforma::Executar() {
 
 	if(ativa){
 		
-		if(se_move){
 
-
-		}
+		executar_Gravidade();
 
 		desenhar();
 	}

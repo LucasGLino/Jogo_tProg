@@ -24,8 +24,8 @@ namespace Entidades {
                 ~Pirata();
             
                 void andar_ate(float em_x, float em_y);
-                void Salvar();
-                void Executar();
+                void salvar();
+                void executar();
                 void Danificar(Entidades::Personagens::Personagem* pAtacado);
 
                 void setar_Patrulha(float patrulha_esq, float patrulha_dir);

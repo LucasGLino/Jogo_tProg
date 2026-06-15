@@ -47,8 +47,6 @@ namespace Entidades {
 		void executar_Gravidade();
 		void executar();
 		void salvar();
-		void Executar();
-		void Salvar();
 
 		void setar_Cor(sf::Color cor);
 	};

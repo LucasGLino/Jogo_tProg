@@ -14,7 +14,7 @@ Jogo::Jogo():
     acabou(false)
 {
 
-    jogador_2.setar_Dois_Jogadores(false);
+    jogador_2.setar_Dois_Jogadores(true);
 
     //Ger_Graf = ::Gerenciador_Grafico::getInstancia();
     Ger_Graf = Gerenciador_Grafico::getInstancia();
@@ -177,8 +177,6 @@ void Jogo::verifica_Fim_De_Jogo()
 }
 
 void Jogo::atualiza_Camera() {
-    
-    Ger_Graf->getJanela()->setView(*Ger_Graf->getCamera());
 
     if(fase_1_ativa){
         //fase1.atualiza_Camera_Fase(&jogador_1, &jogador_2);
@@ -186,6 +184,8 @@ void Jogo::atualiza_Camera() {
     else if(fase_2_ativa){
         fase2.atualiza_Camera_Fase(&jogador_1, &jogador_2);
     }
+
+    Ger_Graf->getJanela()->setView(*Ger_Graf->getCamera());
 
     //isso deve ser passado para a fase, que deve ajustar a camera conforme o jogador se move pelo mapa.
     //Ger_Graf->getCamera()->setCenter(jogador_1.get_Centro());

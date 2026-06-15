@@ -5,7 +5,7 @@ using namespace Entidades;
 using namespace Obstaculos;
 using namespace Personagens;
 
-int base_Id(0);
+int Fases::Fase::base_Id = 0;
 
 Fase::Fase(): Ente(base_Id) {
 

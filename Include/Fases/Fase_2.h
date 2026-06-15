@@ -35,8 +35,8 @@ namespace Fases{
 		sf::Sprite fundo;
 		bool fundo_carregado;
 
-	protected:
 		void remover_Inimigo_Das_Listas_Auxiliares(Entidades::Personagens::Inimigo* pInimigo);
+		void ajustar_Fundo_A_Camera();
 
 	public:
 
