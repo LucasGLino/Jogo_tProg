@@ -1,5 +1,4 @@
 #include "Entidades/Obstaculos/Espinho.h"
-#include "Espinho.h"
 
 
 Entidades::Obstaculos::Espinho::Espinho()

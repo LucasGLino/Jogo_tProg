@@ -1,5 +1,4 @@
 #include "Entidades/Obstaculos/Obstaculo.h"
-#include "Obstaculo.h"
 
 using namespace Entidades;
 using namespace Personagens;

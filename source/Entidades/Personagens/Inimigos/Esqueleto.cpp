@@ -1,5 +1,4 @@
 #include "Entidades/Personagens/Inimigos/Esqueleto.h"
-#include "Esqueleto.h"
 
 Entidades::Personagens::Esqueleto::Esqueleto()
 {
