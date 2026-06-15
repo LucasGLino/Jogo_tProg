@@ -1,4 +1,5 @@
 #include "Entidades/Obstaculos/Obstaculo.h"
+#include "Obstaculo.h"
 
 using namespace Entidades;
 using namespace Personagens;
@@ -7,7 +8,7 @@ using namespace Obstaculos;
 /*
 Obstaculo::Obstaculo() : Entidade(id_base)
 */
-Obstaculo::Obstaculo() : Entidade(id_base, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f))
+Obstaculo::Obstaculo() : Entidade(id_base, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f)) 
 {
 	//agressivo = false;
 	danoso = false;
@@ -26,6 +27,24 @@ Obstaculo::~Obstaculo() {
 void Obstaculo::executar_Gravidade(){
 	pos.y += gravidade;
 	pos.y -= gravidade;
+}
+
+void Entidades::Obstaculos::Obstaculo::seta_Obstaculo(float alt, float larg, float origem_x, float origem_y)
+{
+	tamanho.x = larg;
+	tamanho.y = alt;
+
+	//pFigura->setFillColor(sf::Color::Green);
+	pFigura->setSize(tamanho);
+	if (!textura.loadFromFile("assets/Plataforma.png")) {
+		std::cout << "Erro ao carregar textura da plataforma." << std::endl;
+		pFigura->setFillColor(sf::Color::Green);
+	}
+	else {
+		pFigura->setFillColor(sf::Color::White);
+		pFigura->setTexture(&textura);
+	}
+	this->setar_Pos(origem_x, origem_y);
 }
 
 void Obstaculo::salvar(){

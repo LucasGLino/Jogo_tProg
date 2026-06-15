@@ -38,6 +38,10 @@ namespace Fases {
 
 			virtual void remover_Inimigo_Das_Listas_Auxiliares(Entidades::Personagens::Inimigo* pInimigo);
 
+			void Cria_Pirata(float x, float y, float patrulha_ate_a, float patrulha_ate_b);
+
+			virtual void Cria_Plataforma(float alt, float larg, float origem_x, float origem_y);
+
 
 		public:
 			Fase();
@@ -47,13 +51,11 @@ namespace Fases {
 			void Setar_Jogadores_Colisoes(Entidades::Personagens::Jogador* p_jogador1, Entidades::Personagens::Jogador* p_jogador2);
 			void Setar_Jogadores_Inimigos(Entidades::Personagens::Jogador* p_jogador1, Entidades::Personagens::Jogador* p_jogador2);
 
-			void Cria_Pirata(float x, float y, float patrulha_ate_a, float patrulha_ate_b);
 
 			bool get_Ganhou();
 
 			virtual void executar();
 			virtual void Cria_Piso() = 0;
-			virtual void Cria_Plataforma() = 0;
 			virtual void Cria_Inimigos() = 0;	
 			virtual void Cria_Obstaculos() = 0;
 

@@ -3,18 +3,18 @@
 #include "Fases/Fase.h"
 #include "Entidades/Obstaculos/Plataforma.h"
 //#include "Entidades/Obstaculos/Espinhos.h"
-#include "Entidades/Personagens/Inimigos/Capitao.h"
+#include "Entidades/Personagens/Inimigos/Esqueleto.h"
 #include "Entidades/Projetil.h"
 
 namespace Fases{
 
-	class Fase_2 : public Fase
+	class Fase_1 : public Fase
 	{
 	private:
-		int num_capitoes;
+		int num_esqueletos;
 		int num_piratas;
 		int num_restante_piratas;
-		int num_restante_capitoes;
+		int num_restante_esqueletos;
 		//int num_restante_espinhos;
 
 		int i,j;
@@ -34,22 +34,19 @@ namespace Fases{
 		sf::Texture textura_fundo;
 		sf::Sprite fundo;
 		bool fundo_carregado;
-
-		void remover_Inimigo_Das_Listas_Auxiliares(Entidades::Personagens::Inimigo* pInimigo);
+        
 		void ajustar_Fundo_A_Camera();
 
 	public:
 
-		Fase_2();
-		~Fase_2();
+		Fase_1();
+		~Fase_1();
 		
 		void Cria_Obstaculos();
 		void Cria_Inimigos();
-		void Cria_Capitao(float x, float y);
+        void Cria_Esqueletos(float x, float y, float patrulha_ate_a, float patrula_ate_b);
 
 		void executar();
-		Entidades::Projetil* Cria_Projetil();
-		void verifica_Projeteis_Destroidos();
 
 		void seta_Tamanho_Plataformas(int n_plataformas);
 		void seta_Num_Plataformas();
