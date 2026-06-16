@@ -4,7 +4,7 @@
 #include "Entidades/Personagens/Jogador/Jogador.h"
 //#include "Fases/Fase_1.h"
 #include "Fases/Fase_2.h"
-//#include "Core/Menu.h"
+#include "Core/Menus/Menu.h"
 
 //enum class Estado { MENU, FASE_1, FASE_2 };
 
@@ -20,7 +20,8 @@ class Jogo
 		Fases::Fase_2 fase2;
 
 		//Menu *menu;
-		//Estado estado;
+		//jogando 0 , Menu 1, Pausado 2, Venceu 3, Perdeu 4
+		int estado;
 
 		bool fase_1_ativa;
 		bool fase_2_ativa;

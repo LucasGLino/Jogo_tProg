@@ -24,7 +24,8 @@ Ente::~Ente(){
 
 void Ente::desenhar() { 
 	pGG->desenhar(pFigura);
-	//pGG->getJanela()->draw(*pFigura); 
+
+	
 }
 
 int Ente::getId() const {
