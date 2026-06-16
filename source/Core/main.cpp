@@ -15,6 +15,8 @@ int main{
 
 int main()
 {
+    std::cout << "ERRO" << std::endl;
+    
     Jogo jogo;
 
     jogo.executar();

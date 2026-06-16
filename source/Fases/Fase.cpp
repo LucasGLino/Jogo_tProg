@@ -117,6 +117,11 @@ void Fases::Fase::Cria_Pirata(float x, float y, float patrulha_ate_a, float patr
 
 }
 
+void Fases::Fase::Cria_Plataforma(float alt, float larg, float origem_x, float origem_y)
+{
+	plataforma = new Plataforma;
+	plataforma->seta_Obstaculo(alt, larg, origem_x, origem_y);
+}
 bool Fases::Fase::get_Ganhou()
 {
 	return ganhou;

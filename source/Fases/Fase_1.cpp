@@ -1,4 +1,4 @@
-#include "Fases/Fase_2.h"
+#include "Fases/Fase_1.h"
 
 using namespace Entidades;
 using namespace Personagens;
@@ -6,16 +6,15 @@ using namespace Fases;
 using namespace Obstaculos;
 using namespace Gerenciadores;
 
-Fases::Fase_2::Fase_2() {
+Fases::Fase_1::Fase_1() {
 
 	//srand(static_cast<unsigned int>(time(0)));
 	
 	i = 0;
 	j = 0;
 
-	// entre 3 e 6
-	num_capitoes = (rand() % 3) + 3;
-	//num_capitoes = 1;
+	// entre 3 e 10
+	num_esqueletos = (rand() % 7) + 3;
 
 	//entre 3 e 8
 	num_piratas = (rand() % 5) + 3;
@@ -25,7 +24,7 @@ Fases::Fase_2::Fase_2() {
 	//num_espinhos = (rand()%1) + 3;
 	//num_espinhos = 0;
 
-	num_restante_capitoes = num_capitoes;
+	num_restante_esqueletos = num_esqueletos;
 	num_restante_piratas = num_piratas;
 	//num_restante_espinhos = num_espinhos;
 
@@ -43,8 +42,6 @@ Fases::Fase_2::Fase_2() {
 	pos_Piso.x = 0.f;
 	pos_Piso.y = tam_Piso_Fase.y;
 
-
-	lista_cap.clear();
 
 	tamanho_da_tela_x = pGG->getCamera()->getSize().x * zoom_camera;
 	espaco_vazio_x = 0;
@@ -71,7 +68,7 @@ Fases::Fase_2::Fase_2() {
 	//lista_Entidades.imprimir_Ids();
 }
 
-void Fases::Fase_2::ajustar_Fundo_A_Camera()
+void Fases::Fase_1::ajustar_Fundo_A_Camera()
 {
 	if (!fundo_carregado) {
 		return;
@@ -90,32 +87,19 @@ void Fases::Fase_2::ajustar_Fundo_A_Camera()
 	fundo.setScale(tam_camera.x / static_cast<float>(tam_fundo.x), tam_camera.y / static_cast<float>(tam_fundo.y));
 }
 
-Fases::Fase_2::~Fase_2(){
+Fases::Fase_1::~Fase_1(){
 
-	lista_cap.clear();
 	num_plataformas_por_andar.clear();
 }
 
-void Fases::Fase_2::remover_Inimigo_Das_Listas_Auxiliares(Inimigo* pInimigo)
-{
-	for (std::vector<Capitao*>::iterator itr = lista_cap.begin(); itr != lista_cap.end();) {
-		if (static_cast<Inimigo*>(*itr) == pInimigo) {
-			itr = lista_cap.erase(itr);
-		}
-		else {
-			itr++;
-		}
-	}
-}
 
-
-void Fases::Fase_2::Cria_Obstaculos(){
+void Fases::Fase_1::Cria_Obstaculos(){
 
 	Cria_Piso();
 	Posiciona_plataforma();
 }
 
-void Fases::Fase_2::executar(){
+void Fases::Fase_1::executar(){
 
 	verifica_Inimigos_Neutralizados();
 
@@ -124,17 +108,12 @@ void Fases::Fase_2::executar(){
 			pGG->getJanela()->draw(fundo);
 		}
 
-		verifica_Projeteis_Destroidos();
 		gerenciador_colisoes.Executar();
 		lista_Entidades.percorrer();
 
-		for (i = 0; i < lista_cap.size(); i++) {
+		// for (i = 0; i < lista_cap.size(); i++) {
 
-			if (lista_cap[i]->get_Disparou() && !(lista_cap[i]->get_Eliminado())) {
-
-				lista_cap[i]->incluir_Projetil(Cria_Projetil());
-			}
-		}
+		// }
 
 		/*
 		for(i = 0; i<lista_espinhos.size(); i++){
@@ -149,19 +128,19 @@ void Fases::Fase_2::executar(){
 
 }
 
-void Fases::Fase_2::Cria_Inimigos(){
+void Fases::Fase_1::Cria_Inimigos(){
 
 
 	sf::Vector2f aux;
-	Capitao aux_cap;
-	Pirata aux_pirat;
+	Esqueleto aux_esq;
+	Pirata aux_pirata;
 
-	for(i=0;i<num_restante_capitoes;i++){
+	for(i=0;i<num_restante_esqueletos;i++){
 
 		aux.x = pos_Piso.x + (rand() % static_cast<int>(tam_Piso_Fase.x));
 		aux.y = pos_Piso.y;
 
-		Cria_Capitao(aux.x, aux.y);
+		Cria_Esqueletos(aux.x, aux.y, pos_Piso.x, tam_Piso_Fase.x);
 	}
 
 	for(i = 0; i<num_restante_piratas; i++){
@@ -174,88 +153,24 @@ void Fases::Fase_2::Cria_Inimigos(){
 }
 
 //cria o inimigo dificil (Boss)
-void Fase_2::Cria_Capitao(float x, float y){
+void Fase_1::Cria_Esqueletos(float x, float y,float patrulha_ate_a, float patrula_ate_b){
 
-	Capitao* capitao;
-	capitao = new Capitao;
+	Esqueleto* esqueleto;
+	esqueleto = new Esqueleto;
 
-	capitao->setar_Pos(x, y - capitao->get_Altura());
-	gerenciador_colisoes.Incluir_Inimigo(capitao);
-	lista_Entidades.adicionar(static_cast<Entidade*>(capitao));
-	lista_cap.push_back(capitao);
-	lista_id_inimigos.push_front(capitao->getId());
+	esqueleto->setar_Patrulha(patrulha_ate_a, patrula_ate_b);
+
+	lista_id_inimigos.push_front(esqueleto->getId());
+	gerenciador_colisoes.Incluir_Inimigo(esqueleto);
+	lista_Entidades.adicionar(static_cast<Entidade*>(esqueleto));
 }
 
-//auto explicativo
-Projetil* Fases::Fase_2::Cria_Projetil()
-{
-
-	Projetil* proj;
-	proj = new Projetil;
-	
-	lista_Entidades.adicionar(static_cast<Entidade*>(proj));
-	gerenciador_colisoes.Incluir_Projetil(proj);
-
-	return proj;
-}
-
-void Fases::Fase_2::verifica_Projeteis_Destroidos()
-{
-	
-	Projetil* projetil_deletado;
-
-	for(i=0;i<lista_cap.size(); i++) {
-
-		for(j = 0; j < lista_cap[i]->get_Vetor_De_Projetis()->size(); j++) {
-
-
-			// conteudo apontado pelo ponteiro do vetor de projeteis do capitao
-			if (!((*lista_cap[i]->get_Vetor_De_Projetis())[j]->get_Ativo())) {
-
-				projetil_deletado = (*(lista_cap[i]->get_Vetor_De_Projetis()))[j];
-
-
-				if (projetil_deletado) {
-					//remove da lista de colisões
-					gerenciador_colisoes.projetil_Destruido(projetil_deletado);
-
-				}
-				else {
-					std::cout << "Erro ao remover projetil (Gerenciador_colisoes)" << std::endl;
-				}
-
-				if (projetil_deletado) {
-					//remove do capitão
-					lista_cap[i]->remover_Projetil(projetil_deletado);
-				}
-				else {
-					std::cout << "Erro ao remover projetil (Capitao)" << std::endl;
-				}
-
-				if (projetil_deletado) {
-					//remove da lista de entidades
-					lista_Entidades.remover(static_cast<Entidade*>(projetil_deletado));
-				}
-				else {
-					std::cout << "Erro ao remover projetil (Lista_Entidades)" << std::endl;
-				}
-
-			}
-		}
-
-		projetil_deletado = nullptr;
-	}
-
-	
-
-}
-
-void Fases::Fase_2::setar_Camera_Fase()
+void Fases::Fase_1::setar_Camera_Fase()
 {
 	pGG->getCamera()->zoom(zoom_camera);
 }
 
-void Fases::Fase_2::atualiza_Camera_Fase(Jogador* p_jogador1, Jogador* p_jogador2)
+void Fases::Fase_1::atualiza_Camera_Fase(Jogador* p_jogador1, Jogador* p_jogador2)
 {
 	sf::Vector2f pos_camera;
 
@@ -268,7 +183,7 @@ void Fases::Fase_2::atualiza_Camera_Fase(Jogador* p_jogador1, Jogador* p_jogador
 
 }
 
-void Fases::Fase_2::seta_Tamanho_Plataformas(int n_plataformas) {
+void Fases::Fase_1::seta_Tamanho_Plataformas(int n_plataformas) {
 
 	if(n_plataformas == 1){
 
@@ -301,7 +216,7 @@ void Fases::Fase_2::seta_Tamanho_Plataformas(int n_plataformas) {
 	}
 }
 
-void Fases::Fase_2::seta_Num_Plataformas(){
+void Fases::Fase_1::seta_Num_Plataformas(){
 
 	if (num_plataformas_totais < 5) {
 		num_plataformas_totais = 5;
@@ -343,7 +258,7 @@ void Fases::Fase_2::seta_Num_Plataformas(){
 
 }
 
-void Fases::Fase_2::Posiciona_plataforma() {
+void Fases::Fase_1::Posiciona_plataforma() {
 
     seta_Num_Plataformas();
 
@@ -382,7 +297,7 @@ void Fases::Fase_2::Posiciona_plataforma() {
 
 }
 
-void Fases::Fase_2::Cria_Piso() {
+void Fases::Fase_1::Cria_Piso() {
 
 	piso = new Plataforma;
 	piso->seta_Obstaculo(tam_Piso_Fase.y, tam_Piso_Fase.x, pos_Piso.x, pos_Piso.y);
@@ -391,27 +306,27 @@ void Fases::Fase_2::Cria_Piso() {
 	lista_Entidades.adicionar(static_cast<Entidade*>(piso));
 }
 
-void Fases::Fase_2::cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, float ponta_dir_plataforma, sf::Vector2f pos_plat){
+void Fases::Fase_1::cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, float ponta_dir_plataforma, sf::Vector2f pos_plat){
 
 	int gerar_ou_nao = (rand() % 100);
-	int gerar_cap_ou_pirata = (rand() % 100);
+	int gerar_esq_ou_pirata = (rand() % 100);
 
 
 	//50% de chance
-	int gerar_cap = 50;
+	int gerar_esq = 70;
 
 	//70% de chance
-	if(gerar_ou_nao<= 70) {
+	if(gerar_ou_nao<= 80) {
 
 		//gera cap
-		if(gerar_cap_ou_pirata < gerar_cap && num_restante_capitoes > 0) {
+		if(gerar_esq_ou_pirata < gerar_esq && num_restante_esqueletos > 0) {
 
 			//precisa ser a posição a direita da plataforma, para que o inimigo possa ser gerado dentro dela.
-			Cria_Capitao(pos_plat.x + ((ponta_dir_plataforma - ponta_esq_plataforma)/2), pos_plat.y);
-			num_restante_capitoes--;
+			Cria_Esqueletos(pos_plat.x + ((ponta_dir_plataforma - ponta_esq_plataforma)/2), pos_plat.y, ponta_esq_plataforma, ponta_dir_plataforma);
+			num_restante_esqueletos--;
 		}
 		//gera pirata
-		else if(gerar_cap_ou_pirata >= gerar_cap && num_restante_piratas > 0){
+		else if(gerar_esq_ou_pirata >= gerar_esq && num_restante_piratas > 0){
 
 			//precisa ser a posição a direita da plataforma, para que o inimigo possa ser gerado dentro dela.
 			Cria_Pirata(pos_plat.x + ((ponta_dir_plataforma - ponta_esq_plataforma)/2), pos_plat.y, ponta_esq_plataforma, ponta_dir_plataforma);

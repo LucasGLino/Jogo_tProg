@@ -20,24 +20,24 @@ Plataforma::~Plataforma(){
 
 }
 
-void Plataforma::seta_Plataforma(float alt, float larg, float origem_x, float origem_y)
-{
+// void Plataforma::seta_Plataforma(float alt, float larg, float origem_x, float origem_y)
+// {
 
-	tamanho.x = larg;
-	tamanho.y = alt;
+// 	tamanho.x = larg;
+// 	tamanho.y = alt;
 
-	//pFigura->setFillColor(sf::Color::Green);
-	pFigura->setSize(tamanho);
-	if (!textura.loadFromFile("assets/Plataforma.png")) {
-		std::cout << "Erro ao carregar textura da plataforma." << std::endl;
-		pFigura->setFillColor(sf::Color::Green);
-	}
-	else {
-		pFigura->setFillColor(sf::Color::White);
-		pFigura->setTexture(&textura);
-	}
-	this->setar_Pos(origem_x, origem_y);
-}
+// 	//pFigura->setFillColor(sf::Color::Green);
+// 	pFigura->setSize(tamanho);
+// 	if (!textura.loadFromFile("assets/Plataforma.png")) {
+// 		std::cout << "Erro ao carregar textura da plataforma." << std::endl;
+// 		pFigura->setFillColor(sf::Color::Green);
+// 	}
+// 	else {
+// 		pFigura->setFillColor(sf::Color::White);
+// 		pFigura->setTexture(&textura);
+// 	}
+// 	this->setar_Pos(origem_x, origem_y);
+// }
 
 void Plataforma::Salvar(){
 
