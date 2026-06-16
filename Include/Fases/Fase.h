@@ -40,7 +40,7 @@ namespace Fases {
 
 			void Cria_Pirata(float x, float y, float patrulha_ate_a, float patrulha_ate_b);
 
-			virtual void Cria_Plataforma(float alt, float larg, float origem_x, float origem_y);
+			void Cria_Plataforma(float alt, float larg, float origem_x, float origem_y);
 
 
 		public:
