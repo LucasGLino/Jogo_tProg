@@ -20,10 +20,10 @@ Jogo::Jogo():
     Ger_Graf = Gerenciador_Grafico::getInstancia();
 
     //inicialação das fases corrigida, agora função Atualiza chama setar_Fase quando necessário
-    fase_1_ativa = false;
-    fase_2_ativa = true;
+    fase_1_ativa = true;
+    fase_2_ativa = false;
 
-    //fase1.Setar_Jogadores(&jogador_1, &jogador_2);
+    fase1.Setar_Jogadores(&jogador_1, &jogador_2);
     fase2.Setar_Jogadores(&jogador_1, &jogador_2);
 
 
@@ -113,10 +113,14 @@ void Jogo::setar_Fase()
     //}
 
     //seta os jogadores na fase ativa
-    /*
     if (fase_1_ativa) {
        //fase1.Setar_Jogadores(&jogador_1, &jogador_2);
         fase1.executar();
+
+        jogador_1.executar();
+        if (jogador_2.get_Dois_Jogadores()) {
+            jogador_2.executar();
+        }
 
         if(fase1.verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(&jogador_1))){
             jogador_1.diminuir_Vitalidade(200);
@@ -127,8 +131,8 @@ void Jogo::setar_Fase()
         
 	}
     else if (fase_2_ativa) {
-    */
-   if(fase_2_ativa){
+    
+//    if(fase_2_ativa){
         //fase2.Setar_Jogadores(&jogador_1, &jogador_2);
         fase2.executar();
 
@@ -150,7 +154,7 @@ void Jogo::setar_Fase()
 void Jogo::verifica_Fim_De_Jogo()
 {
 
-    /*
+
     if(fase_1_ativa){
         if (fase1.get_Ganhou() || (jogador_1.get_Eliminado() && jogador_2.get_Eliminado()))
         {
@@ -161,10 +165,8 @@ void Jogo::verifica_Fim_De_Jogo()
             Ger_Graf->getJanela()->close();
             acabou = true;
         }
-    }
-    */
-   //else if(fase_2_ativa){
-    if(fase_2_ativa){
+    }else if(fase_2_ativa){
+    // if(fase_2_ativa){
         if (fase2.get_Ganhou() || (jogador_1.get_Eliminado() && jogador_2.get_Eliminado()))
         {
             std::cout << "pontuacao jogador 1:" << jogador_1.get_Pontuacao() << std::endl;
@@ -179,7 +181,7 @@ void Jogo::verifica_Fim_De_Jogo()
 void Jogo::atualiza_Camera() {
 
     if(fase_1_ativa){
-        //fase1.atualiza_Camera_Fase(&jogador_1, &jogador_2);
+       fase1.atualiza_Camera_Fase(&jogador_1, &jogador_2);
     }
     else if(fase_2_ativa){
         fase2.atualiza_Camera_Fase(&jogador_1, &jogador_2);

@@ -2,7 +2,7 @@
 
 #include "Gerenciadores/Gerenciador_Grafico.h"
 #include "Entidades/Personagens/Jogador/Jogador.h"
-//#include "Fases/Fase_1.h"
+#include "Fases/Fase_1.h"
 #include "Fases/Fase_2.h"
 //#include "Core/Menu.h"
 
@@ -16,7 +16,7 @@ class Jogo
 		Entidades::Personagens::Jogador jogador_1;
 		Entidades::Personagens::Jogador jogador_2;
 
-		//Fases::Fase_1 fase1;
+		Fases::Fase_1 fase1;
 		Fases::Fase_2 fase2;
 
 		//Menu *menu;

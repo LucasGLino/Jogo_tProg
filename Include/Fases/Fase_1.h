@@ -29,7 +29,6 @@ namespace Fases{
 
 		std::vector<int> num_plataformas_por_andar;
 
-		std::vector<Entidades::Personagens::Capitao*> lista_cap;
 		//std::vector<Entidades::Obstaculos::Espinhos*> lista_espinhos;
 		sf::Texture textura_fundo;
 		sf::Sprite fundo;

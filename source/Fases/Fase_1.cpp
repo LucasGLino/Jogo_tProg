@@ -13,9 +13,8 @@ Fases::Fase_1::Fase_1() {
 	i = 0;
 	j = 0;
 
-	// entre 3 e 6
+	// entre 3 e 10
 	num_esqueletos = (rand() % 7) + 3;
-	//num_capitoes = 1;
 
 	//entre 3 e 8
 	num_piratas = (rand() % 5) + 3;
@@ -43,8 +42,6 @@ Fases::Fase_1::Fase_1() {
 	pos_Piso.x = 0.f;
 	pos_Piso.y = tam_Piso_Fase.y;
 
-
-	lista_cap.clear();
 
 	tamanho_da_tela_x = pGG->getCamera()->getSize().x * zoom_camera;
 	espaco_vazio_x = 0;
@@ -92,7 +89,6 @@ void Fases::Fase_1::ajustar_Fundo_A_Camera()
 
 Fases::Fase_1::~Fase_1(){
 
-	lista_cap.clear();
 	num_plataformas_por_andar.clear();
 }
 
@@ -115,9 +111,9 @@ void Fases::Fase_1::executar(){
 		gerenciador_colisoes.Executar();
 		lista_Entidades.percorrer();
 
-		for (i = 0; i < lista_cap.size(); i++) {
+		// for (i = 0; i < lista_cap.size(); i++) {
 
-		}
+		// }
 
 		/*
 		for(i = 0; i<lista_espinhos.size(); i++){
@@ -137,7 +133,7 @@ void Fases::Fase_1::Cria_Inimigos(){
 
 	sf::Vector2f aux;
 	Esqueleto aux_esq;
-	Pirata aux_pirat;
+	Pirata aux_pirata;
 
 	for(i=0;i<num_restante_esqueletos;i++){
 
@@ -320,7 +316,7 @@ void Fases::Fase_1::cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, fl
 	int gerar_esq = 70;
 
 	//70% de chance
-	if(gerar_ou_nao<= 70) {
+	if(gerar_ou_nao<= 80) {
 
 		//gera cap
 		if(gerar_esq_ou_pirata < gerar_esq && num_restante_esqueletos > 0) {
