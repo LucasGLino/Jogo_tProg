@@ -7,7 +7,6 @@ namespace Entidades {
 		{
 		private:
 			//sf::Vector2f tamanho;
-			bool ativa;
 
             bool tetano;
 

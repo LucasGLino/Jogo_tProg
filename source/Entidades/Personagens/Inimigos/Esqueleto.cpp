@@ -23,7 +23,7 @@ Entidades::Personagens::Esqueleto::Esqueleto()
 
 	pos_final = pos_inicial;
 
-	velocidade.x = 1.0f;
+	velocidade.x = 0.5f;
 
 	velocidade_maxima = 2 * velocidade.x;
 
