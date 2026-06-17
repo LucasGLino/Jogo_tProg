@@ -14,6 +14,9 @@ Jogo::Jogo():
     acabou(false)
 {
 
+    //estado Menu;
+    estado = 1;
+
     jogador_2.setar_Dois_Jogadores(true);
 
     //Ger_Graf = ::Gerenciador_Grafico::getInstancia();

@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <string>
 
 //using namespace std;
 //using namespace sf;
@@ -16,6 +17,8 @@ namespace Gerenciadores{
 
             sf::View* camera;
             
+            sf::Font fonte;
+
             unsigned int largura;
             unsigned int altura; 
 
@@ -31,6 +34,10 @@ namespace Gerenciadores{
             void desenhar(sf::Sprite* corpo);
             void desenhar(sf::RectangleShape* aux);
             void desenhar(sf::Text* texto);
+
+            void setar_Fonte();
+            sf::Text* setar_Texto(std::string texto, int tamanho, sf::Vector2f pos);
+            void setar_Cor_Texto(sf::Text* texto, sf::Color cor);
 
             sf::RenderWindow* getJanela()const;
             sf::View* getCamera() const;
