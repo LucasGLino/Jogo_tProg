@@ -22,12 +22,12 @@ Fases::Fase_2::Fase_2() {
 	//num_piratas = 0;
 
 	//entre 3 a 4
-	//num_espinhos = (rand()%1) + 3;
+	num_espinhos = (rand()%1) + 3;
 	//num_espinhos = 0;
 
 	num_restante_capitoes = num_capitoes;
 	num_restante_piratas = num_piratas;
-	//num_restante_espinhos = num_espinhos;
+	num_restante_espinhos = num_espinhos;
 
 	zoom_camera = 1.3f;
 
@@ -52,7 +52,7 @@ Fases::Fase_2::Fase_2() {
 	num_max_plataformas = 10;
 
 	fundo_carregado = false;
-	if (!textura_fundo.loadFromFile("assets/Fundo_fase2.png")) {
+	if (!textura_fundo.loadFromFile("Imagens/Fundo_fase2.png")) {
 		std::cout << "Erro ao carregar textura do fundo da fase 2." << std::endl;
 	}
 	else {
@@ -67,6 +67,8 @@ Fases::Fase_2::Fase_2() {
 
 	// precisa ser antes que Cria Obstaculos, justamente pq precisa ser setado os inimigos nas plataformas primeiro.
 	Cria_Inimigos();
+
+
 
 	//lista_Entidades.imprimir_Ids();
 }
@@ -136,15 +138,6 @@ void Fases::Fase_2::executar(){
 			}
 		}
 
-		/*
-		for(i = 0; i<lista_espinhos.size(); i++){
-
-			if(lista_espinhos[i]->get_Soltar_Espinho()){
-
-				lista_espinhos[i]->setar_Espinho(Cria_Projetil());
-			}
-		}
-		*/
 	}
 
 }
@@ -366,7 +359,7 @@ void Fases::Fase_2::Posiciona_plataforma() {
 			Cria_Plataforma(tam_plataforma.y, tam_plataforma.x, pos_plataforma.x, pos_plataforma.y);
 
 			cria_Inimigos_Nas_Plataformas(pos_plataforma.x, (pos_plataforma.x + tam_plataforma.x), pos_plataforma);
-			//cria_Espinhos_na_Plataforma(tam_plataforma,pos_plataforma);
+			cria_Espinhos_na_Plataforma(tam_plataforma,pos_plataforma);
 
 			gerenciador_colisoes.Incluir_Obstaculo(static_cast<Obstaculo*>(plataforma));
 			lista_Entidades.adicionar(static_cast<Entidade*>(plataforma));
@@ -385,7 +378,7 @@ void Fases::Fase_2::Posiciona_plataforma() {
 void Fases::Fase_2::Cria_Piso() {
 
 	piso = new Plataforma;
-	piso->seta_Obstaculo(tam_Piso_Fase.y, tam_Piso_Fase.x, pos_Piso.x, pos_Piso.y);
+	piso->seta_Obstaculo(tam_Piso_Fase.y, tam_Piso_Fase.x, pos_Piso.x, pos_Piso.y,"Imagens/Plataforma.png");
 
 	gerenciador_colisoes.Incluir_Obstaculo(static_cast<Obstaculo*>(piso));
 	lista_Entidades.adicionar(static_cast<Entidade*>(piso));
@@ -420,39 +413,28 @@ void Fases::Fase_2::cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, fl
 	}
 }
 
-//void Fases::Fase_2::Cria_Espinhos(float pos_plat_x, float pos_embaixo_plat_y, float tam_plat_x){
-//
-//	Espinhos* espinhos;
-//	espinhos = new Espinhos;
-//
-//	espinhos->setar_Espinhos(pos_plat_x, pos_embaixo_plat_y, tam_plat_x);
-//	lista_espinhos.push_back(espinhos);
-//	gerenciador_colisoes.Incluir_Obstaculo(espinhos);
-//	lista_Entidades.adicionar(static_cast<Entidade*>(espinhos));
-//}
-//
-//void Fases::Fase_2::cria_Espinhos_na_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat){
-//
-//	int gerar_ou_nao = rand() % 100;
-//	int chance = 100;
-//
-//	/*
-//	if( > 4) {
-//		//70% so
-//		chance = 70;
-//	}
-//	else {
-//		//100% de chance
-//		chance = 100;
-//	}
-//	*/
-//
-//	if(num_restante_espinhos > 0) {
-//
-//		if(gerar_ou_nao < chance){
-//
-//			Cria_Espinhos(pos_plat.x,(pos_plat.y+tam_plat.y),tam_plat.x);
-//			num_restante_espinhos--;
-//		}
-//	}
-//}
+void Fases::Fase_2::Cria_Espinhos(float pos_plat_x, float pos_embaixo_plat_y, float tam_plat_x){
+
+	Espinho* espinhos;
+	espinhos = new Espinho;
+
+	espinhos->seta_Obstaculo(32.0, pos_plat_x, pos_embaixo_plat_y, tam_plat_x, "Assets/Imagens/Espinhos.png");
+	lista_espinhos.push_back(espinhos);
+	gerenciador_colisoes.Incluir_Obstaculo(espinhos);
+	lista_Entidades.adicionar(static_cast<Entidade*>(espinhos));
+}
+
+void Fases::Fase_2::cria_Espinhos_na_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat){
+
+	int gerar_ou_nao = rand() % 100;
+	int chance = 100;
+
+	if(num_restante_espinhos > 0) {
+
+		if(gerar_ou_nao < 60){
+
+			Cria_Espinhos(pos_plat.x,(pos_plat.y-32.f),tam_plat.x);
+			num_restante_espinhos--;
+		}
+	}
+}

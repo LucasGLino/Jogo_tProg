@@ -62,6 +62,14 @@ void Entidades::Personagens::Esqueleto::executar()
     desenhar();
 	setar_Pos(pos.x, pos.y);
 
+	srand(static_cast<unsigned int>(time(0)));
+	int chance_parar = (rand() % 100);
+	if(chance_parar <= 40){
+		parar = true;
+	}else{
+		parar = false;
+	}
+	
 	if(!parar){
 		if ((pos_final.x != pos.x) && (pos_final.y != pos.y)) {
 

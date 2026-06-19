@@ -1,5 +1,4 @@
 #include "Entidades/Obstaculos/Espinho.h"
-#include "Espinho.h"
 
 
 Entidades::Obstaculos::Espinho::Espinho(): tetano(false), dano_tetano(5), Jog_tetano(false), pJog(nullptr), contador_dano(0)
@@ -25,7 +24,7 @@ Entidades::Obstaculos::Espinho::~Espinho()
 void Entidades::Obstaculos::Espinho::Executar()
 {
 
-	desenhar();
+    desenhar();
     if(Jog_tetano){
         Tetano_Danar();
     }

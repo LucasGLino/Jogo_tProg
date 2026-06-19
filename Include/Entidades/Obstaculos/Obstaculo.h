@@ -18,7 +18,7 @@ namespace Entidades {
 				Obstaculo();
 				~Obstaculo();
 
-				void seta_Obstaculo(float alt, float larg, float origem_x, float origem_y);
+				void seta_Obstaculo(float alt, float larg, float origem_x, float origem_y,std::string assets);
 
 				virtual void executar_Gravidade();
 				virtual void salvar();

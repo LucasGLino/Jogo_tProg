@@ -21,12 +21,12 @@ Fases::Fase_1::Fase_1() {
 	//num_piratas = 0;
 
 	//entre 3 a 4
-	//num_espinhos = (rand()%1) + 3;
+	num_caixas = (rand()%1) + 3;
 	//num_espinhos = 0;
 
 	num_restante_esqueletos = num_esqueletos;
 	num_restante_piratas = num_piratas;
-	//num_restante_espinhos = num_espinhos;
+	num_restante_caixas = num_caixas;
 
 	zoom_camera = 1.3f;
 
@@ -49,7 +49,7 @@ Fases::Fase_1::Fase_1() {
 	num_max_plataformas = 10;
 
 	fundo_carregado = false;
-	if (!textura_fundo.loadFromFile("assets/Fundo_fase2.png")) {
+	if (!textura_fundo.loadFromFile("assets/imagens/Fundo_fase2.png")) {
 		std::cout << "Erro ao carregar textura do fundo da fase 2." << std::endl;
 	}
 	else {
@@ -115,15 +115,6 @@ void Fases::Fase_1::executar(){
 
 		// }
 
-		/*
-		for(i = 0; i<lista_espinhos.size(); i++){
-
-			if(lista_espinhos[i]->get_Soltar_Espinho()){
-
-				lista_espinhos[i]->setar_Espinho(Cria_Projetil());
-			}
-		}
-		*/
 	}
 
 }
@@ -300,7 +291,7 @@ void Fases::Fase_1::Posiciona_plataforma() {
 void Fases::Fase_1::Cria_Piso() {
 
 	piso = new Plataforma;
-	piso->seta_Obstaculo(tam_Piso_Fase.y, tam_Piso_Fase.x, pos_Piso.x, pos_Piso.y);
+	piso->seta_Obstaculo(tam_Piso_Fase.y, tam_Piso_Fase.x, pos_Piso.x, pos_Piso.y,"Assets/Imagens/Plataforma.png");
 
 	gerenciador_colisoes.Incluir_Obstaculo(static_cast<Obstaculo*>(piso));
 	lista_Entidades.adicionar(static_cast<Entidade*>(piso));
@@ -335,39 +326,25 @@ void Fases::Fase_1::cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, fl
 	}
 }
 
-//void Fases::Fase_2::Cria_Espinhos(float pos_plat_x, float pos_embaixo_plat_y, float tam_plat_x){
-//
-//	Espinhos* espinhos;
-//	espinhos = new Espinhos;
-//
-//	espinhos->setar_Espinhos(pos_plat_x, pos_embaixo_plat_y, tam_plat_x);
-//	lista_espinhos.push_back(espinhos);
-//	gerenciador_colisoes.Incluir_Obstaculo(espinhos);
-//	lista_Entidades.adicionar(static_cast<Entidade*>(espinhos));
-//}
-//
-//void Fases::Fase_2::cria_Espinhos_na_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat){
-//
-//	int gerar_ou_nao = rand() % 100;
-//	int chance = 100;
-//
-//	/*
-//	if( > 4) {
-//		//70% so
-//		chance = 70;
-//	}
-//	else {
-//		//100% de chance
-//		chance = 100;
-//	}
-//	*/
-//
-//	if(num_restante_espinhos > 0) {
-//
-//		if(gerar_ou_nao < chance){
-//
-//			Cria_Espinhos(pos_plat.x,(pos_plat.y+tam_plat.y),tam_plat.x);
-//			num_restante_espinhos--;
-//		}
-//	}
-//}
+void Fases::Fase_1::Cria_Caixas(float pos_plat_x, float pos_embaixo_plat_y, float tam_plat_x){
+
+	Caixa* caixas;
+	caixas = new Caixa;
+
+	caixas->seta_Obstaculo(128.0, pos_plat_x, pos_embaixo_plat_y, tam_plat_x,"Assets/Imagens/Caixa.png");
+	lista_caixa.push_back(caixas);
+	gerenciador_colisoes.Incluir_Obstaculo(caixas);
+	lista_Entidades.adicionar(static_cast<Entidade*>(caixas));
+}
+
+void Fases::Fase_1::cria_Caixas_na_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat){
+
+	int gerar_ou_nao = rand() % 100;
+
+	if(gerar_ou_nao <= 90){
+		if(num_restante_caixas > 0) {
+				Cria_Caixas(pos_plat.x,(pos_plat.y+tam_plat.y),tam_plat.x);
+				num_restante_caixas--;
+		}
+	}	
+}

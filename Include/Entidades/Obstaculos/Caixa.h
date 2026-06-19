@@ -3,20 +3,28 @@
 
 namespace Entidades {
 	namespace Obstaculos {
-		class Baril : public Obstaculo
+		class Caixa : public Obstaculo
 		{
 		private:
             bool ativa;
             
             int dano_explisivo;
 
+			bool Mover_Esq;
+
+			bool mover;
+
+			
+
 		public:
 
-			Baril();
-			~Baril();
+			Caixa();
+			~Caixa();
 
 			void Executar();
 			void obstacular(Entidades::Personagens::Jogador* p, int lado);
+			void Mover_Esquerda();
+			void Mover_Direita();
 			void Salvar();
 
 		};

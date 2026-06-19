@@ -28,14 +28,14 @@ void Obstaculo::executar_Gravidade(){
 	pos.y -= gravidade;
 }
 
-void Entidades::Obstaculos::Obstaculo::seta_Obstaculo(float alt, float larg, float origem_x, float origem_y)
+void Entidades::Obstaculos::Obstaculo::seta_Obstaculo(float alt, float larg, float origem_x, float origem_y, std::string assets)
 {
 	tamanho.x = larg;
 	tamanho.y = alt;
 
 	//pFigura->setFillColor(sf::Color::Green);
 	pFigura->setSize(tamanho);
-	if (!textura.loadFromFile("assets/Plataforma.png")) {
+	if (!textura.loadFromFile(assets)) {
 		std::cout << "Erro ao carregar textura da plataforma." << std::endl;
 		pFigura->setFillColor(sf::Color::Green);
 	}

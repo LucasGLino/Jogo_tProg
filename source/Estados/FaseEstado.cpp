@@ -17,11 +17,6 @@ void Fase_Estado::descarregar()
 void Fase_Estado::criarFase()
 {
     switch (i) { 
-        case 0:            
-            
-        case 1: 
-            
-        case 2:
            
     }
 

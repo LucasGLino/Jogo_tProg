@@ -1,4 +1,4 @@
-#include "include/Estados/FaseEstado.h"
+#include "Estados/FaseEstado.h"
 
 void Gerenciador_Estado::adicionarEstado(Estado *novoEstado)
 {

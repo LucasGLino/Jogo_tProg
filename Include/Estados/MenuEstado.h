@@ -5,7 +5,7 @@
 #include"State.h"
 #include"Elementos/Botao.h"
 #include"vector"
-#include"../Ente.h"
+#include"Entidades/Ente.h"
 #include"Gerenciadores/Gerenciador_Grafico.h"
 #include"GerenciadorEstado.h"
 #include"FaseEstado.h"
