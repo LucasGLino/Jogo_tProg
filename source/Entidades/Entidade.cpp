@@ -48,8 +48,8 @@ void Entidade::setar_Gravidade(float grav)
 
 void Entidade::executar_Gravidade()
 {
-    velocidade.y += gravidade;
-    //setar_Pos(pos.x, pos.y + velocidade.y);
+    // velocidade.y += gravidade;
+    setar_Pos(pos.x, pos.y + gravidade);
 }
 
 //Em relação a posição global.

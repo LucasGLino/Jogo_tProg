@@ -227,10 +227,10 @@ void Jogador::diminuir_Vitalidade(int dano) {
 		vitalidade = 0;
 		eliminado = true;
 	}
-	std::cout << "Jogador " << getId() << " tomou " << dano << " de dano. Vitalidade atual: " << vitalidade << std::endl;
+	// std::cout << "Jogador " << getId() << " tomou " << dano << " de dano. Vitalidade atual: " << vitalidade << std::endl;
 
 	if (eliminado) {
-		std::cout << "Jogador " << getId() << " foi eliminado!" << std::endl;
+		// std::cout << "Jogador " << getId() << " foi eliminado!" << std::endl;
 	}
 }
 

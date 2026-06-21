@@ -1,5 +1,6 @@
 #include "Entidades/Obstaculos/Caixa.h"
 
+
 Entidades::Obstaculos::Caixa::Caixa(): Mover_Esq(false), mover(false)
 {
     densidade_superficial = 0.02f;
@@ -14,6 +15,7 @@ Entidades::Obstaculos::Caixa::~Caixa()
 void Entidades::Obstaculos::Caixa::executar()
 {
     desenhar();
+    executar_Gravidade();
     if(mover){
         if(Mover_Esq){
             Mover_Esquerda();
@@ -23,8 +25,28 @@ void Entidades::Obstaculos::Caixa::executar()
             mover = false;
         }
     }
+    std::cout << "executou a caixa" << std::endl;
 }
 
+void Entidades::Obstaculos::Caixa::seta_Caixa(float origem_x, float origem_y)
+{
+    tamanho.x = 64.f;
+	tamanho.y = 64.f;
+
+	//pFigura->setFillColor(sf::Color::Green);
+	pFigura->setSize(tamanho);
+	if (!textura.loadFromFile("Assets/Imagens/Caixa.png")) {
+		std::cout << "Erro ao carregar textura da plataforma." << std::endl;
+		pFigura->setFillColor(sf::Color::Green);
+	}
+	else {
+		pFigura->setFillColor(sf::Color::White);
+		pFigura->setTexture(&textura);
+	}
+	this->setar_Pos(origem_x, origem_y);
+
+	massa = (densidade_superficial * calcula_Densidade_de_Area(*pFigura,50,50));
+}
 void Entidades::Obstaculos::Caixa::obstacular(Entidades::Personagens::Jogador *p, int lado)
 {
     

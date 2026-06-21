@@ -272,7 +272,7 @@ void Fases::Fase_1::Posiciona_plataforma() {
 			Cria_Plataforma(tam_plataforma.y, tam_plataforma.x, pos_plataforma.x, pos_plataforma.y);
 
 			cria_Inimigos_Nas_Plataformas(pos_plataforma.x, (pos_plataforma.x + tam_plataforma.x), pos_plataforma);
-			//cria_Espinhos_na_Plataforma(tam_plataforma,pos_plataforma);
+			cria_Caixas_na_Plataforma(tam_plataforma,pos_plataforma);
 
 			gerenciador_colisoes.Incluir_Obstaculo(static_cast<Obstaculo*>(plataforma));
 			lista_Entidades.adicionar(static_cast<Entidade*>(plataforma));
@@ -326,25 +326,23 @@ void Fases::Fase_1::cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, fl
 	}
 }
 
-void Fases::Fase_1::Cria_Caixas(float pos_plat_x, float pos_embaixo_plat_y, float tam_plat_x){
+void Fases::Fase_1::Cria_Caixas(float pos_embaixo_plat_y, float tam_plat_x){
 
 	Caixa* caixas;
 	caixas = new Caixa;
 
-	caixas->seta_Obstaculo(128.0, pos_plat_x, pos_embaixo_plat_y, tam_plat_x,"Assets/Imagens/Caixa.png");
+	caixas->seta_Caixa(pos_embaixo_plat_y, tam_plat_x);
 	lista_caixa.push_back(caixas);
 	gerenciador_colisoes.Incluir_Obstaculo(caixas);
 	lista_Entidades.adicionar(static_cast<Entidade*>(caixas));
+	std::cout << "criou caixas" << std::endl;
 }
 
 void Fases::Fase_1::cria_Caixas_na_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat){
 
-	int gerar_ou_nao = rand() % 100;
-
-	if(gerar_ou_nao <= 90){
 		if(num_restante_caixas > 0) {
-				Cria_Caixas(pos_plat.x,(pos_plat.y+tam_plat.y),tam_plat.x);
+				Cria_Caixas(100,tam_plat.x - 400);
 				num_restante_caixas--;
 		}
-	}	
+
 }

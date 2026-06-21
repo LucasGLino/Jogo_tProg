@@ -22,7 +22,7 @@ namespace Entidades {
 				~Obstaculo();
 
 				
-				virtual void executar_Gravidade();
+				// virtual void executar_Gravidade();
 				void seta_Obstaculo(float alt, float larg, float origem_x, float origem_y,std::string assets);
 				bool pontoDentroDoPoligono(const sf::Shape& figura, sf::Vector2f ponto);
 				float calcula_Densidade_de_Area(const sf::Shape& figura, int divisoesHorizontais, int divisoesVerticais);
