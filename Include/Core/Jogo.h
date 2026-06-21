@@ -10,7 +10,7 @@
 
 
 
-class Jogo {
+class Jogo : public Gerenciador_Estado{
 
 	private:
 		Gerenciadores::Gerenciador_Grafico* Ger_Graf;

@@ -22,6 +22,7 @@ namespace Entidades {
 			~Caixa();
 
 			void executar();
+			void seta_Caixa(float origem_x, float origem_y);
 			void obstacular(Entidades::Personagens::Jogador* p, int lado);
 			void Mover_Esquerda();
 			void Mover_Direita();

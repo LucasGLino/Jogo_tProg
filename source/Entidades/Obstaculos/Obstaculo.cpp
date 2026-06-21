@@ -19,6 +19,7 @@ Obstaculo::Obstaculo() : Entidade(id_base, sf::Vector2f(0.f, 0.f), sf::Vector2f(
 
 	tamanho.x = 0.f;
 	tamanho.y = 0.f;
+	//gravidade = 6.0f;
 	
 }
 
@@ -28,10 +29,10 @@ Obstaculo::~Obstaculo() {
 
 
 //n�o sei como executar a gravidade aplicada ao obstaculo.
-void Obstaculo::executar_Gravidade(){
-	pos.y += gravidade;
-	pos.y -= gravidade;
-}
+// void Obstaculo::executar_Gravidade(){
+// 	pos.y += gravidade;
+// 	pos.y -= gravidade;
+// }
 
 void Entidades::Obstaculos::Obstaculo::seta_Obstaculo(float alt, float larg, float origem_x, float origem_y, std::string assets)
 {
