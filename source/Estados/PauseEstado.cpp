@@ -1,6 +1,6 @@
 #include "../../include/Estados/FaseEstado.h"
 
-#define font "../assets/PermanentMarker-Regular.ttf"
+#define font "Assets/PermanentMarker-Regular.ttf"
 using namespace sf;
 using namespace std;
 void Pause_Estado::carregarBotoes()

@@ -4,10 +4,10 @@ project(Projeto)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Usar SFML do MSYS2 MINGW64
-set(SFML_DIR "C:/msys64/mingw64/lib/cmake/SFML")
+# Usar SFML incluida no projeto
+set(SFML_DIR "${CMAKE_SOURCE_DIR}/SFML-2.6.2/lib/cmake/SFML")
 
-find_package(SFML 2.6 REQUIRED COMPONENTS Graphics Window System)
+find_package(SFML 2.6 REQUIRED COMPONENTS graphics window system)
 
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
     "${CMAKE_SOURCE_DIR}/source/*.cpp"
@@ -21,6 +21,8 @@ foreach(file ${SRC_FILES})
     endif()
 endforeach()
 
+add_executable(${PROJECT_NAME} ${SRC_FILES})
+
 target_link_libraries(${PROJECT_NAME} PRIVATE
     sfml-graphics
     sfml-window
@@ -30,4 +32,13 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Include
     ${CMAKE_SOURCE_DIR}/source
+)
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/SFML-2.6.2/bin"
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/Assets"
+        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/Assets"
 )

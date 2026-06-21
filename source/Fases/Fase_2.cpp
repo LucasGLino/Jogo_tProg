@@ -52,7 +52,7 @@ Fases::Fase_2::Fase_2() {
 	num_max_plataformas = 10;
 
 	fundo_carregado = false;
-	if (!textura_fundo.loadFromFile("Imagens/Fundo_fase2.png")) {
+	if (!textura_fundo.loadFromFile("Assets/Imagens/Fundo_fase2.png")) {
 		std::cout << "Erro ao carregar textura do fundo da fase 2." << std::endl;
 	}
 	else {
@@ -378,7 +378,7 @@ void Fases::Fase_2::Posiciona_plataforma() {
 void Fases::Fase_2::Cria_Piso() {
 
 	piso = new Plataforma;
-	piso->seta_Obstaculo(tam_Piso_Fase.y, tam_Piso_Fase.x, pos_Piso.x, pos_Piso.y,"Imagens/Plataforma.png");
+	piso->seta_Obstaculo(tam_Piso_Fase.y, tam_Piso_Fase.x, pos_Piso.x, pos_Piso.y,"Assets/Imagens/Plataforma.png");
 
 	gerenciador_colisoes.Incluir_Obstaculo(static_cast<Obstaculo*>(piso));
 	lista_Entidades.adicionar(static_cast<Entidade*>(piso));

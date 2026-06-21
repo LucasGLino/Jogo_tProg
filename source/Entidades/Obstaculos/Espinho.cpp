@@ -3,6 +3,9 @@
 
 Entidades::Obstaculos::Espinho::Espinho(): tetano(false), dano_tetano(5), Jog_tetano(false), pJog(nullptr), contador_dano(0)
 {
+
+    densidade_superficial = 0.02f;
+
     srand(static_cast<unsigned int>(time(0)));
 
     danoso = true;
@@ -21,7 +24,7 @@ Entidades::Obstaculos::Espinho::~Espinho()
 {
 }
 
-void Entidades::Obstaculos::Espinho::Executar()
+void Entidades::Obstaculos::Espinho::executar()
 {
 
     desenhar();
@@ -65,7 +68,7 @@ void Entidades::Obstaculos::Espinho::Tetano_Danar()
    
 }
 
-void Entidades::Obstaculos::Espinho::Salvar()
+void Entidades::Obstaculos::Espinho::salvar()
 {
-    Salvar();
+
 }

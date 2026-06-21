@@ -33,7 +33,7 @@ Projetil::Projetil(): Entidade(id_base, sf::Vector2f(0.f, 0.f), sf::Vector2f(10.
 
 	pFigura->setSize(tamanho);
 	//pFigura->setFillColor(sf::Color(222, 120, 31));
-	if (!textura.loadFromFile("assets/Projetil.png")) {
+	if (!textura.loadFromFile("Assets/Imagens/Projetil.png")) {
 		std::cout << "Erro ao carregar textura do projetil." << std::endl;
 		pFigura->setFillColor(sf::Color(222, 120, 31));
 	}
@@ -73,7 +73,7 @@ Projetil::Projetil(float saida_x, float saida_y, int direcao) : Entidade(id_base
 
 	pFigura->setSize(tamanho);
 	//pFigura->setFillColor(sf::Color(222, 120, 31));
-	if (!textura.loadFromFile("assets/Projetil.png")) {
+	if (!textura.loadFromFile("Assets/Imagens/Projetil.png")) {
 		std::cout << "Erro ao carregar textura do projetil." << std::endl;
 		pFigura->setFillColor(sf::Color(222, 120, 31));
 	}

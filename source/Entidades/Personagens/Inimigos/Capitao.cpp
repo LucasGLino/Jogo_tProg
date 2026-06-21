@@ -35,7 +35,7 @@ Capitao::Capitao(): recarga(0), espera(240){
 	//pFigura->setFillColor(sf::Color::Magenta);
 
 	pFigura->setSize(tamanho);
-	if (!textura.loadFromFile("assets/Capitao.png")) {
+	if (!textura.loadFromFile("Assets/Imagens/Capitao.png")) {
 		std::cout << "Erro ao carregar textura do capitao." << std::endl;
 		pFigura->setFillColor(sf::Color::Magenta);
 	}

@@ -171,7 +171,7 @@ void Jogador::setar_Dois_Jogadores(bool jogador_dois) {
 	if (jogador_dois) {
 		segundo_jogador = jogador_dois;
 		//pFigura->setFillColor(sf::Color::Cyan);
-		if (!textura.loadFromFile("assets/Jogador_2.png")) {
+		if (!textura.loadFromFile("Assets/Imagens/Jogador_2.png")) {
 			std::cout << "Erro ao carregar textura do jogador 2." << std::endl;
 			pFigura->setTexture(NULL);
 			pFigura->setFillColor(sf::Color::Cyan);
@@ -239,7 +239,7 @@ void Jogador::setar_Figura() {
 
 	pFigura->setSize(tamanho);
 	//pFigura->setFillColor(sf::Color::Blue);
-	if (!textura.loadFromFile("assets/Jogador_1.png")) {
+	if (!textura.loadFromFile("Assets/Imagens/Jogador_1.png")) {
 		std::cout << "Erro ao carregar textura do jogador 1." << std::endl;
 		pFigura->setFillColor(sf::Color::Blue);
 	}

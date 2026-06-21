@@ -21,11 +21,11 @@ namespace Entidades {
 			Caixa();
 			~Caixa();
 
-			void Executar();
+			void executar();
 			void obstacular(Entidades::Personagens::Jogador* p, int lado);
 			void Mover_Esquerda();
 			void Mover_Direita();
-			void Salvar();
+			void salvar();
 
 		};
 	}

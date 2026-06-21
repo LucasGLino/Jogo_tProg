@@ -36,7 +36,7 @@ Pirata::Pirata() {
 	//pFigura->setFillColor(sf::Color::Red);
 
 	pFigura->setSize(tamanho);
-	if (!textura.loadFromFile("assets/Esqueleto.png")) {
+	if (!textura.loadFromFile("Assets/Imagens/Esqueleto.png")) {
 		std::cout << "Erro ao carregar textura do esqueleto." << std::endl;
 		pFigura->setFillColor(sf::Color::Red);
 	}

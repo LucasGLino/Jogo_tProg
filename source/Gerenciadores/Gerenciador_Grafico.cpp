@@ -52,7 +52,7 @@ void Gerenciadores::Gerenciador_Grafico::desenhar(Text* texto)
 }
 
 void Gerenciadores::Gerenciador_Grafico::setar_Fonte(){
-    if(!fonte.loadFromFile("assets/fontes/PirataOne-Regular.ttf")){
+    if(!fonte.loadFromFile("Assets/Fontes/PirataOne-Regular.ttf")){
         std::cout << "Erro ao carregar a fonte!" << std::endl;
     }
 }

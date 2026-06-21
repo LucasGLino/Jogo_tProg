@@ -4,6 +4,8 @@ using namespace Entidades;
 using namespace Obstaculos;
 using namespace Personagens;
 
+//const int massa_plataforma(10000);
+
 Plataforma::Plataforma()
 {
 	se_move = false;
@@ -14,6 +16,8 @@ Plataforma::Plataforma()
 
 	tamanho.x = 0;
 	tamanho.y = 0;
+
+	densidade_superficial = 1.f;
 }
 
 Plataforma::~Plataforma(){
@@ -39,13 +43,13 @@ Plataforma::~Plataforma(){
 // 	this->setar_Pos(origem_x, origem_y);
 // }
 
-void Plataforma::Salvar(){
+void Plataforma::salvar(){
 
 }
 
 
 
-void Plataforma::Executar() {
+void Plataforma::executar() {
 
 	if(ativa){
 		

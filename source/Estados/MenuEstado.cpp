@@ -1,5 +1,5 @@
 #include "../../include/Estados/FaseEstado.h"
-#define font "../assets/PermanentMarker-Regular.ttf"
+#define font "Assets/PermanentMarker-Regular.ttf"
 
 using namespace std;
 using namespace sf;

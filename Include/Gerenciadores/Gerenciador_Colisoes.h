@@ -28,13 +28,14 @@ namespace Gerenciadores {
 
 	private:
 
-
-		void tratar_Colisoes_Inimigos();
-		void tratar_Colisoes_Obstaculo(Entidades::Entidade* pEntidadeRef);
 		void tratar_Colisoes_Projeteis();
+		void tratar_Colisoes_Inimigos();
+		void tratar_Colisoes_Obstaculo_Obstaculo();
+		void tratar_Colisoes_Inimigo_Obstaculo(Entidades::Entidade* pEntidadeRef);
 		void tratar_Colisoes_Jogador_Inimigos(Entidades::Personagens::Jogador* p_Jogador, Entidades::Personagens::Inimigo* pInimigo);
 		void tratar_Colisoes_Jogador_Obstaculo(Entidades::Personagens::Jogador* p_Jogador);
 		void tratar_Colisoes_Jogador_Projeteis(Entidades::Personagens::Jogador* p_Jogador);
+		
 
 		const int verifica_Tipo_De_Colisao(Entidades::Entidade* pEntidade_Ref, Entidades::Entidade* pEntidade2);
 		const bool verifica_Mesma_Pos(Entidades::Entidade* pEntidade_Ref, Entidades::Entidade* pEntidade2);

@@ -49,7 +49,7 @@ Fases::Fase_1::Fase_1() {
 	num_max_plataformas = 10;
 
 	fundo_carregado = false;
-	if (!textura_fundo.loadFromFile("assets/imagens/Fundo_fase2.png")) {
+	if (!textura_fundo.loadFromFile("Assets/Imagens/Fundo_fase2.png")) {
 		std::cout << "Erro ao carregar textura do fundo da fase 2." << std::endl;
 	}
 	else {

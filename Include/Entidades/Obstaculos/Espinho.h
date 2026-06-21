@@ -33,10 +33,10 @@ namespace Entidades {
 			Espinho();
 			~Espinho();
 
-			void Executar();
+			void executar();
 			void obstacular(Entidades::Personagens::Jogador* p, int lado);
 			void Tetano_Danar();
-			void Salvar();
+			void salvar();
 
 		};
 	}

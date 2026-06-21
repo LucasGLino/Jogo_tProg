@@ -2,6 +2,8 @@
 
 Entidades::Obstaculos::Caixa::Caixa(): Mover_Esq(false), mover(false)
 {
+    densidade_superficial = 0.02f;
+
     velocidade.x = 1.f;
     velocidade.y = 1.f;
 }
@@ -9,7 +11,7 @@ Entidades::Obstaculos::Caixa::~Caixa()
 {
 }
 
-void Entidades::Obstaculos::Caixa::Executar()
+void Entidades::Obstaculos::Caixa::executar()
 {
     desenhar();
     if(mover){
@@ -25,6 +27,7 @@ void Entidades::Obstaculos::Caixa::Executar()
 
 void Entidades::Obstaculos::Caixa::obstacular(Entidades::Personagens::Jogador *p, int lado)
 {
+    
      if(lado == esquerda){
         mover = true; 
         Mover_Esq = true;
@@ -32,6 +35,7 @@ void Entidades::Obstaculos::Caixa::obstacular(Entidades::Personagens::Jogador *p
         mover = true;
         Mover_Esq = false;
     }
+    
 }
 
 void Entidades::Obstaculos::Caixa::Mover_Esquerda()
@@ -48,6 +52,6 @@ void Entidades::Obstaculos::Caixa::Mover_Direita()
     }    
 }
 
-void Entidades::Obstaculos::Caixa::Salvar()
+void Entidades::Obstaculos::Caixa::salvar()
 {
 }

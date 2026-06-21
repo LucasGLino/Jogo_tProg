@@ -170,7 +170,7 @@ void Gerenciador_colisoes::tratar_Colisoes_Jogador_Projeteis(Jogador* p_Jogador)
 }
 
 //colisão de qualquer coisa com os obstáculos
-void Gerenciador_colisoes::tratar_Colisoes_Obstaculo(Entidade* pEntidadeRef) {
+void Gerenciador_colisoes::tratar_Colisoes_Inimigo_Obstaculo(Entidade* pEntidadeRef) {
 
 	list<Obstaculo*>::iterator itr;
 
@@ -253,18 +253,77 @@ void Gerenciador_colisoes::tratar_Colisoes_Inimigos(){
 
 
 		if (pJogador2->get_Dois_Jogadores()) {
-			tratar_Colisoes_Obstaculo(static_cast<Entidade*>(lista_Inimigos[i]));
+			tratar_Colisoes_Inimigo_Obstaculo(static_cast<Entidade*>(lista_Inimigos[i]));
 			
 			tratar_Colisoes_Jogador_Inimigos(pJogador1, lista_Inimigos[i]);
 			tratar_Colisoes_Jogador_Inimigos(pJogador2, lista_Inimigos[i]);
 
 		}
 		else {
-			tratar_Colisoes_Obstaculo(static_cast<Entidade*>(lista_Inimigos[i]));
+			tratar_Colisoes_Inimigo_Obstaculo(static_cast<Entidade*>(lista_Inimigos[i]));
 			tratar_Colisoes_Jogador_Inimigos(pJogador1, lista_Inimigos[i]);
 			
 		}
 
+	}
+
+}
+
+//trata as colisões entre os obstáculos
+void Gerenciador_colisoes::tratar_Colisoes_Obstaculo_Obstaculo(){
+
+	list<Obstaculo*>::iterator itr;
+	list<Obstaculo*>::iterator itr2;
+
+	Obstaculo* pesado;
+	Obstaculo* leve;
+
+	itr = lista_Obstaculos.begin();
+	itr2 = itr++;
+
+
+	//verifica o tipo de colisão especificamente com objetos.
+	while (itr != lista_Obstaculos.end()){
+
+		while(itr2 != lista_Obstaculos.end()){
+
+			if((*itr)->get_Massa() < (*itr2)->get_Massa()){
+				pesado = *itr2;
+				leve = *itr;
+			}
+			else{
+				pesado = *itr;
+				leve = *itr2;
+			}
+
+
+			int lado = verifica_Tipo_De_Colisao(static_cast<Entidade*>(leve), static_cast<Entidade*>(pesado));
+
+			//direita
+			if (lado == 1) {
+
+				leve->setar_Pos((pesado->get_X() - leve->get_Largura()), leve->get_Y());
+			}
+			//cima
+			else if (lado == 2) {
+
+				leve->setar_Pos(leve->get_X(), pesado->get_Comprimento_A());
+			}
+			//esquerda
+			else if (lado == 3) {
+
+				leve->setar_Pos(pesado->get_Comprimento_L(), leve->get_Y());
+			}
+			//baixo
+			else if (lado == 4) {
+
+				leve->setar_Pos(leve->get_X(), (pesado->get_Y() - leve->get_Altura()));
+			}
+
+			itr2++;
+		}
+
+		itr++;
 	}
 
 }
@@ -341,6 +400,11 @@ const int Gerenciador_colisoes::verifica_Tipo_De_Colisao(Entidade* pEntidade_Ref
 	float comprimento_cima = 0;
 	float comprimento_direita = 0;
 	float comprimento_esquerda = 0;
+
+
+	if(pEntidade_Ref == nullptr || pEntidade2 == nullptr || (pEntidade_Ref == pEntidade2)){
+		return 0;
+	}
 
 	//Baixo
 	if (verifica_Colisao_Baixo(static_cast<Entidade*>(pEntidade_Ref), static_cast<Entidade*>(pEntidade2))) {
@@ -561,6 +625,7 @@ void Gerenciador_colisoes::Executar(){
 		tratar_Colisoes_Jogador_Projeteis(pJogador2);
 	}
 
+	tratar_Colisoes_Obstaculo_Obstaculo();
 	tratar_Colisoes_Inimigos();
 	tratar_Colisoes_Projeteis();
 }
