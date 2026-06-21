@@ -112,13 +112,13 @@ void Inimigo::setar_Jogador_No_Inimigo(Jogador* pJogador1, Jogador* pJogador2) {
 	}
 }
 
-void Inimigo::verifica_Acao_de_Colisao(int lado, Jogador* pJogador) {
+void Inimigo::danificar(int lado, Jogador* pJogador) {
 
 	if (lado == lado_fraco) {
-		pJogador->danificar(static_cast<Personagem*>(this));
+		pJogador->colidir(static_cast<Personagem*>(this));
 	}
 	else {
-		danificar(static_cast<Personagem*>(pJogador));
+		pJogador->diminuir_Vitalidade(dano);
 	}
 }
 

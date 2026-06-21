@@ -71,11 +71,12 @@ void Entidades::Personagens::Capitao::incluir_Projetil(Projetil* projet) {
 
 
 	if (direcao == esquerda) {
-		projet->setar_Pos((pos.x - projet->get_Largura()), (this->get_Centro().y - projet->get_Centro().y));
-
+		//projet->setar_Pos((pos.x - projet->get_Largura()), (this->get_Centro().y - projet->get_Centro().y));
+		projet->setar_Pos((pos.x - projet->get_Largura()), (pos.y));
 	}
 	else if (direcao == direita) {
-		projet->setar_Pos((pos.x + this->get_Largura()), (this->get_Centro().y - projet->get_Centro().y));
+		//projet->setar_Pos((pos.x + this->get_Largura()), (this->get_Centro().y - projet->get_Centro().y));
+		projet->setar_Pos((pos.x + this->get_Largura()), (pos.y));
 	}
 
 	//std::cout << "Incluiu projetil ID " << projet->getId() << " na pos (" << projet->get_X() << "," << projet->get_Y() << ")" << std::endl;
@@ -107,40 +108,45 @@ std::vector<Projetil*>* Capitao::get_Vetor_De_Projetis(){
 
 void Capitao::executar() {
 
-	desenhar();
 
-	disparou = false;
+	if(!get_Eliminado()){
 
-	setar_Pos(pos.x,pos.y);
+		executar_Gravidade();
 
-	if (pode_disparar) {
+		desenhar();
+		disparou = false;
+		setar_Pos(pos.x,pos.y);
+		
 
-		if (recarga < espera) {
-			recarga++;
-		}
-		else if (recarga >= espera && !disparou){
+		if (pode_disparar) {
 
-			disparou = true;
-			// << "Disparou, pos (" << pos.x << "," << pos.y << ") direcao " << direcao << std::endl;
-
-			recarga = 0;
-		}
-	}
-
-	if(!parar){
-		if ((pos_final.x != pos.x) && (pos_final.y != pos.y)) {
-
-			if (pos_final.x > pos.x) {
-				pos.x += velocidade.x;
+			if (recarga < espera) {
+				recarga++;
 			}
-			else if (pos_final.x < pos.x) {
-				pos.x -= velocidade.x;
+			else if (recarga >= espera && !disparou){
+
+				disparou = true;
+				// << "Disparou, pos (" << pos.x << "," << pos.y << ") direcao " << direcao << std::endl;
+
+				recarga = 0;
 			}
-
 		}
-	}
 
-	sondando_Por_Jogadores();
+		if(!parar){
+			if ((pos_final.x != pos.x) && (pos_final.y != pos.y)) {
+
+				if (pos_final.x > pos.x) {
+					pos.x += velocidade.x;
+				}
+				else if (pos_final.x < pos.x) {
+					pos.x -= velocidade.x;
+				}
+
+			}
+		}
+
+		sondando_Por_Jogadores();
+	}
 	
 }
 
@@ -159,17 +165,17 @@ void Capitao::salvar() {
 }
 
 
-void Capitao::verifica_Acao_de_Colisao(int lado, Jogador* pJogador){
+void Capitao::danificar(int lado, Jogador* pJogador){
 
 	if(lado == lado_fraco){
-		pJogador->danificar(static_cast<Personagem*>(this));
+		pJogador->colidir(static_cast<Personagem*>(this));
 
 		if(get_Eliminado()){
 			pJogador->aumentar_Pontuacao(pontos_de_eliminacao);
 		}
 	}
 	else {
-		danificar(static_cast<Personagem*>(pJogador));
+		pJogador->diminuir_Vitalidade(dano);
 	}
 
 }

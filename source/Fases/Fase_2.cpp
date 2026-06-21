@@ -19,7 +19,7 @@ Fases::Fase_2::Fase_2() {
 
 	//entre 3 e 8
 	num_piratas = (rand() % 5) + 3;
-	//num_piratas = 0;
+	num_piratas = 0;
 
 	//entre 3 a 4
 	num_espinhos = (rand()%1) + 3;

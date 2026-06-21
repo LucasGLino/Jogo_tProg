@@ -17,7 +17,7 @@ Personagem::Personagem(int semente, Vector2f p, Vector2f tam, int vida, float ve
 {
     eliminado = false;
     //setVel({velx,vely});
-    setar_Gravidade(1000.f);
+    //setar_Gravidade(6.f);
     setar_velocidade(velx, vely);
 }
 
@@ -47,13 +47,6 @@ void Personagem::diminuir_Vitalidade(int dano)
 bool Personagem::get_Eliminado() const
 {
     return eliminado;
-}
-
-void Personagem::danificar(Personagem* pAtacado)
-{
-    if(pAtacado){
-        pAtacado->diminuir_Vitalidade(dano);
-    }
 }
 
 void Personagem::move(float dt)

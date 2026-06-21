@@ -59,6 +59,9 @@ void Entidades::Personagens::Esqueleto::salvar()
 
 void Entidades::Personagens::Esqueleto::executar()
 {
+
+	executar_Gravidade();
+	
     desenhar();
 	setar_Pos(pos.x, pos.y);
 
@@ -84,11 +87,6 @@ void Entidades::Personagens::Esqueleto::executar()
 	}
 
 	patrulhar();
-}
-
-void Entidades::Personagens::Esqueleto::Danificar(Entidades::Personagens::Personagem *pAtacado)
-{
-    pAtacado->diminuir_Vitalidade(dano);
 }
 
 void Entidades::Personagens::Esqueleto::setar_Patrulha(float patrulha_esq, float patrulha_dir)
@@ -139,10 +137,10 @@ void Entidades::Personagens::Esqueleto::aumentar_Forca()
     forca += 5;
 }
 
-void Entidades::Personagens::Esqueleto::verifica_Acao_de_Colisao(int lado, Entidades::Personagens::Jogador *pJogador)
+void Entidades::Personagens::Esqueleto::danificar(int lado, Entidades::Personagens::Jogador *pJogador)
 {
     if (lado == lado_fraco) {
-		pJogador->danificar(static_cast<Personagem*>(this));
+		pJogador->colidir(static_cast<Personagem*>(this));
         aumentar_Forca();
 
 		if(get_Eliminado()){
@@ -151,7 +149,7 @@ void Entidades::Personagens::Esqueleto::verifica_Acao_de_Colisao(int lado, Entid
 	}
 	else {
 
-		danificar(static_cast<Personagem*>(pJogador));
+		pJogador->diminuir_Vitalidade(dano);
 	}
 }
 

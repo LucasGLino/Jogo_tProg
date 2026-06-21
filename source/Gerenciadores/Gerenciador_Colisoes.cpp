@@ -67,7 +67,6 @@ void Gerenciadores::Gerenciador_colisoes::projetil_Destruido(Projetil* pProj)
 }
 
 
-
 Entidade* Gerenciador_colisoes::Inimigo_neutralizado(Inimigo* inimigo_eliminado)
 {
 	int i;
@@ -114,8 +113,6 @@ void Gerenciador_colisoes::tratar_Colisoes_Jogador_Obstaculo(Jogador* p_Jogador)
 		else if (lado == 2) {
 
 			p_Jogador->setar_Pos(p_Jogador->get_X(), (*itr)->get_Comprimento_A());
-			p_Jogador->setar_No_Ar(true);
-			p_Jogador->setar_Estado_Pulando(true);
 			p_Jogador->setar_Bateu_A_Cabeca();
 			(*itr)->obstacular(p_Jogador, lado);
 		}
@@ -129,8 +126,7 @@ void Gerenciador_colisoes::tratar_Colisoes_Jogador_Obstaculo(Jogador* p_Jogador)
 		else if (lado == 4) {
 
 			p_Jogador->setar_Pos(p_Jogador->get_X(), ((*itr)->get_Y() - p_Jogador->get_Altura()));
-			p_Jogador->setar_No_Ar(false);
-			p_Jogador->setar_Estado_Pulando(false);
+			p_Jogador->setar_Pode_Pular();
 			(*itr)->obstacular(p_Jogador, lado);
 		}
 
@@ -208,31 +204,38 @@ void Gerenciador_colisoes::tratar_Colisoes_Inimigo_Obstaculo(Entidade* pEntidade
 }
 
 //colisão de projeteis com os obstáculos
-void Gerenciador_colisoes::tratar_Colisoes_Projeteis(){
-
-	set<Projetil*>::iterator itr_proj;
-	list<Obstaculo*>::iterator itr_obst;
-
-	itr_proj = lista_Projeteis.begin();
+void Gerenciador_colisoes::tratar_Colisoes_Projeteis()
+{
+	set<Projetil*>::iterator itr_proj = lista_Projeteis.begin();
 
 	while (itr_proj != lista_Projeteis.end()) {
 
-		itr_obst = lista_Obstaculos.begin();
+		Projetil* projetil = *itr_proj;
+		bool projetil_destruido = false;
 
-		while (itr_obst != lista_Obstaculos.end()) {
+		list<Obstaculo*>::iterator itr_obst = lista_Obstaculos.begin();
 
-			int lado = verifica_Tipo_De_Colisao(static_cast<Entidade*>(*itr_proj), static_cast<Entidade*>(*itr_obst));
+		while (itr_obst != lista_Obstaculos.end() && projetil != nullptr) {
+
+			int lado = verifica_Tipo_De_Colisao(
+				static_cast<Entidade*>(projetil),
+				static_cast<Entidade*>(*itr_obst)
+			);
 
 			if (lado != 0) {
+				projetil->setar_Ativo(false);
 
-				(*itr_proj)->setar_Ativo(false);
-				projetil_Destruido(*itr_proj);
+				itr_proj = lista_Projeteis.erase(itr_proj);
+				projetil_destruido = true;
+				break;
 			}
 
 			itr_obst++;
 		}
 
-		itr_proj++;
+		if (!projetil_destruido) {
+			itr_proj++;
+		}
 	}
 }
 
@@ -338,26 +341,26 @@ void Gerenciador_colisoes::tratar_Colisoes_Jogador_Inimigos(Jogador* pJogador, I
 	if (lado == 1) {
 
 		pJogador->setar_Pos(pInimigo->get_Comprimento_L() + empurrao, pJogador->get_Y());
-		pInimigo->verifica_Acao_de_Colisao(lado, pJogador);
+		pInimigo->danificar(lado, pJogador);
 	}
 	//cima
 	else if (lado == 2) {
 
 		pJogador->setar_Pos(pJogador->get_X(), (pInimigo->get_Y() - pJogador->get_Altura()));
-		pInimigo->verifica_Acao_de_Colisao(lado, pJogador);
+		pInimigo->danificar(lado, pJogador);
 		
 	}
 	//esquerda
 	else if (lado == 3) {
 
 		pJogador->setar_Pos((pInimigo->get_X() - pJogador->get_Largura() - empurrao), pJogador->get_Y());
-		pInimigo->verifica_Acao_de_Colisao(lado, pJogador);
+		pInimigo->danificar(lado, pJogador);
 	}
 	//baixo
 	else if (lado == 4) {
 
 		pJogador->setar_Pos(pJogador->get_X(), pInimigo->get_Comprimento_A() + empurrao);
-		pInimigo->verifica_Acao_de_Colisao(lado, pJogador);
+		pInimigo->danificar(lado, pJogador);
 	}
 
 	/*

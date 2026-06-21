@@ -7,7 +7,7 @@ using namespace Personagens;
 
 Jogo::Jogo():
     Ger_Graf(Gerenciador_Grafico::getInstancia()),
-    jogador_1(Vector2f(0.f, 0.f), Vector2f(20.f, 40.f), 100, 3.f, -5.f),
+    jogador_1(Vector2f(50.f, 20.f), Vector2f(20.f, 40.f), 100, 3.f, -5.f),
     jogador_2(Vector2f(25.f, 0.f), Vector2f(20.f, 40.f), 100, 3.f, -5.f),
     fase_1_ativa(false),
     fase_2_ativa(false),
@@ -17,7 +17,7 @@ Jogo::Jogo():
     //estado Menu;
     estado = 1;
 
-    jogador_2.setar_Dois_Jogadores(true);
+    jogador_2.setar_Dois_Jogadores(false);
 
     //Ger_Graf = ::Gerenciador_Grafico::getInstancia();
     Ger_Graf = Gerenciador_Grafico::getInstancia();

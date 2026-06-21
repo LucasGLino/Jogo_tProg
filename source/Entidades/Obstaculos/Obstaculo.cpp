@@ -26,6 +26,7 @@ Obstaculo::~Obstaculo() {
 
 }
 
+
 //n�o sei como executar a gravidade aplicada ao obstaculo.
 void Obstaculo::executar_Gravidade(){
 	pos.y += gravidade;

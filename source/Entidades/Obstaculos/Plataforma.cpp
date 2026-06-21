@@ -65,13 +65,11 @@ void Plataforma::obstacular(Jogador* p, int lado) {
 
 	if(lado == cima){
 		p->setar_Bateu_A_Cabeca();
-		p->setar_Estado_Pulando(true );
-		p->setar_No_Ar(true);
+
 	}
 	if(lado == baixo){
 		
-		p->setar_Estado_Pulando(false);
-		p->setar_No_Ar(false);
+		p->setar_Pode_Pular();
 	}
 	
 }

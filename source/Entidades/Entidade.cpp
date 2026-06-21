@@ -20,9 +20,9 @@ Entidade::Entidade(int semente, Vector2f p, Vector2f tam):
     direita(1), cima(2),
     esquerda(3), baixo(4)
 {
-    aceleracao = Vector2f(0.f, 0.f);
+    //aceleracao = Vector2f(0.f, 0.f);
     velocidade = Vector2f(0.f, 0.f);
-    gravidade = 0.f;
+    gravidade = 6.0f;
 
     //pFigura = corpo;
     pFigura->setSize(tam);
@@ -48,8 +48,19 @@ void Entidade::setar_Gravidade(float grav)
 
 void Entidade::executar_Gravidade()
 {
-    velocidade.y += gravidade;
-    //setar_Pos(pos.x, pos.y + velocidade.y);
+    //velocidade.y += gravidade;
+    //setar_Pos(pos.x, pos.y + gravidade);
+
+    if (velocidade.y <= gravidade) {
+		//pos.y += velocidade.y;
+		velocidade.y += 0.3f;
+		//velocidade.y = gravidade;
+	}
+	if (velocidade.y > gravidade) {
+		velocidade.y = gravidade;
+	}
+
+	pos.y += velocidade.y;
 }
 
 //Em relação a posição global.
@@ -102,6 +113,14 @@ float Entidade::get_Y() const
     return pos.y;
 }
 
+float Entidade::get_Vel_X() const {
+    return velocidade.x;
+}
+
+float Entidade::get_Vel_Y() const {
+    return velocidade.y;
+}
+
 void Entidade::setar_Pos(float pos_x, float pos_y)
 {
     pos.x = pos_x;
@@ -122,10 +141,12 @@ void Entidade::setar_velocidade(float vel_x, float vel_y)
     velocidade.y = vel_y;
 }
 
+/*
 void Entidade::setar_aceleracao(float ace_x, float ace_y){
-    aceleracao.x=ace_x;
+    wd.x=ace_x;
     aceleracao.y=ace_y;
 }
+*/
 
 /*
 RectangleShape Entidade::getBody()

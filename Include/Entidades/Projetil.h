@@ -44,7 +44,7 @@ namespace Entidades {
 		bool get_Ativo();
 		void Atingiu_Jogador(Entidades::Personagens::Jogador* pJogador);
 
-		void executar_Gravidade();
+		void executar_Empuxo();
 		void executar();
 		void salvar();
 
