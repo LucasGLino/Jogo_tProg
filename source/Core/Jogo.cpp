@@ -23,8 +23,8 @@ Jogo::Jogo():
     Ger_Graf = Gerenciador_Grafico::getInstancia();
 
     //inicialação das fases corrigida, agora função Atualiza chama setar_Fase quando necessário
-    fase_1_ativa = true;
-    fase_2_ativa = false;
+    fase_1_ativa = false;
+    fase_2_ativa = true;
 
     fase1.Setar_Jogadores(&jogador_1, &jogador_2);
     fase2.Setar_Jogadores(&jogador_1, &jogador_2);
