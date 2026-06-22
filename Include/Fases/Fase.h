@@ -24,6 +24,9 @@ namespace Fases {
 			Entidades::Obstaculos::Plataforma* plataforma;
 			Gerenciadores::Gerenciador_colisoes gerenciador_colisoes;
 			std::list<int> lista_id_inimigos;
+
+			sf::Texture textura_fundo;
+			sf::Sprite fundo;
 			
 
 			sf::Vector2f tam_Piso_Fase;
@@ -31,6 +34,8 @@ namespace Fases {
 
 			int num_plataformas_totais;
 			int num_inimigos;
+
+			bool fundo_carregado;
 
 			sf::Vector2f tam_plataforma;
 
@@ -59,7 +64,9 @@ namespace Fases {
 			virtual void Cria_Inimigos() = 0;	
 			virtual void Cria_Obstaculos() = 0;
 
-			virtual void atualiza_Camera_Fase(Entidades::Personagens::Jogador* p_jogador1, Entidades::Personagens::Jogador* p_jogador2) = 0;
+			void ajustar_Fundo_A_Camera();
+
+			void atualiza_Camera_Fase(Entidades::Personagens::Jogador* p_jogador1, Entidades::Personagens::Jogador* p_jogador2);
 			virtual void setar_Camera_Fase() = 0;
 
 			void criar_cenario();

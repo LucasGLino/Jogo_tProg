@@ -1,12 +1,15 @@
 #include "Estados/FaseEstado.h"
 
-Fase_Estado::Fase_Estado(Gerenciador_Estado* pGe,int i): Estado(nullptr),pGe(pGe) , i(i)
+Fase_Estado::Fase_Estado(Gerenciador_Estado* pGe,int i): Estado(nullptr), pGe(pGe) , i(i), fase(false), pFase(nullptr)
 {
-    criarFase();
+    if(!pFase){
+        std::cout << "imprima algo" << std::endl;
+    }
 }
 
 Fase_Estado::~Fase_Estado()
 {
+    
 }
 
 void Fase_Estado::descarregar()
@@ -14,30 +17,36 @@ void Fase_Estado::descarregar()
     delete pFase;
 }
 
-void Fase_Estado::criarFase()
+void Fase_Estado::executar_fase()
 {
-    switch (i) { 
-           
-    }
+    // switch (i) { 
+    //        case 0:
+    //             // std::cout << "entrou no switch case de fase" << std::endl;
+    //             // // pJogo->get_Jogador_2()->setar_Dois_Jogadores(false);
+    //             // // std::cout << "passou" << std::endl;
+    //             // pFase = pJogo->get_fase_1();
+    //             // std::cout << "saiu da criação da fase" << std::endl;
+    //             // break;
+    //         case 1:
+    //             // pFase = pJogo->get_fase_2();
+    //             // break;
+    // }
 
 }
 
-void Fase_Estado::proximaFase()
-{
-    pGe->removerEstado(); 
-        
-        
-    pGe->adicionarEstado(new Fase_Estado(pGe, 1));
-}
 
 void Fase_Estado::executar()
 {
-    // pFase->executar(); 
-    // tratarInput();
-    // if(pFase->getFinalizar()){
-    //     pGe->limparPilha(); 
-    //     pGe->adicionarEstado(new Menu_Estado(pGe));
-    // }
+    executar_fase();
+    std::cout << "esta para entrar em atualiza_Camera" << std::endl;
+//     pJogo->atualiza_Camera(pFase);
+//     pJogo->setar_Fase(pFase);
+    
+//     tratarInput();
+//     if(pFase->get_Ganhou() || (pJogo->get_Jogador_1()->get_Eliminado() && pJogo->get_Jogador_2()->get_Eliminado())){
+//         pGe->limparPilha(); 
+//         pGe->adicionarEstado(new Menu_Estado(pGe));
+//     }
 }
 
 void Fase_Estado::tratarInput()

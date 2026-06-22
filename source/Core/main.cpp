@@ -20,9 +20,7 @@ int main()
     //std::cout << "ERRO" << std::endl;
     srand(time(NULL));
     
-    Jogo jogo;
-
-    jogo.executar();
+    Jogo* jogo = Jogo::getInstancia();
 
     return 0;
 }

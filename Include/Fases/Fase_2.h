@@ -31,9 +31,6 @@ namespace Fases{
 
 		std::vector<Entidades::Personagens::Capitao*> lista_cap;
 		std::vector<Entidades::Obstaculos::Espinho*> lista_espinhos;
-		sf::Texture textura_fundo;
-		sf::Sprite fundo;
-		bool fundo_carregado;
 
 		void remover_Inimigo_Das_Listas_Auxiliares(Entidades::Personagens::Inimigo* pInimigo);
 		void ajustar_Fundo_A_Camera();
@@ -59,7 +56,7 @@ namespace Fases{
 		void Cria_Espinhos_Restantes();
 
 
-		void atualiza_Camera_Fase(Entidades::Personagens::Jogador* p_jogador1, Entidades::Personagens::Jogador* p_jogador2);
+		// void atualiza_Camera_Fase(Entidades::Personagens::Jogador* p_jogador1, Entidades::Personagens::Jogador* p_jogador2);
 		void setar_Camera_Fase();
 		void cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, float ponta_dir_plataforma, sf::Vector2f pos_plat);
 		void cria_Espinhos_na_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat);
