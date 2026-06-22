@@ -48,17 +48,21 @@ void Entidade::setar_Gravidade(float grav)
 
 void Entidade::executar_Gravidade()
 {
+    
     //velocidade.y += gravidade;
     //setar_Pos(pos.x, pos.y + gravidade);
 
+    //acelera até bater o teto da gravidade.
     if (velocidade.y <= gravidade) {
 		//pos.y += velocidade.y;
 		velocidade.y += 0.3f;
 		//velocidade.y = gravidade;
 	}
+    //limita a velocidade a gravidade definida anteriormente, 6.0f
 	if (velocidade.y > gravidade) {
 		velocidade.y = gravidade;
 	}
+    
 
 	pos.y += velocidade.y;
 }

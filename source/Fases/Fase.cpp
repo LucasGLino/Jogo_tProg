@@ -58,10 +58,10 @@ void Fases::Fase::Setar_Jogadores(Jogador* p_jogador1,Jogador* p_jogador2)
 	//p_jogador1->setar_Pos(pos_Piso.x, pos_Piso.y - p_jogador1->get_Altura());
 	//p_jogador2->setar_Pos(pos_Piso.x, pos_Piso.y - p_jogador2->get_Altura());
 	if (p_jogador1 != nullptr) {
-		p_jogador1->setar_Pos(pos_Piso.x, pos_Piso.y - p_jogador1->get_Altura());
+		p_jogador1->setar_Pos(pos_Piso.x + p_jogador1->get_Largura(), pos_Piso.y - p_jogador1->get_Altura());
 	}
 	if (p_jogador2 != nullptr) {
-		p_jogador2->setar_Pos(pos_Piso.x, pos_Piso.y - p_jogador2->get_Altura());
+		p_jogador2->setar_Pos(pos_Piso.x + p_jogador1->get_Largura(), pos_Piso.y - p_jogador2->get_Altura());
 	}
 
 }
@@ -121,6 +121,7 @@ void Fases::Fase::Cria_Plataforma(float alt, float larg, float origem_x, float o
 {
 	plataforma = new Plataforma;
 	plataforma->seta_Obstaculo(alt, larg, origem_x, origem_y,"Assets/Imagens/Plataforma.png");
+	plataforma->seta_Origem(origem_x,origem_y);
 }
 bool Fases::Fase::get_Ganhou()
 {
@@ -189,10 +190,11 @@ void Fases::Fase::remover_Inimigo_Das_Listas_Auxiliares(Inimigo* pInimigo)
 
 void Fases::Fase::executar()
 {
+	/*
 	verifica_Inimigos_Neutralizados();
 	gerenciador_colisoes.Executar();
 	lista_Entidades.percorrer();
-	
+	*/
 }
 
 bool Fases::Fase::verifica_Se_Caiu_No_Abismo(Entidade* pEntidade){

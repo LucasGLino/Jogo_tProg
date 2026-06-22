@@ -8,11 +8,12 @@ using namespace Personagens;
 
 Plataforma::Plataforma()
 {
-	se_move = false;
+	chao = false;
 	ativa = true;
 
-	pos_final.x = pos.x;
-	pos_final.y = pos.y;
+	subindo = (rand() % 2);
+
+	flutuabilidade = 4.0f;
 
 	tamanho.x = 0;
 	tamanho.y = 0;
@@ -43,18 +44,47 @@ Plataforma::~Plataforma(){
 // 	this->setar_Pos(origem_x, origem_y);
 // }
 
-void Plataforma::salvar(){
+void Plataforma::seta_Origem(float origem_x, float origem_y){
 
+	origem.x = origem_x;
+	origem.y = origem_y;
 }
 
+void Plataforma::flutuar(){
 
+	if(pos.y <= (origem.y - flutuabilidade)){
+		subindo = false;
+	}
+	else if(pos.y > (origem.y + flutuabilidade)){
+		subindo = true;
+	}
+
+	if(subindo){
+
+		pos.y -= velocidade.y + (velocidade.y / 60);
+	}
+	else{
+		
+		pos.y -= velocidade.y - (velocidade.y / 60);
+	}
+
+	//pos.y -=velocidade.y;
+}
+
+void Plataforma::determinar_chao() {
+	chao = true;
+}
 
 void Plataforma::executar() {
 
 	if(ativa){
-		
 
-		// executar_Gravidade();
+		if(!chao){
+
+			executar_Gravidade();
+			flutuar();
+			setar_Pos(pos.x,pos.y);
+		}
 
 		desenhar();
 	}
@@ -74,7 +104,6 @@ void Plataforma::obstacular(Jogador* p, int lado) {
 	
 }
 
-void Plataforma::seta_Movimento(float x_esq, float x_dir, float y_cima, float y_baixo){
-
+void Plataforma::salvar(){
 
 }

@@ -282,11 +282,14 @@ void Gerenciador_colisoes::tratar_Colisoes_Obstaculo_Obstaculo(){
 	Obstaculo* leve;
 
 	itr = lista_Obstaculos.begin();
-	itr2 = itr++;
+	//itr2 = itr++;
 
 
 	//verifica o tipo de colisão especificamente com objetos.
 	while (itr != lista_Obstaculos.end()){
+
+		itr2 = itr;
+		itr2++;
 
 		while(itr2 != lista_Obstaculos.end()){
 
@@ -628,7 +631,8 @@ void Gerenciador_colisoes::Executar(){
 		tratar_Colisoes_Jogador_Projeteis(pJogador2);
 	}
 
-	tratar_Colisoes_Obstaculo_Obstaculo();
+	
 	tratar_Colisoes_Inimigos();
+	tratar_Colisoes_Obstaculo_Obstaculo();
 	tratar_Colisoes_Projeteis();
 }

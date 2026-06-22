@@ -292,6 +292,7 @@ void Fases::Fase_1::Cria_Piso() {
 
 	piso = new Plataforma;
 	piso->seta_Obstaculo(tam_Piso_Fase.y, tam_Piso_Fase.x, pos_Piso.x, pos_Piso.y,"Assets/Imagens/Plataforma.png");
+	piso->determinar_chao();
 
 	gerenciador_colisoes.Incluir_Obstaculo(static_cast<Obstaculo*>(piso));
 	lista_Entidades.adicionar(static_cast<Entidade*>(piso));
