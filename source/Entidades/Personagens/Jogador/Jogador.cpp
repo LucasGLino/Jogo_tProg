@@ -96,9 +96,9 @@ void Jogador::setar_Dois_Jogadores(bool jogador_dois) {
 		estado_pulando = false;
 		no_ar = false;
 	}
-	else {
-		eliminado = true;
-	}
+	// else {
+	// 	eliminado = true;
+	// }
 }
 
 bool Jogador::get_Dois_Jogadores() {

@@ -18,6 +18,8 @@ class Botao{
 
         Gerenciadores::Gerenciador_Grafico* pGg;
 
+        bool troca_cor;
+
         
      public:
         Botao(const std::string& stri, const sf::Font& fonte,sf::Vector2f pos);
@@ -28,9 +30,11 @@ class Botao{
 
         void hover();
 
+        void hover_selecionado();
+
+        void set_troca_cor(bool c);
+
         bool getPress();
 
         void executar();
 };
-
-

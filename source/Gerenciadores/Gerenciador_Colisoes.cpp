@@ -249,6 +249,7 @@ void Gerenciador_colisoes::tratar_Colisoes_Projeteis()
 //trata as colisões entre os inimigos e os outros objetos não em inimigos (ainda)
 void Gerenciador_colisoes::tratar_Colisoes_Inimigos(){
 
+
 	int i;
 
 	for (i = 0; i < lista_Inimigos.size(); i++) {
@@ -262,7 +263,7 @@ void Gerenciador_colisoes::tratar_Colisoes_Inimigos(){
 		}
 
 
-		if (pJogador2->get_Dois_Jogadores()) {
+		if (pJogador2 && pJogador2->get_Dois_Jogadores()) {
 			tratar_Colisoes_Inimigo_Obstaculo(static_cast<Entidade*>(lista_Inimigos[i]));
 			
 			tratar_Colisoes_Jogador_Inimigos(pJogador1, lista_Inimigos[i]);
@@ -630,16 +631,22 @@ const bool Gerenciador_colisoes::verifica_Colisao_Direita(Entidade* pEntidade_Re
 void Gerenciador_colisoes::Executar(){
 
 	if (pJogador1 && !(pJogador1->get_Eliminado())) {
+
 		tratar_Colisoes_Jogador_Obstaculo(pJogador1);
+
 		tratar_Colisoes_Jogador_Projeteis(pJogador1);
+
 	}
-	if (pJogador2->get_Dois_Jogadores() && !(pJogador2->get_Eliminado())) {
+	if (pJogador2 && pJogador2->get_Dois_Jogadores() && !(pJogador2->get_Eliminado())) {
 		tratar_Colisoes_Jogador_Obstaculo(pJogador2);
 		tratar_Colisoes_Jogador_Projeteis(pJogador2);
 	}
 
-	
+
 	tratar_Colisoes_Inimigos();
+
 	tratar_Colisoes_Obstaculo_Obstaculo();
+
 	tratar_Colisoes_Projeteis();
+
 }

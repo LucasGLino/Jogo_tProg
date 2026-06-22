@@ -1,10 +1,11 @@
 #include "Estados/FaseEstado.h"
 
-Fase_Estado::Fase_Estado(Gerenciador_Estado* pGe,int i): Estado(nullptr), pGe(pGe) , i(i), fase(false), pFase(nullptr)
+
+Fase_Estado::Fase_Estado(Gerenciador_Estado* pGe,int i, bool j): Estado(nullptr), pGe(pGe) , i(i),Jogadores(j)
 {
-    if(!pFase){
-        std::cout << "imprima algo" << std::endl;
-    }
+    pJogo = pJogo->getInstancia();
+    cria_jogadores();
+    executar_fase();
 }
 
 Fase_Estado::~Fase_Estado()
@@ -14,39 +15,40 @@ Fase_Estado::~Fase_Estado()
 
 void Fase_Estado::descarregar()
 {
-    delete pFase;
 }
 
 void Fase_Estado::executar_fase()
 {
-    // switch (i) { 
-    //        case 0:
-    //             // std::cout << "entrou no switch case de fase" << std::endl;
-    //             // // pJogo->get_Jogador_2()->setar_Dois_Jogadores(false);
-    //             // // std::cout << "passou" << std::endl;
-    //             // pFase = pJogo->get_fase_1();
-    //             // std::cout << "saiu da criação da fase" << std::endl;
-    //             // break;
-    //         case 1:
-    //             // pFase = pJogo->get_fase_2();
-    //             // break;
-    // }
+    switch (i) { 
+           case 0:
+                pJogo->criar_fase_1();
+                break;
+            case 1:
+                pJogo->criar_fase_2();
+                break;
+    }
 
 }
 
+void Fase_Estado::cria_jogadores()
+{
+    if(!Jogadores){
+        pJogo->cria_jogador_1();
+        pJogo->set_pJog2_Dois_Jogadores(Jogadores);
+    }else{
+        pJogo->cria_jogador_1();
+        pJogo->cria_jogador_2();
+        pJogo->set_pJog2_Dois_Jogadores(Jogadores);
+    }
+}
 
 void Fase_Estado::executar()
 {
-    executar_fase();
-    std::cout << "esta para entrar em atualiza_Camera" << std::endl;
-//     pJogo->atualiza_Camera(pFase);
-//     pJogo->setar_Fase(pFase);
+    pJogo->atualiza_Camera();
+    pJogo->setar_Fase();
     
-//     tratarInput();
-//     if(pFase->get_Ganhou() || (pJogo->get_Jogador_1()->get_Eliminado() && pJogo->get_Jogador_2()->get_Eliminado())){
-//         pGe->limparPilha(); 
-//         pGe->adicionarEstado(new Menu_Estado(pGe));
-//     }
+    tratarInput();
+    pJogo->verifica_Fim_De_Jogo();
 }
 
 void Fase_Estado::tratarInput()

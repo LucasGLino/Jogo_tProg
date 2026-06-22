@@ -1,11 +1,12 @@
 #include "Elementos/Botao.h"
 
+
 #define corBotao sf::Color(100, 100, 100, 200)
 
 #define bHover sf::Color(150, 150, 150, 255)
 
 
-Botao::Botao(const std::string& stri, const sf::Font& fonte, sf::Vector2f pos):str(stri, fonte, 30), press(false)
+Botao::Botao(const std::string& stri, const sf::Font& fonte, sf::Vector2f pos):str(stri, fonte, 30), press(false),troca_cor(false)
 {    
 
     pGg = Gerenciadores::Gerenciador_Grafico::getInstancia();
@@ -38,7 +39,6 @@ Botao::~Botao()
 
 void Botao::desenhar()
 {
-    Gerenciadores::Gerenciador_Grafico* pGg = Gerenciadores::Gerenciador_Grafico::getInstancia();
 
     pGg->desenhar(&botao);
     pGg->desenhar(&str);
@@ -57,6 +57,18 @@ void Botao::hover()
     }else{
         this->botao.setFillColor(corBotao);
     }
+}
+void Botao::hover_selecionado()
+{
+    if(troca_cor){
+        this->str.setFillColor(sf::Color::Blue);
+    }else{
+        this->str.setFillColor(sf::Color::White);
+    }
+}
+void Botao::set_troca_cor(bool c)
+{
+    troca_cor = c;
 }
 bool Botao::getPress()
 {
@@ -94,4 +106,5 @@ bool Botao::getPress()
 void Botao::executar()
 {
     hover();
+    hover_selecionado();
 }

@@ -5,55 +5,40 @@ using namespace Gerenciadores;
 using namespace Entidades;
 using namespace Personagens;
 
+Jogo* Jogo::pInstancia = NULL;
+
 Jogo::Jogo():
     Ger_Graf(Gerenciador_Grafico::getInstancia()),
-    jogador_1(Vector2f(50.f, 20.f), Vector2f(20.f, 40.f), 100, 3.f, -5.f),
-    jogador_2(Vector2f(25.f, 0.f), Vector2f(20.f, 40.f), 100, 3.f, -5.f),
-    fase_1_ativa(false),
-    fase_2_ativa(false),
-    acabou(false)
+    jogador_1(nullptr),
+    jogador_2(nullptr),
+    pFase(nullptr)
 {
-
-    //estado Menu;
-    estado = 1;
-
-    jogador_2.setar_Dois_Jogadores(false);
-
-    //Ger_Graf = ::Gerenciador_Grafico::getInstancia();
-    Ger_Graf = Gerenciador_Grafico::getInstancia();
-
-    //inicialação das fases corrigida, agora função Atualiza chama setar_Fase quando necessário
-    fase_1_ativa = false;
-    fase_2_ativa = true;
-
-    fase1 = new Fases::Fase_1();
-    fase2 = new Fases::Fase_2();
-
-    fase1->Setar_Jogadores(&jogador_1, &jogador_2);
-    fase2->Setar_Jogadores(&jogador_1, &jogador_2);
-
-
+    pGe = new Gerenciador_Estado();
+    pGe->setEstado(new Menu_Estado(this->pGe));
+    
 }
+
+
+
 
 Jogo::~Jogo(){
+    delete(pFase);
+    delete(jogador_1);
+    delete(jogador_2);
+    delete(pGe);
 
-    delete fase1;
-    delete fase2;
-    Gerenciador_Grafico::destruirInstancia();
 }
 
-void Jogo::set_pJog2_Dois_Jogadores(bool valor) {
-    jogador_2.setar_Dois_Jogadores(valor);
+Jogo *Jogo::getInstancia()
+{
+    if(pInstancia == NULL){
+        pInstancia = new Jogo();
+    }
+    return pInstancia;
 }
 
-bool Jogo::get_pJog2_Dois_Jogadores() {
-    return jogador_2.get_Dois_Jogadores();
-}
-
-
-
-void Jogo::executar(){
-
+void Jogo::executar()
+{
     while (Ger_Graf->getJanela()->isOpen())
     {
         
@@ -77,128 +62,99 @@ void Jogo::executar(){
 
         Ger_Graf->limpar();
 
+        pGe->executar();
 
-        if(fase_1_ativa){
-            atualiza_Camera();
-            setar_Fase();
+        pGe->desenhar();
 
-            verifica_Fim_De_Jogo();
-        }
-        else if(fase_2_ativa){
-            atualiza_Camera();
-            setar_Fase();
+		Ger_Graf->mostrar();
 
-            verifica_Fim_De_Jogo();
-        }
-        
-        //EstadoDoJogo();
+    }
+}
+void Jogo::criar_fase_1()
+{
+    if(pFase){
+        delete(pFase);
+        pFase = new Fases::Fase_1();
+    }else{
+        pFase = new Fases::Fase_1();
+    }
+    
+}
 
-        Ger_Graf->mostrar();
-
-        /*
-        if(fase_1_ativa) {
-            
-            if (fase1.get_Ganhou()) {
-                Ger_Graf->getJanela()->close();
-            }
-        }
-        else if (fase_2_ativa) {
-
-            if (fase2.get_Ganhou()) {
-                Ger_Graf->getJanela()->close();
-            }
-        }
-        */
+void Jogo::criar_fase_2()
+{
+    if(pFase){
+        delete(pFase);
+        pFase = new Fases::Fase_2();
+    }else{
+        pFase = new Fases::Fase_2();
     }
 }
 
+void Jogo::cria_jogador_1()
+{
+    jogador_1 = new Entidades::Personagens::Jogador(Vector2f(25.f, 20.f), Vector2f(20.f, 40.f), 100, 3.f, -5.f);
+}
+
+void Jogo::cria_jogador_2()
+{
+    jogador_2 = new Entidades::Personagens::Jogador(Vector2f(50.f, 20.f), Vector2f(20.f, 40.f), 100, 3.f, -5.f);
+}
+
+void Jogo::set_pJog2_Dois_Jogadores(bool valor)
+{
+    jogador_2->setar_Dois_Jogadores(valor);
+}
+
+bool Jogo::get_pJog2_Dois_Jogadores() {
+    return jogador_2->get_Dois_Jogadores();
+}
 
 void Jogo::setar_Fase()
 {
-    //garante que os jogadores sejam setados
-    //jogador_1.executar();
-    //if (jogador_2.get_Dois_Jogadores()) {
-    //    jogador_2.executar();
-    //}
-
-    //seta os jogadores na fase ativa
-    if (fase_1_ativa) {
-       //fase1.Setar_Jogadores(&jogador_1, &jogador_2);
-        fase1->executar();
-
-        jogador_1.executar();
-        if (jogador_2.get_Dois_Jogadores()) {
-            jogador_2.executar();
+    if (pFase) {
+        pFase->Setar_Jogadores(jogador_1, jogador_2);
+        pFase->executar();
+        jogador_1->executar();
+        if (jogador_2 && jogador_2->get_Dois_Jogadores()) {
+            jogador_2->executar();
         }
+        std::cout << "passou"<< std::endl;
 
-        if(fase1->verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(&jogador_1))){
-            jogador_1.diminuir_Vitalidade(200);
+        if(pFase->verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(jogador_1))){
+            jogador_1->diminuir_Vitalidade(200);
         }
-        if(fase1->verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(&jogador_2))){
-            jogador_2.diminuir_Vitalidade(200);
+        if(jogador_2 &&  pFase->verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(jogador_2))){
+            jogador_2->diminuir_Vitalidade(200);
+            
         }
         
 	}
-    else if (fase_2_ativa) {
-    
-//    if(fase_2_ativa){
-        //fase2.Setar_Jogadores(&jogador_1, &jogador_2);
-        fase2->executar();
-
-        jogador_1.executar();
-        if (jogador_2.get_Dois_Jogadores()) {
-            jogador_2.executar();
-        }
-
-        if(fase2->verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(&jogador_1))){
-            jogador_1.diminuir_Vitalidade(200);
-        }
-        if(fase2->verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(&jogador_2))){
-            jogador_2.diminuir_Vitalidade(200);
-        }
-	}
+    std::cout << "saiu"<< std::endl;
 }
-
-
+void Jogo::atualiza_Camera()
+{
+    
+    if(pFase){
+       pFase->atualiza_Camera_Fase(jogador_1, jogador_2);
+    }
+}
 void Jogo::verifica_Fim_De_Jogo()
 {
 
 
-    if(fase_1_ativa){
-        if (fase1->get_Ganhou() || (jogador_1.get_Eliminado() && jogador_2.get_Eliminado()))
+    if(pFase){
+        if (pFase->get_Ganhou() || (jogador_1->get_Eliminado() && jogador_2->get_Eliminado()))
         {
             
-            std::cout << "pontuacao jogador 1:" << jogador_1.get_Pontuacao() << std::endl;
-            std::cout << "pontuacao jogador 2:" << jogador_2.get_Pontuacao() << std::endl;
+            std::cout << "pontuacao jogador 1:" << jogador_1->get_Pontuacao() << std::endl;
+            std::cout << "pontuacao jogador 2:" << jogador_2->get_Pontuacao() << std::endl;
 
-            Ger_Graf->getJanela()->close();
-            acabou = true;
+            
+            delete(pFase);
+
+            pGe->limparPilha(); 
+            pGe->adicionarEstado(new Menu_Estado(pGe));
         }
-    }else if(fase_2_ativa){
-    // if(fase_2_ativa){
-        if (fase2->get_Ganhou() || (jogador_1.get_Eliminado() && jogador_2.get_Eliminado()))
-        {
-            std::cout << "pontuacao jogador 1:" << jogador_1.get_Pontuacao() << std::endl;
-            std::cout << "pontuacao jogador 2:" << jogador_2.get_Pontuacao() << std::endl;
-
-            Ger_Graf->getJanela()->close();
-			acabou = true;
-        }
-	}
-}
-
-void Jogo::atualiza_Camera() {
-
-    if(fase_1_ativa){
-       fase1->atualiza_Camera_Fase(&jogador_1, &jogador_2);
     }
-    else if(fase_2_ativa){
-        fase2->atualiza_Camera_Fase(&jogador_1, &jogador_2);
-    }
-
-    Ger_Graf->getJanela()->setView(*Ger_Graf->getCamera());
-
-    //isso deve ser passado para a fase, que deve ajustar a camera conforme o jogador se move pelo mapa.
-    //Ger_Graf->getCamera()->setCenter(jogador_1.get_Centro());
-
 }
