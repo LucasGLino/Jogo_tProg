@@ -116,6 +116,7 @@ void Capitao::executar() {
 		desenhar();
 		disparou = false;
 		setar_Pos(pos.x,pos.y);
+		sondando_Por_Jogadores();
 		
 
 		if (pode_disparar) {
@@ -144,8 +145,6 @@ void Capitao::executar() {
 
 			}
 		}
-
-		sondando_Por_Jogadores();
 	}
 	
 }
@@ -201,37 +200,30 @@ void Capitao::setar_Pontos_Por_Eliminacao(int pontos){
 
 void Capitao::sondando_Por_Jogadores(){
 
+	pode_disparar = false;
+	parar = true;
+	andar_ate(pos.x,pos.y);
+
 	//verifica se está dentro da visão em X 
-	if((ponteiro_jogador1->get_X() > (get_Centro().x - visao.x)) && (ponteiro_jogador1->get_X() < (get_Centro().x + visao.x))){
+	if((ponteiro_jogador1->get_X() > (get_Centro().x - visao.x)) && (ponteiro_jogador1->get_X() < (get_Centro().x + visao.x)) &&
+	   (ponteiro_jogador1->get_Y() > (get_Centro().y - visao.y)) && (ponteiro_jogador1->get_Y() < (get_Centro().y + tamanho.y/2))){
 
 		// verifica se está na mesma altura, apartir do seu pé até o alcance de visão em Y para cima.
-		if((ponteiro_jogador1->get_Y() > (get_Centro().y - visao.y)) && (ponteiro_jogador1->get_Y() < (get_Centro().y + tamanho.y/2)))
-		{
-			setar_direcao();
-			pode_disparar = true;
-			this->andar_ate(ponteiro_jogador1->get_Centro().x, ponteiro_jogador1->get_Centro().y);
-			parar = false;
-		}
+		setar_direcao();
+		pode_disparar = true;
+		this->andar_ate(ponteiro_jogador1->get_Centro().x, ponteiro_jogador1->get_Centro().y);
+		parar = false;
 	}
 
 	//verifica se está dentro da visão em X
-	else if((ponteiro_jogador2->get_X() > (get_Centro().x - visao.x)) && (ponteiro_jogador2->get_X() < (get_Centro().x + visao.x))){
+	else if((ponteiro_jogador2->get_X() > (get_Centro().x - visao.x)) && (ponteiro_jogador2->get_X() < (get_Centro().x + visao.x)) &&
+	        (ponteiro_jogador2->get_Y() > (get_Centro().y - visao.y)) && (ponteiro_jogador2->get_Y() < (get_Centro().y + tamanho.y/2))){
 
 		// verifica se está na mesma altura, apartir do seu pé até o alcance de visão em Y para cima.
-		if((ponteiro_jogador2->get_Y() > (get_Centro().y - visao.y)) && (ponteiro_jogador2->get_Y() < (get_Centro().y + tamanho.y/2)))
-		{
-			setar_direcao();
-			pode_disparar = true;
-			this->andar_ate(ponteiro_jogador2->get_Centro().x, ponteiro_jogador2->get_Centro().y);
-			parar = false;
-		}
-	}
-
-	else {
-
-		parar = true;
-		pode_disparar = false;
-		andar_ate(pos.x,pos.y);
+		setar_direcao();
+		pode_disparar = true;
+		this->andar_ate(ponteiro_jogador2->get_Centro().x, ponteiro_jogador2->get_Centro().y);
+		parar = false;
 	}
 	
 }

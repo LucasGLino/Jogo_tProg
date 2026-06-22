@@ -6,7 +6,6 @@ using namespace Personagens;
 
 const int Jogador::id_base(10);
 
-//Jogador::Jogador(int semente, sf::Vector2f p, sf::Vector2f tam, int vida, float velx, float vely):
 Jogador::Jogador(sf::Vector2f p, sf::Vector2f tam, int vida, float velx, float vely):
 	Personagem(id_base, p, tam, vida, velx, vely) 
 {
@@ -14,24 +13,14 @@ Jogador::Jogador(sf::Vector2f p, sf::Vector2f tam, int vida, float velx, float v
 	segundo_jogador = false;
 	estado_pulando = false;
 	no_ar = false;
-	estado_caindo = true;
-
-	vitalidade = vida;
 
 	dano = 70;
 
-	pos = p;
-	tamanho = tam;
-
-	set_Vitalidade(vida);
 	setar_Figura();
 	setar_Pos(pos.x, pos.y);
 
 	forca_de_impulso = -9.0;
 	acelerando = false;
-	
-	velocidade.y = vely;
-	velocidade.x = velx;
 
 	pontos = 0;
 }
@@ -69,7 +58,6 @@ void Jogador::executar() {
 				pos.x -= velocidade.x;
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-				//pos.y -=2.f;
 				executando_Pulo();
 			}
 
@@ -90,17 +78,10 @@ void Jogador::executar() {
 	
 }
 
-bool Jogador::get_Eliminado() const
-{
-	return eliminado;
-}
-
-
 void Jogador::setar_Dois_Jogadores(bool jogador_dois) {
 
 	if (jogador_dois) {
 		segundo_jogador = jogador_dois;
-		//pFigura->setFillColor(sf::Color::Cyan);
 		if (!textura.loadFromFile("Assets/Imagens/Jogador_2.png")) {
 			std::cout << "Erro ao carregar textura do jogador 2." << std::endl;
 			pFigura->setTexture(NULL);
@@ -157,17 +138,11 @@ void Jogador::diminuir_Vitalidade(int dano) {
 		eliminado = true;
 	}
 	std::cout << "Jogador " << getId() << " tomou " << dano << " de dano. Vitalidade atual: " << vitalidade << std::endl;
-
-	if (eliminado) {
-		// std::cout << "Jogador " << getId() << " foi eliminado!" << std::endl;
-	}
 }
 
-// adicionar em classes primordiais? tais como Ente ou Entidades?
 void Jogador::setar_Figura() {
 
 	pFigura->setSize(tamanho);
-	//pFigura->setFillColor(sf::Color::Blue);
 	if (!textura.loadFromFile("Assets/Imagens/Jogador_1.png")) {
 		std::cout << "Erro ao carregar textura do jogador 1." << std::endl;
 		pFigura->setFillColor(sf::Color::Blue);
@@ -186,10 +161,6 @@ void Jogador::aumentar_Pontuacao(int pontos_a_adicionar){
 int Jogador::get_Pontuacao() const {
 
 	return pontos;
-}
-
-void Jogador::setar_Caindo(bool caindo){
-	estado_caindo = caindo;
 }
 
 void Jogador::setar_Bateu_A_Cabeca(){

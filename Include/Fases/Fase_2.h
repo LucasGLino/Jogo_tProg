@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Fases/Fase.h"
-#include "Entidades/Obstaculos/Plataforma.h"
 #include "Entidades/Obstaculos/Espinho.h"
 #include "Entidades/Personagens/Inimigos/Capitao.h"
 #include "Entidades/Projetil.h"
@@ -12,54 +11,29 @@ namespace Fases{
 	{
 	private:
 		int num_capitoes;
-		int num_piratas;
-		int num_restante_piratas;
 		int num_restante_capitoes;
+		int num_espinhos;
 		int num_restante_espinhos;
 
-		int i,j;
-
-		float zoom_camera;
-		float tamanho_da_tela_x;
-
-		int num_max_andares;
-		float espaco_vazio_x;
-		int num_max_plataformas;
-		int num_espinhos;
-
-		std::vector<int> num_plataformas_por_andar;
-
 		std::vector<Entidades::Personagens::Capitao*> lista_cap;
-		std::vector<Entidades::Obstaculos::Espinho*> lista_espinhos;
 
 		void remover_Inimigo_Das_Listas_Auxiliares(Entidades::Personagens::Inimigo* pInimigo);
-		void ajustar_Fundo_A_Camera();
+		void Cria_Inimigos_Especificos();
+		void criar_Entidades_em_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat, float ponta_esq, float ponta_dir);
+		void Cria_Obstaculos_Restantes();
+		void executar_Antes_Entidades();
+		void executar_Depois_Entidades();
 
-	public:
-
-		Fase_2();
-		~Fase_2();
-		
-		void Cria_Obstaculos();
-		void Cria_Inimigos();
 		void Cria_Capitao(float x, float y);
-
-		void executar();
 		Entidades::Projetil* Cria_Projetil();
 		void verifica_Projeteis_Destroidos();
-
-		void seta_Tamanho_Plataformas(int n_plataformas);
-		void seta_Num_Plataformas();
-		void Posiciona_plataforma();
-		void Cria_Piso();
 		void Cria_Espinhos(float pos_plat_x, float pos_plat_y);
 		void Cria_Espinhos_Restantes();
-
-
-		// void atualiza_Camera_Fase(Entidades::Personagens::Jogador* p_jogador1, Entidades::Personagens::Jogador* p_jogador2);
-		void setar_Camera_Fase();
 		void cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, float ponta_dir_plataforma, sf::Vector2f pos_plat);
 		void cria_Espinhos_na_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat);
 
+	public:
+		Fase_2();
+		~Fase_2();
 	};
 }
