@@ -19,13 +19,14 @@ Obstaculo::Obstaculo() : Entidade(id_base, sf::Vector2f(0.f, 0.f), sf::Vector2f(
 
 	tamanho.x = 0.f;
 	tamanho.y = 0.f;
-	gravidade = 6.0f;
+	//gravidade = 6.0f;
 	
 }
 
 Obstaculo::~Obstaculo() {
 
 }
+
 
 //n�o sei como executar a gravidade aplicada ao obstaculo.
 // void Obstaculo::executar_Gravidade(){

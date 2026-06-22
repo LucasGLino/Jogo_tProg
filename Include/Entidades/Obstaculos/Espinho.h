@@ -12,7 +12,7 @@ namespace Entidades {
 
             bool tetano;
 
-			int dano_espinho;
+			int danosidade;
 
 			int dano_tetano;
 
@@ -34,7 +34,7 @@ namespace Entidades {
 			~Espinho();
 
 			void executar();
-			void obstacular(Entidades::Personagens::Jogador* p, int lado);
+			void obstacular(Entidades::Personagens::Jogador* pJogador, int lado);
 			void Tetano_Danar();
 			void salvar();
 

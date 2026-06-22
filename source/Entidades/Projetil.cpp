@@ -115,12 +115,18 @@ bool Entidades::Projetil::get_Ativo()
 	return ativo;
 }
 
+/*
 void Projetil::executar_Gravidade() {
 	pos.y += gravidade;
 	pos.y -= gravidade;
 }
+*/
 
 void Projetil::executar() {
+
+	executar_Gravidade();
+	executar_Empuxo();
+	
 
 	setar_Pos(pos.x, pos.y);
 
@@ -164,6 +170,11 @@ void Projetil::Atingiu_Jogador(Entidades::Personagens::Jogador* pJogador)
 	if(ativo){
 		pJogador->diminuir_Vitalidade(dano);
 	}
+}
+
+void Projetil::executar_Empuxo(){
+
+	pos.y -= (velocidade.y - 0.3f);
 }
 
 void Projetil::setar_Cor(sf::Color cor){

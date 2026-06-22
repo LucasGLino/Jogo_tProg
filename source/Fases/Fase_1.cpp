@@ -6,7 +6,7 @@ using namespace Fases;
 using namespace Obstaculos;
 using namespace Gerenciadores;
 
-Fases::Fase_1::Fase_1(): Fase() {
+Fases::Fase_1::Fase_1() {
 
 	//srand(static_cast<unsigned int>(time(0)));
 	
@@ -64,7 +64,6 @@ Fases::Fase_1::Fase_1(): Fase() {
 
 	// precisa ser antes que Cria Obstaculos, justamente pq precisa ser setado os inimigos nas plataformas primeiro.
 	Cria_Inimigos();
-	std::cout << "terminou de criar a fase" << std::endl;
 
 	//lista_Entidades.imprimir_Ids();
 }
@@ -293,6 +292,7 @@ void Fases::Fase_1::Cria_Piso() {
 
 	piso = new Plataforma;
 	piso->seta_Obstaculo(tam_Piso_Fase.y, tam_Piso_Fase.x, pos_Piso.x, pos_Piso.y,"Assets/Imagens/Plataforma.png");
+	piso->determinar_chao();
 
 	gerenciador_colisoes.Incluir_Obstaculo(static_cast<Obstaculo*>(piso));
 	lista_Entidades.adicionar(static_cast<Entidade*>(piso));
@@ -342,7 +342,7 @@ void Fases::Fase_1::Cria_Caixas(float pos_embaixo_plat_y, float tam_plat_x){
 void Fases::Fase_1::cria_Caixas_na_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat){
 
 		if(num_restante_caixas > 0) {
-				Cria_Caixas(pos_plat.y+100,pos_plat.x - 400);
+				Cria_Caixas(100,tam_plat.x - 400);
 				num_restante_caixas--;
 		}
 

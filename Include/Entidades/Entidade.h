@@ -16,7 +16,7 @@ namespace Entidades
 
 
             sf::Vector2f pos;
-            sf::Vector2f aceleracao;
+            //sf::Vector2f aceleracao;
             sf::Vector2f velocidade;
             sf::Vector2f centro_glob;
 
@@ -34,8 +34,8 @@ namespace Entidades
             virtual void executar_Gravidade();
 
             sf::Vector2f get_Centro();
-
             sf::Vector2f get_Tamanho();
+
             float get_Largura();
             float get_Altura();
 
@@ -45,6 +45,9 @@ namespace Entidades
             sf::Vector2f getPos();
             float get_X() const;
             float get_Y() const;
+
+            float get_Vel_X() const;
+            float get_Vel_Y() const;
 
             void setar_Pos(float pos_x, float pos_y);
             void setar_Pos(sf::Vector2f p);

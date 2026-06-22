@@ -30,7 +30,7 @@ namespace Entidades {
                 void setar_Patrulha(float patrulha_esq, float patrulha_dir);
                 void patrulhar();
                 void aumentar_Forca();
-                void verifica_Acao_de_Colisao(int lado, Entidades::Personagens::Jogador* pJogador);
+                void danificar(int lado, Entidades::Personagens::Jogador* pJogador);
 
                 void setar_Pontos_Por_Eliminacao(int pontos);
         };

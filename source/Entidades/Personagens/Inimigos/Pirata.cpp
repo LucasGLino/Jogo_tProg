@@ -36,8 +36,8 @@ Pirata::Pirata() {
 	//pFigura->setFillColor(sf::Color::Red);
 
 	pFigura->setSize(tamanho);
-	if (!textura.loadFromFile("Assets/Imagens/Esqueleto.png")) {
-		std::cout << "Erro ao carregar textura do esqueleto." << std::endl;
+	if (!textura.loadFromFile("Assets/Imagens/Pirata_Inimigo.png")) {
+		std::cout << "Erro ao carregar textura do Pirata Inimigo." << std::endl;
 		pFigura->setFillColor(sf::Color::Red);
 	}
 	else {
@@ -55,8 +55,11 @@ Pirata::~Pirata() {
 
 void Pirata::executar() {
 
+	executar_Gravidade();
+	
 	desenhar();
 	setar_Pos(pos.x, pos.y);
+	
 
 	if(!parar){
 		if ((pos_final.x != pos.x) && (pos_final.y != pos.y)) {
@@ -75,11 +78,6 @@ void Pirata::executar() {
 	bonus_De_Irritabilidade();
 }
 
-void Pirata::Danificar(Personagem* pAtacado){
-
-	pAtacado->diminuir_Vitalidade(dano);
-}
-
 void Pirata::andar_ate(float em_x, float em_y){
 
 	pos_final.x = em_x;
@@ -92,10 +90,10 @@ void Pirata::salvar()
 
 }
 
-void Pirata::verifica_Acao_de_Colisao(int lado, Jogador* pJogador) {
+void Pirata::danificar(int lado, Jogador* pJogador) {
 
 	if (lado == lado_fraco) {
-		pJogador->danificar(static_cast<Personagem*>(this));
+		pJogador->colidir(static_cast<Personagem*>(this));
 
 		if(get_Eliminado()){
 			pJogador->aumentar_Pontuacao(pontos_de_eliminacao);
@@ -103,7 +101,7 @@ void Pirata::verifica_Acao_de_Colisao(int lado, Jogador* pJogador) {
 	}
 	else {
 
-		danificar(static_cast<Personagem*>(pJogador));
+		pJogador->diminuir_Vitalidade(dano);
 		raiva += 5;
 	}
 }

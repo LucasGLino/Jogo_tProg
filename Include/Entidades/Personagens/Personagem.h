@@ -39,7 +39,7 @@ namespace Entidades{
 
                 bool get_Eliminado() const;
 
-                virtual void danificar(Personagem* pAtacado);
+                //virtual void danificar(Personagem* pAtacado);
 
                 //bool getEsq() const { return esq; }
 

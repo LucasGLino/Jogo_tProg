@@ -4,13 +4,13 @@
 Entidades::Obstaculos::Espinho::Espinho(): tetano(false), dano_tetano(5), Jog_tetano(false), pJog(nullptr), contador_dano(0)
 {
 
-    densidade_superficial = 0.02f;
+    densidade_superficial = 0.05f;
 
     srand(static_cast<unsigned int>(time(0)));
 
     danoso = true;
 
-    dano_espinho =  (rand() % 5 + 5);
+    danosidade =  (rand() % 5 + 5);
 
     int aux = (rand() % 6);
 
@@ -20,8 +20,10 @@ Entidades::Obstaculos::Espinho::Espinho(): tetano(false), dano_tetano(5), Jog_te
 
     dt = clock.restart().asSeconds();
 }
+
 Entidades::Obstaculos::Espinho::~Espinho()
 {
+
 }
 
 void Entidades::Obstaculos::Espinho::executar()
@@ -34,14 +36,17 @@ void Entidades::Obstaculos::Espinho::executar()
 
 }
 
-void Entidades::Obstaculos::Espinho::obstacular(Entidades::Personagens::Jogador *p, int lado)
+void Entidades::Obstaculos::Espinho::obstacular(Entidades::Personagens::Jogador *pJogador, int lado)
 {
     if(lado == baixo){
-		p->diminuir_Vitalidade(dano_espinho);
+
+        pJogador->setar_Pode_Pular();
+        pJogador->executando_Pulo();
+		pJogador->diminuir_Vitalidade(danosidade);
         
         if(tetano == true){
             Jog_tetano = true;
-            pJog = p;
+            pJog = pJogador;
         }
 	}
 }

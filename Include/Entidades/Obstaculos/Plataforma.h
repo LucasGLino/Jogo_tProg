@@ -6,19 +6,28 @@ namespace Entidades {
 		class Plataforma : public Obstaculo
 		{
 		private:
-			//sf::Vector2f tamanho;
-			bool ativa;
-			bool se_move;
 
-			sf::Vector2f pos_final;
+			bool ativa;
+			sf::Vector2f origem;
+
+			bool subindo;
+
+			//define se é chão ou não
+			bool chao;
+
+			//define quantos pixeis ele ocila para cima e para baixo ao flutuar.
+			float flutuabilidade;
 
 		public:
 
 			Plataforma();
 			~Plataforma();
 
+			void seta_Origem(float origem_x, float origem_y);
+
 			// void seta_Plataforma(float alt, float larg, float origem_x, float origem_y);
-			void seta_Movimento(float x_esq,float x_dir, float y_cima, float y_baixo);
+			void determinar_chao();
+			void flutuar();
 			void executar();
 			void obstacular(Entidades::Personagens::Jogador* p, int lado);
 			void salvar();
