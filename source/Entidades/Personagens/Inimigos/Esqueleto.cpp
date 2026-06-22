@@ -76,7 +76,7 @@ void Entidades::Personagens::Esqueleto::executar()
 	}
 	else {
 		verificar_Parada();
-		patrulhar();
+		mover();
 
 		if(!parar){
 			if (pos_final.x != pos.x) {
@@ -110,7 +110,7 @@ void Entidades::Personagens::Esqueleto::setar_Patrulha(float patrulha_esq, float
 	parar = false;
 }
 
-void Entidades::Personagens::Esqueleto::patrulhar()
+void Entidades::Personagens::Esqueleto::mover()
 {
     if(patrulhando) {
 

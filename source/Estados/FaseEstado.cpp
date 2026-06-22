@@ -53,7 +53,7 @@ void Fase_Estado::executar()
 
 void Fase_Estado::tratarInput()
 {
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
     {
         Pause_Estado* pPause = new Pause_Estado(this,pGe);
         pGe->adicionarEstado(pPause);

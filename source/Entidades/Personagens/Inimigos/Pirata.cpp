@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 
+
 using namespace Entidades;
 using namespace Personagens;
 
@@ -74,7 +75,7 @@ void Pirata::executar() {
 		}
 	}
 
-	patrulhar();
+	mover();
 	bonus_De_Irritabilidade();
 }
 
@@ -120,7 +121,6 @@ void Pirata::bonus_De_Irritabilidade(){
 	raiva = 0;
 	regeneracao = 0;
 }
-
 void Pirata::setar_Patrulha(float patrulha_esq, float patrulha_dir){
 
 	if(rand()%2 == 1){
@@ -138,7 +138,7 @@ void Pirata::setar_Patrulha(float patrulha_esq, float patrulha_dir){
 	parar = false;
 }
 
-void Pirata::patrulhar(){
+void Pirata::mover(){
 
 	
 	if(patrulhando) {

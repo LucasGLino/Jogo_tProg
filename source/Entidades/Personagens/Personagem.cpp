@@ -49,10 +49,6 @@ bool Personagem::get_Eliminado() const
     return eliminado;
 }
 
-void Personagem::move(float dt)
-{
-}
-
 /*
 void Entidades::Personagens::Personagem::setPos(Vector2f p)
 {    

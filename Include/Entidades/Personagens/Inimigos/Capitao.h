@@ -41,10 +41,9 @@ namespace Entidades {
 				void executar();
 				void salvar();
 				void danificar(int lado, Entidades::Personagens::Jogador* pJogador);
+				void mover();
 				void colidiu_Obstaculo(int lado);
 				void setar_Pontos_Por_Eliminacao(int pontos);
-
-				void sondando_Por_Jogadores();
 
 		};
 	}

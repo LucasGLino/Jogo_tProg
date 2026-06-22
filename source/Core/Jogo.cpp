@@ -75,8 +75,10 @@ void Jogo::criar_fase_1()
     if(pFase){
         delete(pFase);
         pFase = new Fases::Fase_1();
+        pFase->Setar_Jogadores(jogador_1, jogador_2);
     }else{
         pFase = new Fases::Fase_1();
+        pFase->Setar_Jogadores(jogador_1, jogador_2);
     }
     
 }
@@ -86,8 +88,10 @@ void Jogo::criar_fase_2()
     if(pFase){
         delete(pFase);
         pFase = new Fases::Fase_2();
+        pFase->Setar_Jogadores(jogador_1, jogador_2);
     }else{
         pFase = new Fases::Fase_2();
+        pFase->Setar_Jogadores(jogador_1, jogador_2);
     }
 }
 
@@ -113,13 +117,12 @@ bool Jogo::get_pJog2_Dois_Jogadores() {
 void Jogo::setar_Fase()
 {
     if (pFase) {
-        pFase->Setar_Jogadores(jogador_1, jogador_2);
+        // pFase->Setar_Jogadores(jogador_1, jogador_2);
         pFase->executar();
         jogador_1->executar();
         if (jogador_2 && jogador_2->get_Dois_Jogadores()) {
             jogador_2->executar();
         }
-        std::cout << "passou"<< std::endl;
 
         if(pFase->verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(jogador_1))){
             jogador_1->diminuir_Vitalidade(200);
@@ -130,7 +133,6 @@ void Jogo::setar_Fase()
         }
         
 	}
-    std::cout << "saiu"<< std::endl;
 }
 void Jogo::atualiza_Camera()
 {
@@ -138,6 +140,7 @@ void Jogo::atualiza_Camera()
     if(pFase){
        pFase->atualiza_Camera_Fase(jogador_1, jogador_2);
     }
+    Ger_Graf->getJanela()->setView(*Ger_Graf->getCamera());
 }
 void Jogo::verifica_Fim_De_Jogo()
 {

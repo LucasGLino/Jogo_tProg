@@ -1,5 +1,6 @@
 #include "Entidades/Personagens/Jogador/Jogador.h"
 
+
 using namespace Entidades;
 using namespace Personagens;
 
@@ -49,31 +50,8 @@ void Jogador::executar() {
 		desenhar();
 		setar_Pos(pos.x, pos.y);
 
-		if (!segundo_jogador) {
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-			{
-				pos.x += velocidade.x;
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-				pos.x -= velocidade.x;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-				executando_Pulo();
-			}
+		mover();
 
-		}
-		else {
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-			{
-				pos.x += velocidade.x;
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-				pos.x -= velocidade.x;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-				executando_Pulo();
-			}
-		}
 	}
 	
 }
@@ -158,6 +136,34 @@ void Jogador::aumentar_Pontuacao(int pontos_a_adicionar){
 	pontos += pontos_a_adicionar;
 }
 
+void Entidades::Personagens::Jogador::mover()
+{
+	if (!segundo_jogador) {
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+			{
+				pos.x += velocidade.x;
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+				pos.x -= velocidade.x;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+				executando_Pulo();
+			}
+
+		}
+		else {
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+			{
+				pos.x += velocidade.x;
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+				pos.x -= velocidade.x;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+				executando_Pulo();
+			}
+		}
+}
 int Jogador::get_Pontuacao() const {
 
 	return pontos;

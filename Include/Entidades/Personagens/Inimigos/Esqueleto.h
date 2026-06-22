@@ -36,12 +36,12 @@ namespace Entidades {
                 void Danificar(Entidades::Personagens::Personagem* pAtacado);
 
                 void setar_Patrulha(float patrulha_esq, float patrulha_dir);
-                void patrulhar();
                 void aumentar_Forca();
                 void danificar(int lado, Entidades::Personagens::Jogador* pJogador);
                 void colidiu_Obstaculo(int lado);
                 void preparar_Investida();
                 void iniciar_Investida_Apos_Dano(Entidades::Personagens::Jogador* pJogador);
+                void mover();
                 void executar_Investida();
                 void encerrar_Investida();
                 void verificar_Parada();

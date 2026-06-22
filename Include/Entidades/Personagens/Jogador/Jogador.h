@@ -45,6 +45,8 @@ namespace Entidades{
 
 				void aumentar_Pontuacao(int pontos_a_adicionar);
 
+				void mover();
+
 				void executar();
 				void salvar();
 

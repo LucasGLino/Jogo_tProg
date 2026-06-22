@@ -116,7 +116,7 @@ void Capitao::executar() {
 		desenhar();
 		disparou = false;
 		setar_Pos(pos.x,pos.y);
-		sondando_Por_Jogadores();
+		mover();
 		
 
 		if (pode_disparar) {
@@ -198,7 +198,7 @@ void Capitao::setar_Pontos_Por_Eliminacao(int pontos){
 	pontos_de_eliminacao = pontos;
 }
 
-void Capitao::sondando_Por_Jogadores(){
+void Capitao::mover(){ // era sondagem por jogador
 
 	pode_disparar = false;
 	parar = true;

@@ -52,7 +52,7 @@ namespace Entidades{
                 //void setVel(Vector2f v){velo = v;}
 
                 //virtual void move(float dt) = 0;
-                virtual void move(float dt);
+                virtual void mover() = 0;
 
                 virtual void salvar() = 0;
                 

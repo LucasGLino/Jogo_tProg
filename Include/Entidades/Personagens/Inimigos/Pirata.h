@@ -29,7 +29,7 @@ namespace Entidades {
                 //void Danificar(Entidades::Personagens::Personagem* pAtacado);
 
                 void setar_Patrulha(float patrulha_esq, float patrulha_dir);
-                void patrulhar();
+                void mover();
                 void bonus_De_Irritabilidade();
                 void danificar(int lado, Entidades::Personagens::Jogador* pJogador);
                 void colidiu_Obstaculo(int lado);
