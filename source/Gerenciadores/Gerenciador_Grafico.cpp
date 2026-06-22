@@ -23,6 +23,7 @@ Gerenciador_Grafico::Gerenciador_Grafico()
 
 Gerenciadores::Gerenciador_Grafico::~Gerenciador_Grafico()
 {
+
     delete evento;
     delete camera;
     delete janela;
@@ -34,6 +35,14 @@ Gerenciador_Grafico* Gerenciador_Grafico::getInstancia()
         pInstancia = new Gerenciador_Grafico();
     }
     return pInstancia;
+}
+
+void Gerenciador_Grafico::destruirInstancia()
+{
+    if(pInstancia != NULL){
+        delete pInstancia;
+        pInstancia = NULL;
+    }
 }
 
 void Gerenciadores::Gerenciador_Grafico::desenhar(Sprite* corpo)

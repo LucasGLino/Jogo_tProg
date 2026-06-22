@@ -22,7 +22,7 @@ Fases::Fase_2::Fase_2() {
 	//num_piratas = 0;
 
 	//entre 3 a 4
-	num_espinhos = (rand()%1) + 3;
+	num_espinhos = (rand()%5) + 3;
 	//num_espinhos = 0;
 
 	num_restante_capitoes = num_capitoes;
@@ -65,7 +65,7 @@ Fases::Fase_2::Fase_2() {
 	ajustar_Fundo_A_Camera();
 	Cria_Obstaculos();
 
-	// precisa ser antes que Cria Obstaculos, justamente pq precisa ser setado os inimigos nas plataformas primeiro.
+	// precisa ser depois que Cria Obstaculos, justamente pq precisa ser setado os inimigos nas plataformas primeiro.
 	Cria_Inimigos();
 
 
@@ -115,6 +115,7 @@ void Fases::Fase_2::Cria_Obstaculos(){
 
 	Cria_Piso();
 	Posiciona_plataforma();
+	Cria_Espinhos_Restantes();
 }
 
 void Fases::Fase_2::executar(){
@@ -359,7 +360,7 @@ void Fases::Fase_2::Posiciona_plataforma() {
 			Cria_Plataforma(tam_plataforma.y, tam_plataforma.x, pos_plataforma.x, pos_plataforma.y);
 
 			cria_Inimigos_Nas_Plataformas(pos_plataforma.x, (pos_plataforma.x + tam_plataforma.x), pos_plataforma);
-			cria_Espinhos_na_Plataforma(tam_plataforma,pos_plataforma);
+			cria_Espinhos_na_Plataforma(tam_plataforma, pos_plataforma);
 
 			gerenciador_colisoes.Incluir_Obstaculo(static_cast<Obstaculo*>(plataforma));
 			lista_Entidades.adicionar(static_cast<Entidade*>(plataforma));
@@ -414,28 +415,60 @@ void Fases::Fase_2::cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, fl
 	}
 }
 
-void Fases::Fase_2::Cria_Espinhos(float pos_plat_x, float pos_embaixo_plat_y, float tam_plat_x){
+void Fases::Fase_2::Cria_Espinhos(float pos_plat_x, float pos_plat_y){
 
 	Espinho* espinhos;
 	espinhos = new Espinho;
 
-	espinhos->seta_Obstaculo(32.0, pos_plat_x, pos_embaixo_plat_y, tam_plat_x, "Assets/Imagens/Espinhos.png");
+	espinhos->seta_Obstaculo(32.0, 80.0, pos_plat_x, pos_plat_y, "Assets/Imagens/Espinhos.png");
 	lista_espinhos.push_back(espinhos);
 	gerenciador_colisoes.Incluir_Obstaculo(espinhos);
 	lista_Entidades.adicionar(static_cast<Entidade*>(espinhos));
 }
 
+void Fases::Fase_2::Cria_Espinhos_Restantes(){
+	
+	sf::Vector2f aux;
+	Espinho aux_esp;
+
+	for(i=0;i<num_restante_espinhos;i++){
+
+		aux.x = pos_Piso.x + (rand() % static_cast<int>(tam_Piso_Fase.x));
+		aux.y = pos_Piso.y;
+
+		Cria_Espinhos(aux.x, aux.y - 32.0f);
+	}
+}
+
 void Fases::Fase_2::cria_Espinhos_na_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat){
 
 	int gerar_ou_nao = rand() % 100;
-	int chance = 100;
+	float pos_na_plataforma = 0.f;
+	//int chance = 100;
 
 	if(num_restante_espinhos > 0) {
 
 		if(gerar_ou_nao < 60){
 
-			Cria_Espinhos(pos_plat.x,(pos_plat.y-32.f),tam_plat.x);
+			
+			pos_na_plataforma = ((tam_plat.x/(rand() % 5 + 2) ));
+
+			if(pos_na_plataforma <= 30.0f){
+				pos_na_plataforma = 30.0f;
+			}
+			else if(pos_na_plataforma >= (pos_plat.x+tam_plat.x)){
+				pos_na_plataforma -= 80.0f;
+			}
+			
+
+			Cria_Espinhos((pos_plat.x + pos_na_plataforma),(pos_plat.y-32.0f));
+
+			//std::cout << "Criando espinhos:" << (pos_plat.x + pos_na_plataforma)<< (pos_plat.y-32.f) <<std::endl;
+
 			num_restante_espinhos--;
 		}
 	}
+
+
+	std::cout << "Espinhos Restantes:" << num_restante_espinhos<<std::endl;
 }

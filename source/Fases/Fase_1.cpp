@@ -15,14 +15,15 @@ Fases::Fase_1::Fase_1() {
 
 	// entre 3 e 10
 	num_esqueletos = (rand() % 7) + 3;
+	//num_esqueletos = 1;
 
 	//entre 3 e 8
 	num_piratas = (rand() % 5) + 3;
 	//num_piratas = 0;
 
-	//entre 3 a 4
-	num_caixas = (rand()%1) + 3;
-	//num_espinhos = 0;
+	//entre 3 a 5
+	num_caixas = (rand()%3) + 3;
+	//num_caixas = 0;
 
 	num_restante_esqueletos = num_esqueletos;
 	num_restante_piratas = num_piratas;
@@ -97,6 +98,7 @@ void Fases::Fase_1::Cria_Obstaculos(){
 
 	Cria_Piso();
 	Posiciona_plataforma();
+	Cria_Caixas_Restantes();
 }
 
 void Fases::Fase_1::executar(){
@@ -131,7 +133,7 @@ void Fases::Fase_1::Cria_Inimigos(){
 		aux.x = pos_Piso.x + (rand() % static_cast<int>(tam_Piso_Fase.x));
 		aux.y = pos_Piso.y;
 
-		Cria_Esqueletos(aux.x, aux.y, pos_Piso.x, tam_Piso_Fase.x);
+		Cria_Esqueletos(aux.x, aux.y, pos_Piso.x, pos_Piso.x + tam_Piso_Fase.x);
 	}
 
 	for(i = 0; i<num_restante_piratas; i++){
@@ -139,7 +141,7 @@ void Fases::Fase_1::Cria_Inimigos(){
 		aux.x = pos_Piso.x + (rand() % static_cast<int>(tam_Piso_Fase.x));
 		aux.y = pos_Piso.y;
 
-		Cria_Pirata(aux.x, aux.y, pos_Piso.x, tam_Piso_Fase.x);
+		Cria_Pirata(aux.x, aux.y, pos_Piso.x, pos_Piso.x + tam_Piso_Fase.x);
 	}
 }
 
@@ -149,6 +151,7 @@ void Fase_1::Cria_Esqueletos(float x, float y,float patrulha_ate_a, float patrul
 	Esqueleto* esqueleto;
 	esqueleto = new Esqueleto;
 
+	esqueleto->setar_Pos(x, y - esqueleto->get_Altura());
 	esqueleto->setar_Patrulha(patrulha_ate_a, patrula_ate_b);
 
 	lista_id_inimigos.push_front(esqueleto->getId());
@@ -302,48 +305,96 @@ void Fases::Fase_1::cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, fl
 
 	int gerar_ou_nao = (rand() % 100);
 	int gerar_esq_ou_pirata = (rand() % 100);
+	float pos_inimigo_x = 0.f;
+	float limite_esquerdo = ponta_esq_plataforma + 10.f;
+	float limite_direito = ponta_dir_plataforma - 35.f;
 
-
-	//50% de chance
-	int gerar_esq = 70;
 
 	//70% de chance
+	int gerar_esq = 70;
+
+	if(limite_direito > limite_esquerdo){
+		pos_inimigo_x = limite_esquerdo + (rand() % static_cast<int>(limite_direito - limite_esquerdo));
+	}
+	else{
+		pos_inimigo_x = pos_plat.x + ((ponta_dir_plataforma - ponta_esq_plataforma)/2);
+	}
+
+	//80% de chance
 	if(gerar_ou_nao<= 80) {
 
-		//gera cap
+		//gera esqueleto
 		if(gerar_esq_ou_pirata < gerar_esq && num_restante_esqueletos > 0) {
 
 			//precisa ser a posição a direita da plataforma, para que o inimigo possa ser gerado dentro dela.
-			Cria_Esqueletos(pos_plat.x + ((ponta_dir_plataforma - ponta_esq_plataforma)/2), pos_plat.y, ponta_esq_plataforma, ponta_dir_plataforma);
+			Cria_Esqueletos(pos_inimigo_x, pos_plat.y, ponta_esq_plataforma, ponta_dir_plataforma);
 			num_restante_esqueletos--;
 		}
 		//gera pirata
 		else if(gerar_esq_ou_pirata >= gerar_esq && num_restante_piratas > 0){
 
 			//precisa ser a posição a direita da plataforma, para que o inimigo possa ser gerado dentro dela.
-			Cria_Pirata(pos_plat.x + ((ponta_dir_plataforma - ponta_esq_plataforma)/2), pos_plat.y, ponta_esq_plataforma, ponta_dir_plataforma);
+			Cria_Pirata(pos_inimigo_x, pos_plat.y, ponta_esq_plataforma, ponta_dir_plataforma);
+			num_restante_piratas--;
+		}
+		else if(num_restante_esqueletos > 0) {
+			Cria_Esqueletos(pos_inimigo_x, pos_plat.y, ponta_esq_plataforma, ponta_dir_plataforma);
+			num_restante_esqueletos--;
+		}
+		else if(num_restante_piratas > 0) {
+			Cria_Pirata(pos_inimigo_x, pos_plat.y, ponta_esq_plataforma, ponta_dir_plataforma);
 			num_restante_piratas--;
 		}
 	}
 }
 
-void Fases::Fase_1::Cria_Caixas(float pos_embaixo_plat_y, float tam_plat_x){
+void Fases::Fase_1::Cria_Caixas(float pos_caixa_x, float pos_caixa_y){
 
 	Caixa* caixas;
 	caixas = new Caixa;
 
-	caixas->seta_Caixa(pos_embaixo_plat_y, tam_plat_x);
+	caixas->seta_Caixa(pos_caixa_x, pos_caixa_y);
 	lista_caixa.push_back(caixas);
 	gerenciador_colisoes.Incluir_Obstaculo(caixas);
 	lista_Entidades.adicionar(static_cast<Entidade*>(caixas));
 	std::cout << "criou caixas" << std::endl;
 }
 
+void Fases::Fase_1::Cria_Caixas_Restantes(){
+
+	sf::Vector2f aux;
+
+	for(i=0;i<num_restante_caixas;i++){
+
+		aux.x = pos_Piso.x + (rand() % static_cast<int>(tam_Piso_Fase.x));
+		aux.y = pos_Piso.y;
+
+		Cria_Caixas(aux.x, aux.y - 64.0f);
+	}
+
+	num_restante_caixas = 0;
+}
+
 void Fases::Fase_1::cria_Caixas_na_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat){
 
+	int gerar_ou_nao = rand() % 100;
+	float pos_na_plataforma = 0.f;
+
 		if(num_restante_caixas > 0) {
-				Cria_Caixas(100,tam_plat.x - 400);
+			if(gerar_ou_nao < 60) {
+
+				pos_na_plataforma = (tam_plat.x/(rand() % 5 + 2));
+
+				if(pos_na_plataforma <= 30.0f){
+					pos_na_plataforma = 30.0f;
+				}
+				else if(pos_na_plataforma >= tam_plat.x - 64.0f){
+					pos_na_plataforma = tam_plat.x - 64.0f;
+				}
+
+				Cria_Caixas((pos_plat.x + pos_na_plataforma),(pos_plat.y - 64.0f));
 				num_restante_caixas--;
+			}
 		}
 
 }

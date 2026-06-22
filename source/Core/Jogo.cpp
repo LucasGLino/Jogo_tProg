@@ -23,17 +23,23 @@ Jogo::Jogo():
     Ger_Graf = Gerenciador_Grafico::getInstancia();
 
     //inicialação das fases corrigida, agora função Atualiza chama setar_Fase quando necessário
-    fase_1_ativa = false;
-    fase_2_ativa = true;
+    fase_1_ativa = true;
+    fase_2_ativa = false;
 
-    fase1.Setar_Jogadores(&jogador_1, &jogador_2);
-    fase2.Setar_Jogadores(&jogador_1, &jogador_2);
+    fase1 = new Fases::Fase_1();
+    fase2 = new Fases::Fase_2();
+
+    fase1->Setar_Jogadores(&jogador_1, &jogador_2);
+    fase2->Setar_Jogadores(&jogador_1, &jogador_2);
 
 
 }
 
 Jogo::~Jogo(){
 
+    delete fase1;
+    delete fase2;
+    Gerenciador_Grafico::destruirInstancia();
 }
 
 void Jogo::set_pJog2_Dois_Jogadores(bool valor) {
@@ -118,17 +124,17 @@ void Jogo::setar_Fase()
     //seta os jogadores na fase ativa
     if (fase_1_ativa) {
        //fase1.Setar_Jogadores(&jogador_1, &jogador_2);
-        fase1.executar();
+        fase1->executar();
 
         jogador_1.executar();
         if (jogador_2.get_Dois_Jogadores()) {
             jogador_2.executar();
         }
 
-        if(fase1.verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(&jogador_1))){
+        if(fase1->verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(&jogador_1))){
             jogador_1.diminuir_Vitalidade(200);
         }
-        if(fase1.verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(&jogador_2))){
+        if(fase1->verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(&jogador_2))){
             jogador_2.diminuir_Vitalidade(200);
         }
         
@@ -137,17 +143,17 @@ void Jogo::setar_Fase()
     
 //    if(fase_2_ativa){
         //fase2.Setar_Jogadores(&jogador_1, &jogador_2);
-        fase2.executar();
+        fase2->executar();
 
         jogador_1.executar();
         if (jogador_2.get_Dois_Jogadores()) {
             jogador_2.executar();
         }
 
-        if(fase2.verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(&jogador_1))){
+        if(fase2->verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(&jogador_1))){
             jogador_1.diminuir_Vitalidade(200);
         }
-        if(fase2.verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(&jogador_2))){
+        if(fase2->verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(&jogador_2))){
             jogador_2.diminuir_Vitalidade(200);
         }
 	}
@@ -159,7 +165,7 @@ void Jogo::verifica_Fim_De_Jogo()
 
 
     if(fase_1_ativa){
-        if (fase1.get_Ganhou() || (jogador_1.get_Eliminado() && jogador_2.get_Eliminado()))
+        if (fase1->get_Ganhou() || (jogador_1.get_Eliminado() && jogador_2.get_Eliminado()))
         {
             
             std::cout << "pontuacao jogador 1:" << jogador_1.get_Pontuacao() << std::endl;
@@ -170,7 +176,7 @@ void Jogo::verifica_Fim_De_Jogo()
         }
     }else if(fase_2_ativa){
     // if(fase_2_ativa){
-        if (fase2.get_Ganhou() || (jogador_1.get_Eliminado() && jogador_2.get_Eliminado()))
+        if (fase2->get_Ganhou() || (jogador_1.get_Eliminado() && jogador_2.get_Eliminado()))
         {
             std::cout << "pontuacao jogador 1:" << jogador_1.get_Pontuacao() << std::endl;
             std::cout << "pontuacao jogador 2:" << jogador_2.get_Pontuacao() << std::endl;
@@ -184,10 +190,10 @@ void Jogo::verifica_Fim_De_Jogo()
 void Jogo::atualiza_Camera() {
 
     if(fase_1_ativa){
-       fase1.atualiza_Camera_Fase(&jogador_1, &jogador_2);
+       fase1->atualiza_Camera_Fase(&jogador_1, &jogador_2);
     }
     else if(fase_2_ativa){
-        fase2.atualiza_Camera_Fase(&jogador_1, &jogador_2);
+        fase2->atualiza_Camera_Fase(&jogador_1, &jogador_2);
     }
 
     Ger_Graf->getJanela()->setView(*Ger_Graf->getCamera());

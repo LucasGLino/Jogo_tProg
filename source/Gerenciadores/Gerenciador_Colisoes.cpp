@@ -169,6 +169,7 @@ void Gerenciador_colisoes::tratar_Colisoes_Jogador_Projeteis(Jogador* p_Jogador)
 void Gerenciador_colisoes::tratar_Colisoes_Inimigo_Obstaculo(Entidade* pEntidadeRef) {
 
 	list<Obstaculo*>::iterator itr;
+	Inimigo* pInimigo = dynamic_cast<Inimigo*>(pEntidadeRef);
 
 	itr = lista_Obstaculos.begin();
 
@@ -182,6 +183,9 @@ void Gerenciador_colisoes::tratar_Colisoes_Inimigo_Obstaculo(Entidade* pEntidade
 		if (lado == 1) {
 
 			pEntidadeRef->setar_Pos(((*itr)->get_X() - pEntidadeRef->get_Largura()), pEntidadeRef->get_Y());
+			if(pInimigo != nullptr){
+				pInimigo->colidiu_Obstaculo(lado);
+			}
 		}
 		//cima
 		else if (lado == 2) {
@@ -192,6 +196,9 @@ void Gerenciador_colisoes::tratar_Colisoes_Inimigo_Obstaculo(Entidade* pEntidade
 		else if (lado == 3) {
 
 			pEntidadeRef->setar_Pos((*itr)->get_Comprimento_L(), pEntidadeRef->get_Y());
+			if(pInimigo != nullptr){
+				pInimigo->colidiu_Obstaculo(lado);
+			}
 		}
 		//baixo
 		else if (lado == 4) {

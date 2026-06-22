@@ -41,6 +41,7 @@ namespace Entidades {
 
 				//virtual void Executar();
 				virtual void danificar(int lado, Entidades::Personagens::Jogador* pJogador);
+				virtual void colidiu_Obstaculo(int lado);
 
 				virtual void setar_Pontos_Por_Eliminacao(int pontos) = 0;
 

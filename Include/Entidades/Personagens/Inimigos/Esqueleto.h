@@ -12,11 +12,19 @@ namespace Entidades {
                 bool patrulha_esq_concluida;
                 bool patrulha_dir_concluida;
                 bool patrulhando;
+                bool preparando_investida;
+                bool investindo;
 
                 float patrulha_esquerda;
                 float patrulha_direita;
 
                 float velocidade_maxima;
+                float pos_inicio_investida;
+
+                int investidas_restantes;
+
+                sf::Clock relogio_investida;
+                sf::Clock relogio_parada;
 
             public:
                 Esqueleto();
@@ -31,6 +39,12 @@ namespace Entidades {
                 void patrulhar();
                 void aumentar_Forca();
                 void danificar(int lado, Entidades::Personagens::Jogador* pJogador);
+                void colidiu_Obstaculo(int lado);
+                void preparar_Investida();
+                void iniciar_Investida_Apos_Dano(Entidades::Personagens::Jogador* pJogador);
+                void executar_Investida();
+                void encerrar_Investida();
+                void verificar_Parada();
 
                 void setar_Pontos_Por_Eliminacao(int pontos);
         };

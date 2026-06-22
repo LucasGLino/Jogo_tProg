@@ -62,7 +62,7 @@ void Pirata::executar() {
 	
 
 	if(!parar){
-		if ((pos_final.x != pos.x) && (pos_final.y != pos.y)) {
+		if (pos_final.x != pos.x) {
 
 			if (pos_final.x > pos.x) {
 				pos.x += velocidade.x;
@@ -162,6 +162,18 @@ void Pirata::patrulhar(){
 			patrulha_esq_concluida = false;
 			patrulha_dir_concluida = true;
 		}
+	}
+}
+
+void Pirata::colidiu_Obstaculo(int lado){
+
+	if(lado == direita){
+		patrulha_esq_concluida = false;
+		patrulha_dir_concluida = true;
+	}
+	else if(lado == esquerda){
+		patrulha_esq_concluida = true;
+		patrulha_dir_concluida = false;
 	}
 }
 

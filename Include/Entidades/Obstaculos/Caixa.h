@@ -1,3 +1,4 @@
+#pragma once
 #include"Obstaculo.h"
 
 
@@ -6,15 +7,13 @@ namespace Entidades {
 		class Caixa : public Obstaculo
 		{
 		private:
-            bool ativa;
-            
-            int dano_explisivo;
+            bool sendo_empurrada;
 
-			bool Mover_Esq;
+			bool empurrar_esquerda;
 
-			bool mover;
+			float distancia_percorrida;
 
-			
+			sf::Clock relogio_empurrao;
 
 		public:
 
@@ -24,8 +23,9 @@ namespace Entidades {
 			void executar();
 			void seta_Caixa(float origem_x, float origem_y);
 			void obstacular(Entidades::Personagens::Jogador* p, int lado);
-			void Mover_Esquerda();
-			void Mover_Direita();
+			void iniciar_Empurrao(int lado);
+			void executar_Empurrao();
+			void parar_Empurrao();
 			void salvar();
 
 		};

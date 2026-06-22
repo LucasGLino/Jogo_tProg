@@ -51,7 +51,8 @@ namespace Fases{
 		void seta_Num_Plataformas();
 		void Posiciona_plataforma();
 		void Cria_Piso();
-		void Cria_Caixas(float pos_embaixo_plat_y, float tam_plat_x);
+		void Cria_Caixas(float pos_caixa_x, float pos_caixa_y);
+		void Cria_Caixas_Restantes();
 
 
 		void atualiza_Camera_Fase(Entidades::Personagens::Jogador* p_jogador1, Entidades::Personagens::Jogador* p_jogador2);

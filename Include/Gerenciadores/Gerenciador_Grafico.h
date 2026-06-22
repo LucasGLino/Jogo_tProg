@@ -30,6 +30,7 @@ namespace Gerenciadores{
             ~Gerenciador_Grafico();
 
             static Gerenciador_Grafico* getInstancia();
+            static void destruirInstancia();
 
             void desenhar(sf::Sprite* corpo);
             void desenhar(sf::RectangleShape* aux);

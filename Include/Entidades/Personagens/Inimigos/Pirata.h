@@ -32,6 +32,7 @@ namespace Entidades {
                 void patrulhar();
                 void bonus_De_Irritabilidade();
                 void danificar(int lado, Entidades::Personagens::Jogador* pJogador);
+                void colidiu_Obstaculo(int lado);
 
                 void setar_Pontos_Por_Eliminacao(int pontos);
         };

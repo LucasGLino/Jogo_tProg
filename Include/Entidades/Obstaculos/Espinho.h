@@ -10,7 +10,7 @@ namespace Entidades {
 		private:
 			//sf::Vector2f tamanho;
 
-            bool tetano;
+            bool enferrujado;
 
 			int danosidade;
 
@@ -20,7 +20,9 @@ namespace Entidades {
 
 			bool Jog_tetano;
 
-			float dt;
+			float intervalo_tetano;
+
+			int max_danos_tetano;
 
 			int contador_dano;
 

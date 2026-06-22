@@ -133,7 +133,7 @@ void Capitao::executar() {
 		}
 
 		if(!parar){
-			if ((pos_final.x != pos.x) && (pos_final.y != pos.y)) {
+			if (pos_final.x != pos.x) {
 
 				if (pos_final.x > pos.x) {
 					pos.x += velocidade.x;
@@ -178,6 +178,20 @@ void Capitao::danificar(int lado, Jogador* pJogador){
 		pJogador->diminuir_Vitalidade(dano);
 	}
 
+}
+
+void Capitao::colidiu_Obstaculo(int lado)
+{
+	if(lado == direita){
+		direcao = esquerda;
+		andar_ate(pos.x - 80.f, pos.y);
+		parar = false;
+	}
+	else if(lado == esquerda){
+		direcao = direita;
+		andar_ate(pos.x + 80.f, pos.y);
+		parar = false;
+	}
 }
 
 void Capitao::setar_Pontos_Por_Eliminacao(int pontos){

@@ -122,6 +122,9 @@ void Inimigo::danificar(int lado, Jogador* pJogador) {
 	}
 }
 
+void Inimigo::colidiu_Obstaculo(int lado) {
+}
+
 //sem uso por hora.
 /*
 void Inimigo::dar_Pontuacao_a_Jogadores() {

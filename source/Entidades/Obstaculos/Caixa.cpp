@@ -1,12 +1,14 @@
 #include "Entidades/Obstaculos/Caixa.h"
 
 
-Entidades::Obstaculos::Caixa::Caixa(): Mover_Esq(false), mover(false)
+Entidades::Obstaculos::Caixa::Caixa(): sendo_empurrada(false), empurrar_esquerda(false), distancia_percorrida(0.f)
 {
     densidade_superficial = 0.02f;
 
     velocidade.x = 1.f;
     velocidade.y = 1.f;
+
+    relogio_empurrao.restart();
 }
 Entidades::Obstaculos::Caixa::~Caixa()
 {
@@ -16,16 +18,12 @@ void Entidades::Obstaculos::Caixa::executar()
 {
     desenhar();
     executar_Gravidade();
-    if(mover){
-        if(Mover_Esq){
-            Mover_Esquerda();
-            mover = false;
-        }else{
-            Mover_Direita();
-            mover = false;
-        }
+
+    if(sendo_empurrada){
+        executar_Empurrao();
     }
-    std::cout << "executou a caixa" << std::endl;
+
+    setar_Pos(pos.x, pos.y);
 }
 
 void Entidades::Obstaculos::Caixa::seta_Caixa(float origem_x, float origem_y)
@@ -49,29 +47,46 @@ void Entidades::Obstaculos::Caixa::seta_Caixa(float origem_x, float origem_y)
 }
 void Entidades::Obstaculos::Caixa::obstacular(Entidades::Personagens::Jogador *p, int lado)
 {
-    
-     if(lado == esquerda){
-        mover = true; 
-        Mover_Esq = true;
-	}else if(lado == true){
-        mover = true;
-        Mover_Esq = false;
-    }
-    
-}
-
-void Entidades::Obstaculos::Caixa::Mover_Esquerda()
-{
-    for(int i = 0; i < 3; i++){
-        pos.x -= velocidade.x;
+    if(lado == esquerda || lado == direita){
+        iniciar_Empurrao(lado);
     }
 }
 
-void Entidades::Obstaculos::Caixa::Mover_Direita()
+void Entidades::Obstaculos::Caixa::iniciar_Empurrao(int lado)
 {
-    for(int i = 0; i < 3; i++){
-        pos.x += velocidade.x;
-    }    
+    const float tempo_recarga = 0.35f;
+
+    if(!sendo_empurrada && relogio_empurrao.getElapsedTime().asSeconds() >= tempo_recarga){
+        sendo_empurrada = true;
+        empurrar_esquerda = (lado == esquerda);
+        distancia_percorrida = 0.f;
+    }
+}
+
+void Entidades::Obstaculos::Caixa::executar_Empurrao()
+{
+    const float distancia_maxima = 24.f;
+    const float velocidade_empurrao = 1.5f;
+
+    if(empurrar_esquerda){
+        pos.x -= velocidade_empurrao;
+    }
+    else{
+        pos.x += velocidade_empurrao;
+    }
+
+    distancia_percorrida += velocidade_empurrao;
+
+    if(distancia_percorrida >= distancia_maxima){
+        parar_Empurrao();
+    }
+}
+
+void Entidades::Obstaculos::Caixa::parar_Empurrao()
+{
+    sendo_empurrada = false;
+    distancia_percorrida = 0.f;
+    relogio_empurrao.restart();
 }
 
 void Entidades::Obstaculos::Caixa::salvar()

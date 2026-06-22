@@ -18,8 +18,8 @@ class Jogo : public Gerenciador_Estado{
 		Entidades::Personagens::Jogador jogador_1;
 		Entidades::Personagens::Jogador jogador_2;
 
-		Fases::Fase_1 fase1;
-		Fases::Fase_2 fase2;
+		Fases::Fase_1* fase1;
+		Fases::Fase_2* fase2;
 
 		//Menu *menu;
 		//jogando 0 , Menu 1, Pausado 2, Venceu 3, Perdeu 4

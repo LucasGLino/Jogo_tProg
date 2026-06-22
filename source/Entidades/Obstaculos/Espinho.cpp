@@ -1,24 +1,22 @@
 #include "Entidades/Obstaculos/Espinho.h"
 
 
-Entidades::Obstaculos::Espinho::Espinho(): tetano(false), dano_tetano(5), Jog_tetano(false), pJog(nullptr), contador_dano(0)
+Entidades::Obstaculos::Espinho::Espinho(): enferrujado(false), dano_tetano(5), Jog_tetano(false), intervalo_tetano(0.5f), max_danos_tetano(3), contador_dano(0), pJog(nullptr)
 {
 
     densidade_superficial = 0.05f;
 
-    srand(static_cast<unsigned int>(time(0)));
+    //srand(static_cast<unsigned int>(time(0)));
 
     danoso = true;
 
     danosidade =  (rand() % 5 + 5);
 
-    int aux = (rand() % 6);
-
-    if(aux == 3){
-        tetano = true;
+    if(rand()%3){
+        enferrujado = true;
     }
 
-    dt = clock.restart().asSeconds();
+    clock.restart();
 }
 
 Entidades::Obstaculos::Espinho::~Espinho()
@@ -28,8 +26,10 @@ Entidades::Obstaculos::Espinho::~Espinho()
 
 void Entidades::Obstaculos::Espinho::executar()
 {
-
     desenhar();
+    executar_Gravidade();
+    setar_Pos(pos.x,pos.y);
+    
     if(Jog_tetano){
         Tetano_Danar();
     }
@@ -44,31 +44,34 @@ void Entidades::Obstaculos::Espinho::obstacular(Entidades::Personagens::Jogador 
         pJogador->executando_Pulo();
 		pJogador->diminuir_Vitalidade(danosidade);
         
-        if(tetano == true){
+        if(enferrujado == true && !Jog_tetano){
             Jog_tetano = true;
             pJog = pJogador;
+            contador_dano = 0;
+            clock.restart();
         }
 	}
 }
 
 void Entidades::Obstaculos::Espinho::Tetano_Danar()
 {
-     static float tempo = 0.f;
+    if(pJog == nullptr){
+        contador_dano = 0;
+        Jog_tetano = false;
+        return;
+    }
 
-    const float Tempo_Ataque = 0.5f;
+    if(contador_dano >= max_danos_tetano){
+        pJog = nullptr;
+        contador_dano = 0;
+        Jog_tetano = false;
+        return;
+    }
 
-
-    if(tempo > 0.f){
-        tempo -= dt;
-        if(contador_dano == 3){
-            pJog = nullptr;
-            contador_dano = 0;
-            Jog_tetano = false;
-        }
-    }else if(tempo <= 0.f){
-        tempo = Tempo_Ataque;
+    if(clock.getElapsedTime().asSeconds() >= intervalo_tetano){
         pJog->diminuir_Vitalidade(dano_tetano);
         contador_dano++;
+        clock.restart();
     }
    
 }
