@@ -52,16 +52,17 @@ Fase::~Fase() {
 
 void Fases::Fase::Setar_Jogadores(Jogador* p_jogador1,Jogador* p_jogador2)
 {
+	std::cout << "entrou no Setar_Jogadores" << std::endl;
 	Setar_Jogadores_Colisoes(p_jogador1, p_jogador2);
 	Setar_Jogadores_Inimigos(p_jogador1, p_jogador2);
 	
 	//p_jogador1->setar_Pos(pos_Piso.x, pos_Piso.y - p_jogador1->get_Altura());
 	//p_jogador2->setar_Pos(pos_Piso.x, pos_Piso.y - p_jogador2->get_Altura());
 	if (p_jogador1 != nullptr) {
-		p_jogador1->setar_Pos(pos_Piso.x, pos_Piso.y - p_jogador1->get_Altura());
+		p_jogador1->setar_Pos(25.f, pos_Piso.y - p_jogador1->get_Altura());
 	}
 	if (p_jogador2 != nullptr) {
-		p_jogador2->setar_Pos(pos_Piso.x, pos_Piso.y - p_jogador2->get_Altura());
+		p_jogador2->setar_Pos(25.f, pos_Piso.y - p_jogador2->get_Altura());
 	}
 
 }
@@ -131,6 +132,42 @@ bool Fases::Fase::get_Ganhou()
 void Fases::Fase::criar_cenario()
 {
 
+
+}
+
+void Fases::Fase::ajustar_Fundo_A_Camera()
+{
+	std::cout << "entrou noajustar_Fundo_A_Camera" << std::endl;
+	
+	if (!fundo_carregado) {
+		return;
+	}
+
+	sf::Vector2u tam_fundo = textura_fundo.getSize();
+
+	if (tam_fundo.x == 0 || tam_fundo.y == 0) {
+		return;
+	}
+
+	sf::Vector2f tam_camera = pGG->getCamera()->getSize();
+	sf::Vector2f centro_camera = pGG->getCamera()->getCenter();
+
+	fundo.setPosition(centro_camera.x - (tam_camera.x / 2.f), centro_camera.y - (tam_camera.y / 2.f));
+	fundo.setScale(tam_camera.x / static_cast<float>(tam_fundo.x), tam_camera.y / static_cast<float>(tam_fundo.y));
+}
+
+void Fases::Fase::atualiza_Camera_Fase(Jogador* p_jogador1, Jogador* p_jogador2)
+{
+	
+	
+	sf::Vector2f pos_camera;
+
+	pos_camera.x = tam_Piso_Fase.x/2;
+	pos_camera.y = -tam_Piso_Fase.y/3;
+
+	//trava a camera;
+	pGG->getCamera()->setCenter(pos_camera);
+	ajustar_Fundo_A_Camera();
 
 }
 

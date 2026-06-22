@@ -248,18 +248,18 @@ void Fases::Fase_2::setar_Camera_Fase()
 	pGG->getCamera()->zoom(zoom_camera);
 }
 
-void Fases::Fase_2::atualiza_Camera_Fase(Jogador* p_jogador1, Jogador* p_jogador2)
-{
-	sf::Vector2f pos_camera;
+// void Fases::Fase_2::atualiza_Camera_Fase(Jogador* p_jogador1, Jogador* p_jogador2)
+// {
+// 	sf::Vector2f pos_camera;
 
-	pos_camera.x = tam_Piso_Fase.x/2;
-	pos_camera.y = -tam_Piso_Fase.y/3;
+// 	pos_camera.x = tam_Piso_Fase.x/2;
+// 	pos_camera.y = -tam_Piso_Fase.y/3;
 
-	//trava a camera;
-	pGG->getCamera()->setCenter(pos_camera);
-	ajustar_Fundo_A_Camera();
+// 	//trava a camera;
+// 	pGG->getCamera()->setCenter(pos_camera);
+// 	ajustar_Fundo_A_Camera();
 
-}
+// }
 
 void Fases::Fase_2::seta_Tamanho_Plataformas(int n_plataformas) {
 

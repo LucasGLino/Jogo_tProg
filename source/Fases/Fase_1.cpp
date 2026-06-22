@@ -6,7 +6,7 @@ using namespace Fases;
 using namespace Obstaculos;
 using namespace Gerenciadores;
 
-Fases::Fase_1::Fase_1() {
+Fases::Fase_1::Fase_1(): Fase() {
 
 	//srand(static_cast<unsigned int>(time(0)));
 	
@@ -64,6 +64,7 @@ Fases::Fase_1::Fase_1() {
 
 	// precisa ser antes que Cria Obstaculos, justamente pq precisa ser setado os inimigos nas plataformas primeiro.
 	Cria_Inimigos();
+	std::cout << "terminou de criar a fase" << std::endl;
 
 	//lista_Entidades.imprimir_Ids();
 }
@@ -161,18 +162,18 @@ void Fases::Fase_1::setar_Camera_Fase()
 	pGG->getCamera()->zoom(zoom_camera);
 }
 
-void Fases::Fase_1::atualiza_Camera_Fase(Jogador* p_jogador1, Jogador* p_jogador2)
-{
-	sf::Vector2f pos_camera;
+// void Fases::Fase_1::atualiza_Camera_Fase(Jogador* p_jogador1, Jogador* p_jogador2)
+// {
+// 	sf::Vector2f pos_camera;
 
-	pos_camera.x = tam_Piso_Fase.x/2;
-	pos_camera.y = -tam_Piso_Fase.y/3;
+// 	pos_camera.x = tam_Piso_Fase.x/2;
+// 	pos_camera.y = -tam_Piso_Fase.y/3;
 
-	//trava a camera;
-	pGG->getCamera()->setCenter(pos_camera);
-	ajustar_Fundo_A_Camera();
+// 	//trava a camera;
+// 	pGG->getCamera()->setCenter(pos_camera);
+// 	ajustar_Fundo_A_Camera();
 
-}
+// }
 
 void Fases::Fase_1::seta_Tamanho_Plataformas(int n_plataformas) {
 
@@ -341,7 +342,7 @@ void Fases::Fase_1::Cria_Caixas(float pos_embaixo_plat_y, float tam_plat_x){
 void Fases::Fase_1::cria_Caixas_na_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat){
 
 		if(num_restante_caixas > 0) {
-				Cria_Caixas(100,tam_plat.x - 400);
+				Cria_Caixas(pos_plat.y+100,pos_plat.x - 400);
 				num_restante_caixas--;
 		}
 

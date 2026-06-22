@@ -30,9 +30,6 @@ namespace Fases{
 		std::vector<int> num_plataformas_por_andar;
 
 		std::vector<Entidades::Obstaculos::Caixa*> lista_caixa;
-		sf::Texture textura_fundo;
-		sf::Sprite fundo;
-		bool fundo_carregado;
         
 		void ajustar_Fundo_A_Camera();
 
@@ -54,7 +51,7 @@ namespace Fases{
 		void Cria_Caixas(float pos_embaixo_plat_y, float tam_plat_x);
 
 
-		void atualiza_Camera_Fase(Entidades::Personagens::Jogador* p_jogador1, Entidades::Personagens::Jogador* p_jogador2);
+		// void atualiza_Camera_Fase(Entidades::Personagens::Jogador* p_jogador1, Entidades::Personagens::Jogador* p_jogador2);
 		void setar_Camera_Fase();
 		void cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, float ponta_dir_plataforma, sf::Vector2f pos_plat);
 		void cria_Caixas_na_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat);

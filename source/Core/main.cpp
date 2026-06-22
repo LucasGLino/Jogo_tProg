@@ -17,9 +17,9 @@ int main()
 {
     //std::cout << "ERRO" << std::endl;
     
-    Jogo jogo;
+    Jogo* jogo = Jogo::getInstancia();
 
-    jogo.executar();
+    jogo->executar();
 
     return 0;
 }

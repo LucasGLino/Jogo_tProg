@@ -6,8 +6,8 @@ using namespace sf;
 
 void Menu_Estado::carregarBotoes()
 {
-    const float centroX = pGg->getLarguraJanela() / 2.0f;
-    const float centroY = pGg->getAlturaJanela() / 2.0f;
+    const float centroX = pGG->getLarguraJanela() / 2.0f;
+    const float centroY = pGG->getAlturaJanela() / 2.0f;
     const float espacamento = 120.0f; 
     
     Vector2f posIniciar = {centroX, centroY - espacamento}; 
@@ -23,8 +23,7 @@ void Menu_Estado::carregarBotoes()
     pBt.push_back(btnSair);
 
 }
-Menu_Estado::Menu_Estado(Gerenciador_Estado *pGe): Estado(pGe),Ente(200),pGe(pGe){ 
-
+Menu_Estado::Menu_Estado(Gerenciador_Estado *pGe): Estado(pGe),Ente(200),pGe(pGe){
     carregar();
 }
 void Menu_Estado::carregar()
@@ -56,11 +55,12 @@ void Menu_Estado::executar()
         (*it)->executar();
     }
     tratarInput();
+    
 }
 
 void Menu_Estado::desenhar()
 {
-    sf::RenderWindow* window = pGg->getJanela();
+    sf::RenderWindow* window = pGG->getJanela();
     
     window->setView(window->getDefaultView());
     
@@ -79,14 +79,13 @@ void Menu_Estado::tratarInput()
                 
                 switch (i) { 
                     case 0: 
-                        
-                        pGe->adicionarEstado(new Fase_Estado(this->pGe,1)); 
+                        pGe->adicionarEstado(new Fase_Estado(this->pGe,0)); 
                         break;
                     case 1: 
                         std::cout << "Opções Clicadas!" << std::endl;
                         break;
                     case 2:
-                        this->pGg->fechar();
+                        this->pGG->fechar();
                         break;
                     default:
                         break;

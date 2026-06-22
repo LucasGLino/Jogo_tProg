@@ -6,8 +6,8 @@ using namespace std;
 void Pause_Estado::carregarBotoes()
 {
 
-    const float centroX = pGg->getLarguraJanela() / 2.0f;
-    const float centroY = pGg->getAlturaJanela() / 2.0f;
+    const float centroX = pGG->getLarguraJanela() / 2.0f;
+    const float centroY = pGG->getAlturaJanela() / 2.0f;
     const float espacamento = 120.0f; 
     
     Vector2f posVoltar = {centroX, centroY - espacamento}; 
@@ -60,7 +60,7 @@ void Pause_Estado::executar()
 
 void Pause_Estado::desenhar()
 {
-    sf::RenderWindow* window = pGg->getJanela();
+    sf::RenderWindow* window = pGG->getJanela();
 
     if (eAnterior) {
         eAnterior->desenhar();
