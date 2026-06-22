@@ -4,45 +4,46 @@
 #include "Entidades/Personagens/Jogador/Jogador.h"
 #include "Fases/Fase_1.h"
 #include "Fases/Fase_2.h"
-//#include "Core/Menus/Menu.h"
 #include "Estados/MenuEstado.h"
 #include "Estados/GerenciadorEstado.h"
 
 
 
-class Jogo : public Gerenciador_Estado{
+class Jogo{
 
 	private:
 		Gerenciadores::Gerenciador_Grafico* Ger_Graf;
 
-		Entidades::Personagens::Jogador jogador_1;
-		Entidades::Personagens::Jogador jogador_2;
+		Entidades::Personagens::Jogador* jogador_1;
+		Entidades::Personagens::Jogador* jogador_2;
 
-		Fases::Fase_1 fase1;
-		Fases::Fase_2 fase2;
+		Fases::Fase_1* fase1;
+		Fases::Fase_2* fase2;
 
-		//Menu *menu;
-		//jogando 0 , Menu 1, Pausado 2, Venceu 3, Perdeu 4
-		int estado;
+		Gerenciador_Estado* pGe;
 
-		bool fase_1_ativa;
-		bool fase_2_ativa;
-		bool acabou;
+		static Jogo* pInstancia;
+
+		Jogo();
 
 	public:
-		Jogo();
+		
 		~Jogo();
+
+		static Jogo* getInstancia();
 
 		void executar();
 
-		//void setEstado(Estado novoEstado);
-		//Estado getEstado() const;
-		void set_pJog2_Dois_Jogadores(bool valor);
-		bool get_pJog2_Dois_Jogadores();
-		void setar_Fase();
-		void atualiza_Camera();
-		//void EstadoDoJogo();
-		void verifica_Fim_De_Jogo();
+		// void criar_fase_1();
+
+
+		// void set_pJog2_Dois_Jogadores(bool valor);
+		// bool get_pJog2_Dois_Jogadores();
+		// Entidades::Personagens::Jogador* get_Jogador_1();
+		// Entidades::Personagens::Jogador* get_Jogador_2();
+		// Fases::Fase* get_fase_1();
+		// Fases::Fase* get_fase_2();
+		// void setar_Fase(Fases::Fase* pFase);
+		// void atualiza_Camera(Fases::Fase* pFase);
 
 };
-

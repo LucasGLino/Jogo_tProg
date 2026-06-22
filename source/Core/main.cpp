@@ -22,7 +22,5 @@ int main()
     
     Jogo* jogo = Jogo::getInstancia();
 
-    jogo->executar();
-
     return 0;
 }
