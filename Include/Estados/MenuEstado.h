@@ -15,13 +15,18 @@ class Menu_Estado : public Estado, public Ente
 private:
     std::vector<Botao*> Menu_externo;
     sf::Font fMenu;
+    sf::Texture textura_fundo;
+    sf::Sprite fundo;
 
     Gerenciador_Estado* pGe;
     std::vector<Botao*> Menu_interno;
     Botao* btn_1_Jogador;
     Botao* btn_2_Jogador;
 
-    bool menu; // se true executa o menu interno se false o menu externo
+    bool menu;
+    
+    sf::Vector2f tamanho;
+    sf::Texture textura;
 
     bool dois_Jogadores;
     const float centroX;

@@ -54,12 +54,6 @@ void Jogo::executar()
                 }
         }
 
-        if (Keyboard::isKeyPressed(Keyboard::Escape))
-        {
-            // deve ser modificado para encaixar o menu de pause.
-            Ger_Graf->getJanela()->close();
-        }
-
         Ger_Graf->limpar();
 
         pGe->executar();

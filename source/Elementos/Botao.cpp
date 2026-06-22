@@ -1,7 +1,7 @@
 #include "Elementos/Botao.h"
 
 
-#define corBotao sf::Color(100, 100, 100, 200)
+#define corBotao sf::Color::Transparent
 
 #define bHover sf::Color(150, 150, 150, 255)
 
@@ -11,7 +11,7 @@ Botao::Botao(const std::string& stri, const sf::Font& fonte, sf::Vector2f pos):s
 
     pGg = Gerenciadores::Gerenciador_Grafico::getInstancia();
     
-    this->str.setFillColor(sf::Color::White);
+    this->str.setFillColor(sf::Color::Transparent);
 
     sf::FloatRect tamanhoStr = this->str.getGlobalBounds();
 

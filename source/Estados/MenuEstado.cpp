@@ -1,7 +1,7 @@
 #include "../../include/Estados/FaseEstado.h"
 
 
-#define font "Assets/PermanentMarker-Regular.ttf"
+#define font "Assets/fontes/PirataOne-Regular.ttf"
 
 using namespace std;
 using namespace sf;
@@ -53,7 +53,8 @@ Menu_Estado::Menu_Estado(Gerenciador_Estado *pGe):
     espacamento_largura(200.f),
     centroX(pGG->getLarguraJanela() / 2.0f),
     centroY(pGG->getAlturaJanela() / 2.0f),
-    menu(false)
+    menu(false),
+    tamanho(500.f, 500.f)
 {
     carregar();
     carregar_Menu_externo();
@@ -64,7 +65,23 @@ void Menu_Estado::carregar()
     if (!fMenu.loadFromFile(font)){
         cerr << "Erro ao carregar a fonte!" << std::endl;
         return;
-    }    
+    }
+    if (!textura_fundo.loadFromFile("Assets/Imagens/Fundo_fase2.png")) {
+		std::cout << "Erro ao carregar textura do fundo da fase." << std::endl;
+	}
+	else {
+		fundo.setTexture(textura_fundo);
+	}
+
+    pFigura->setSize(tamanho);
+	if (!textura.loadFromFile("Assets/Imagens/Titulo.png")) {
+		std::cout << "Erro ao carregar textura do titulo." << std::endl;
+	}
+	else {
+		pFigura->setTexture(&textura);
+        pFigura->setPosition(centroX - 250, centroY - 250);
+	}
+   
 }
 
 void Menu_Estado::descarregar()
@@ -97,6 +114,8 @@ void Menu_Estado::descarregar_Menu_interno()
 
 void Menu_Estado::executar()
 {
+    pGG->getJanela()->draw(fundo);
+    pGG->desenhar(pFigura);
     if(!menu){
         for(vector<Botao*>::iterator it = Menu_externo.begin(); it != Menu_externo.end(); it++){
             (*it)->executar();
@@ -153,8 +172,7 @@ void Menu_Estado::tratar_Input_Externo()
                     std::cout << "Opções Clicadas!" << std::endl;
                     break;
                 case 2:
-                    std::cout << "teste" << std::endl;
-                    // this->pGG->fechar();
+                    this->pGG->fechar();
                     break;
                 default:
                     break;
