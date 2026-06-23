@@ -1,38 +1,34 @@
 #include "Entidades/Obstaculos/Plataforma.h"
 
+#include <cstdlib>
+
 using namespace Entidades;
 using namespace Obstaculos;
 using namespace Personagens;
 
-//const int massa_plataforma(10000);
-
+// Comeca com os dados usados na flutuacao da plataforma.
 Plataforma::Plataforma()
 {
-	chao = false;
-	ativa = true;
-
 	subindo = (rand() % 2);
-
 	flutuabilidade = 4.0f;
-
-	tamanho.x = 0;
-	tamanho.y = 0;
-
 	densidade_superficial = 1.f;
 }
 
-Plataforma::~Plataforma(){
-
+// Nao precisa liberar nada alem do que a classe base ja cuida.
+Plataforma::~Plataforma()
+{
 }
 
-void Plataforma::seta_Origem(float origem_x, float origem_y){
-
+// Salva o ponto central da oscilacao.
+void Plataforma::seta_Origem(float origem_x, float origem_y)
+{
 	origem.x = origem_x;
 	origem.y = origem_y;
 }
 
-void Plataforma::flutuar(){
-
+// Move a plataforma levemente para cima e para baixo.
+void Plataforma::flutuar()
+{
 	if(pos.y <= (origem.y - flutuabilidade)){
 		subindo = false;
 	}
@@ -41,51 +37,34 @@ void Plataforma::flutuar(){
 	}
 
 	if(subindo){
-
-		// anula a gravidade para -0.1f
 		pos.y -= velocidade.y + (velocidade.y / 60);
 	}
 	else{
-		// limita a gravidade a 0.1f
 		pos.y -= velocidade.y - (velocidade.y / 60);
 	}
-
-	//pos.y -=velocidade.y;
 }
 
-void Plataforma::determinar_chao() {
-	chao = true;
+// Atualiza a posicao flutuante e desenha a plataforma.
+void Plataforma::executar()
+{
+	executar_Gravidade();
+	flutuar();
+	setar_Pos(pos.x, pos.y);
+	desenhar();
 }
 
-void Plataforma::executar() {
-
-	if(ativa){
-
-		if(!chao){
-
-			executar_Gravidade();
-			flutuar();
-			setar_Pos(pos.x,pos.y);
-		}
-
-		desenhar();
-	}
-	
-}
-
-void Plataforma::obstacular(Jogador* p, int lado) {
-
+// Ajusta o estado de pulo do jogador conforme o lado da colisao.
+void Plataforma::obstacular(Jogador* p, int lado)
+{
 	if(lado == cima){
-
 		p->setar_Bateu_A_Cabeca();
 	}
 	if(lado == baixo){
-
 		p->setar_Pode_Pular();
 	}
-	
 }
 
-void Plataforma::salvar(){
-
+// Salvar ainda nao foi implementado para plataforma.
+void Plataforma::salvar()
+{
 }

@@ -1,64 +1,54 @@
-#include"Entidades/Personagens/Personagem.h"
+#include "Entidades/Personagens/Personagem.h"
 
 using namespace Entidades::Personagens;
-using namespace sf;
 
-/*
-Entidades::Personagens::Personagem::Personagem(RectangleShape b, Vector2f p, Vector2f tam, int life, float velx, float vely, bool e): Entidade(p,b,tam), esq(e),vida(life), pulo(-500.f)
-{
-    setVel({velx,vely});
-}
-*/
-
-Personagem::Personagem(int semente, Vector2f p, Vector2f tam, int vida, float velx, float vely):
+// Comeca o personagem vivo e com a velocidade passada pela classe filha.
+Personagem::Personagem(int semente, sf::Vector2f p, sf::Vector2f tam, int vida, float velx, float vely):
     Entidade(semente, p, tam),
-    vitalidade(vida),
-    pulo(-500.f)
+    num_vidas(vida)
 {
-    eliminado = false;
-    //setVel({velx,vely});
-    //setar_Gravidade(6.f);
+    if (num_vidas < 0) {
+        num_vidas = 0;
+    }
+
+    eliminado = (num_vidas <= 0);
     setar_velocidade(velx, vely);
 }
 
+// Nao precisa liberar nada alem do que a classe base ja cuida.
 Personagem::~Personagem()
 {
 }
 
+// Atualiza vidas e deixa eliminado coerente com o novo valor.
 void Personagem::set_Vitalidade(int vida)
 {
-    vitalidade = vida;
+    num_vidas = vida;
+    if (num_vidas < 0) {
+        num_vidas = 0;
+    }
+
+    eliminado = (num_vidas <= 0);
 }
 
-int Personagem::get_Vitalidade()
+// Retorna as vidas atuais.
+int Personagem::get_Vitalidade() const
 {
-    return vitalidade;
+    return num_vidas;
 }
 
+// Tira vidas e elimina quando chegar em zero.
 void Personagem::diminuir_Vitalidade(int dano)
 {
-    vitalidade -= dano;
-    if(vitalidade <= 0){
-        vitalidade = 0;
+    num_vidas -= dano;
+    if(num_vidas <= 0){
+        num_vidas = 0;
         eliminado = true;
     }
 }
 
+// Retorna se o personagem ja foi eliminado.
 bool Personagem::get_Eliminado() const
 {
     return eliminado;
 }
-
-/*
-void Entidades::Personagens::Personagem::setPos(Vector2f p)
-{    
-    this->pos = p;
-
-    pFigura->setPosition(pos);
-    //body.setPosition(pos);
-
-    pFigura->setPosition({pFigura->getPosition().x - 38.0f, pFigura->getPosition().y - 46.0f});
-    //body.setPosition({body.getPosition().x - 38.0f, body.getPosition().y - 46.0f});
-
-}
-*/

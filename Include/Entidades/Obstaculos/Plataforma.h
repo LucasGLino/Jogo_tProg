@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Entidades/Obstaculos/Obstaculo.h"
 
 namespace Entidades {
@@ -6,32 +7,33 @@ namespace Entidades {
 		class Plataforma : public Obstaculo
 		{
 		private:
-
-			bool ativa;
+			// Ponto central da oscilacao vertical.
 			sf::Vector2f origem;
 
+			// Controla se a plataforma esta subindo ou descendo.
 			bool subindo;
 
-			//define se é chão ou não
-			bool chao;
-
-			//define quantos pixeis ele ocila para cima e para baixo ao flutuar.
+			// Distancia maxima que ela oscila para cima e para baixo.
 			float flutuabilidade;
 
+			// Aplica a oscilacao vertical.
+			void flutuar();
+
 		public:
-
 			Plataforma();
-			~Plataforma();
+			virtual ~Plataforma();
 
+			// Guarda a origem usada na flutuacao.
 			void seta_Origem(float origem_x, float origem_y);
 
-			// void seta_Plataforma(float alt, float larg, float origem_x, float origem_y);
-			void determinar_chao();
-			void flutuar();
+			// Atualiza a flutuacao e desenha a plataforma.
 			void executar();
-			void obstacular(Entidades::Personagens::Jogador* p, int lado);
-			void salvar();
 
+			// Reage a colisao com o jogador.
+			void obstacular(Entidades::Personagens::Jogador* p, int lado);
+
+			// Salvar ainda nao foi implementado para plataforma.
+			void salvar();
 		};
 	}
 }

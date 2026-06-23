@@ -6,62 +6,39 @@ namespace Entidades{
     namespace Personagens{
         class Personagem : public Entidade{
             protected:
-            
-                int vitalidade;
+                // Quantidade de vidas atual do personagem.
+                int num_vidas;
+
+                // Marca se o personagem ja saiu de jogo.
                 bool eliminado;
+
+                // Dano base usado nas interacoes com outros personagens.
                 int dano;
-
-                //Vector2f velo;
-
-                //bool esq;
-
-                //const float gravidade;
-
-                const float pulo; // velocidade do pulo
                 
             public:
-                //Personagem(int semente, RectangleShape b, Vector2f p, Vector2f tam, int life, float velx, float vely,bool e);
                 Personagem(int semente, sf::Vector2f p, sf::Vector2f tam, int vida, float velx, float vely);
-
                 virtual ~Personagem();
 
-                //int getVida();
-
+                // Troca as vidas e ajusta o estado de eliminacao.
                 void set_Vitalidade(int vida);
 
-                //virtual void diminuir_Vida(int dano);
+                // Retorna a quantidade de vidas atual.
+                int get_Vitalidade() const;
 
-                int get_Vitalidade();
-
-                //void setar_Vitalidade(int vida);
-
+                // Aplica dano e elimina quando as vidas acabam.
                 virtual void diminuir_Vitalidade(int dano);
 
+                // Diz se o personagem ja foi eliminado.
                 bool get_Eliminado() const;
 
-                //virtual void danificar(Personagem* pAtacado);
-
-                //bool getEsq() const { return esq; }
-
-                //void setEsq(bool d) { esq = d; }
-
-                //virtual void colisao(Entidade* ent, sf::Vector2f inter) = 0;
-
-                //Vector2f getVel() {return velo;}
-
-                //void setVel(Vector2f v){velo = v;}
-
-                //virtual void move(float dt) = 0;
+                // Cada personagem decide como se movimenta.
                 virtual void mover() = 0;
 
+                // Salvar ainda nao foi implementado para personagem.
                 virtual void salvar() = 0;
                 
-                //virtual void executar(float dt) = 0;
+                // Cada personagem decide sua rotina por frame.
                 virtual void executar() = 0;
-
-                /*
-                void setPos(Vector2f p);
-                */
         };
     }
 }

@@ -2,33 +2,33 @@
 
 #include "Gerenciadores/Gerenciador_Grafico.h"
 
-#include <iostream>
-#include <string>
-
-//using namespace std;
-//using namespace Gerenciadores;
-
 class Ente
 {
 protected:
+	// Guarda o identificador individual do objeto.
 	int id;
+
+	// Gera ids crescentes para os novos entes.
 	static int id_contador;
 
-	//acesso a biblioteca graf (eveitar includes redundantes)
+	// Acesso compartilhado ao gerenciador grafico.
 	Gerenciadores::Gerenciador_Grafico* pGG;
 
-	//todo Ente possu� uma figura retangular
+	// Figura base usada para desenhar o ente.
 	sf::RectangleShape* pFigura;
 
-
 	Ente(int semente);
-	virtual ~Ente();
-	virtual void executar() = 0;
-	void desenhar();
-	
-public:
-	int getId() const;
-	void operator++();
-	void operator--();
 
+	// Desenha a figura base do ente na janela.
+	void desenhar();
+
+public:
+	// Permite destruir objetos derivados por ponteiro de Ente.
+	virtual ~Ente();
+
+	// Executa o comportamento especifico de cada classe filha.
+	virtual void executar() = 0;
+
+	// Retorna o identificador do ente.
+	int getId() const;
 };

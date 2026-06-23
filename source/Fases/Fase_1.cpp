@@ -1,16 +1,20 @@
 #include "Fases/Fase_1.h"
+#include "Entidades/Obstaculos/Caixa.h"
+#include "Entidades/Personagens/Inimigos/Esqueleto.h"
+#include <cstdlib>
 
 using namespace Entidades;
 using namespace Personagens;
 using namespace Fases;
 using namespace Obstaculos;
 
+// Sorteia as quantidades da fase 1 e monta chao, plataformas, obstaculos e inimigos.
 Fases::Fase_1::Fase_1()
 {
-	// entre 4 e 6
+	// Entre 4 e 6 esqueletos.
 	num_esqueletos = (rand() % 3) + 4;
 
-	// entre 3 a 7
+	// Entre 3 e 7 caixas.
 	num_caixas = (rand()%5) + 3;
 
 	num_restante_esqueletos = num_esqueletos;
@@ -27,6 +31,7 @@ Fases::Fase_1::~Fase_1()
 {
 }
 
+// Cria no chao os esqueletos que nao foram colocados em plataformas.
 void Fases::Fase_1::Cria_Inimigos_Especificos()
 {
 	sf::Vector2f aux;
@@ -41,42 +46,47 @@ void Fases::Fase_1::Cria_Inimigos_Especificos()
 	num_restante_esqueletos = 0;
 }
 
+// Preenche uma plataforma com inimigos e caixas da fase 1.
 void Fases::Fase_1::criar_Entidades_em_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat, float ponta_esq, float ponta_dir)
 {
 	cria_Inimigos_Nas_Plataformas(ponta_esq, ponta_dir, pos_plat);
 	cria_Caixas_na_Plataforma(tam_plat, pos_plat);
 }
 
+// Cria as caixas que precisam ficar no chao.
 void Fases::Fase_1::Cria_Obstaculos_Restantes()
 {
 	Cria_Caixas_Restantes();
 }
 
-void Fases::Fase_1::Cria_Esqueletos(float x, float y,float patrulha_ate_a, float patrula_ate_b)
+// Cria um esqueleto, ajusta o spawn e registra ele nas listas da fase.
+void Fases::Fase_1::Cria_Esqueletos(float x, float y,float patrulha_ate_a, float patrulha_ate_b)
 {
 	Esqueleto* esqueleto = new Esqueleto;
 	float x_spawn = ajustar_X_Spawn(x, y);
 
 	esqueleto->setar_Pos(x_spawn, y - esqueleto->get_Altura());
-	esqueleto->setar_Patrulha(patrulha_ate_a, patrula_ate_b);
+	esqueleto->setar_Patrulha(patrulha_ate_a, patrulha_ate_b);
 
 	lista_id_inimigos.push_front(esqueleto->getId());
 	gerenciador_colisoes.Incluir_Inimigo(esqueleto);
 	lista_Entidades.adicionar(static_cast<Entidade*>(esqueleto));
 }
 
+// Cria uma caixa e ajusta sua posicao para evitar spawn repetido.
 void Fases::Fase_1::Cria_Caixas(float pos_caixa_x, float pos_caixa_y)
 {
-	Caixa* caixas = new Caixa;
+	Caixa* caixa = new Caixa;
 
-	caixas->seta_Caixa(pos_caixa_x, pos_caixa_y);
-	float x_spawn = ajustar_X_Spawn(pos_caixa_x, pos_caixa_y + caixas->get_Altura());
-	caixas->setar_Pos(x_spawn, pos_caixa_y);
+	caixa->seta_Caixa(pos_caixa_x, pos_caixa_y);
+	float x_spawn = ajustar_X_Spawn(pos_caixa_x, pos_caixa_y + caixa->get_Altura());
+	caixa->setar_Pos(x_spawn, pos_caixa_y);
 
-	gerenciador_colisoes.Incluir_Obstaculo(caixas);
-	lista_Entidades.adicionar(static_cast<Entidade*>(caixas));
+	gerenciador_colisoes.Incluir_Obstaculo(caixa);
+	lista_Entidades.adicionar(static_cast<Entidade*>(caixa));
 }
 
+// Deixa no maximo duas caixas no chao e zera o restante depois da criacao.
 void Fases::Fase_1::Cria_Caixas_Restantes()
 {
 	sf::Vector2f aux;
@@ -97,11 +107,13 @@ void Fases::Fase_1::Cria_Caixas_Restantes()
 	num_restante_caixas = 0;
 }
 
+// Distribui ate dois inimigos por plataforma, priorizando completar 4 de cada tipo.
 void Fases::Fase_1::cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, float ponta_dir_plataforma, sf::Vector2f pos_plat)
 {
 	const int max_inimigos_por_tipo_em_plataformas = 4;
 	const int max_inimigos_por_plataforma = 2;
 	int inimigos_criados = 0;
+	int intervalo_spawn = 0;
 	float pos_inimigo_x = 0.f;
 	float limite_esquerdo = ponta_esq_plataforma + 10.f;
 	float limite_direito = ponta_dir_plataforma - 35.f;
@@ -116,8 +128,9 @@ void Fases::Fase_1::cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, fl
 			return;
 		}
 
-		if(limite_direito > limite_esquerdo){
-			pos_inimigo_x = limite_esquerdo + (rand() % static_cast<int>(limite_direito - limite_esquerdo));
+		intervalo_spawn = static_cast<int>(limite_direito - limite_esquerdo);
+		if(intervalo_spawn > 0){
+			pos_inimigo_x = limite_esquerdo + (rand() % intervalo_spawn);
 		}
 		else{
 			pos_inimigo_x = pos_plat.x + ((ponta_dir_plataforma - ponta_esq_plataforma)/2);
@@ -138,6 +151,7 @@ void Fases::Fase_1::cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, fl
 	}
 }
 
+// Cria caixas nas plataformas enquanto ainda sobram caixas alem do minimo do chao.
 void Fases::Fase_1::cria_Caixas_na_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat)
 {
 	const int minimo_caixas_no_chao = 2;

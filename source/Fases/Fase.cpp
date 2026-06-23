@@ -1,4 +1,7 @@
 #include "Fases/Fase.h"
+#include <cstdlib>
+#include <ctime>
+#include <iostream>
 
 using namespace Fases;
 using namespace Entidades;
@@ -7,6 +10,7 @@ using namespace Personagens;
 
 int Fases::Fase::base_Id = 0;
 
+// Inicializa os dados gerais da fase, incluindo sorteios, camera, piso e fundo.
 Fase::Fase(): Ente(base_Id)
 {
 	static bool sorteio_iniciado = false;
@@ -17,14 +21,13 @@ Fase::Fase(): Ente(base_Id)
 
 	ganhou = false;
 	chao = nullptr;
-	plataforma = nullptr;
 	lista_id_inimigos.clear();
 	posicoes_spawn_usadas.clear();
 
 
 	num_plataformas_totais = rand() % 10;
 
-	//entre 4 e 6
+	// Cada fase sempre comeca com 4 a 6 piratas.
 	num_piratas = (rand() % 3) + 4;
 
 
@@ -54,19 +57,21 @@ Fase::Fase(): Ente(base_Id)
 	}
 }
 
+// Libera as estruturas auxiliares que a fase mantem.
 Fase::~Fase()
 {
 	num_plataformas_por_andar.clear();
 	posicoes_spawn_usadas.clear();
-	plataforma = nullptr;
 	chao = nullptr;
 }
 
+// Registra os jogadores nos sistemas da fase e posiciona eles no chao.
 void Fases::Fase::Setar_Jogadores(Jogador* p_jogador1,Jogador* p_jogador2)
 {
 	Setar_Jogadores_Colisoes(p_jogador1, p_jogador2);
 	Setar_Jogadores_Inimigos(p_jogador1, p_jogador2);
 	
+	// Os jogadores sempre iniciam sobre o chao da fase.
 	if (p_jogador1 != nullptr) {
 		p_jogador1->setar_Pos(25.f, pos_Piso.y - p_jogador1->get_Altura());
 	}
@@ -75,6 +80,7 @@ void Fases::Fase::Setar_Jogadores(Jogador* p_jogador1,Jogador* p_jogador2)
 	}
 }
 
+// Envia os jogadores para o gerenciador de colisoes.
 void Fases::Fase::Setar_Jogadores_Colisoes(Jogador* p_jogador1, Jogador* p_jogador2)
 {
 	if ((p_jogador1 != nullptr) && (p_jogador2 == nullptr)) {
@@ -88,6 +94,7 @@ void Fases::Fase::Setar_Jogadores_Colisoes(Jogador* p_jogador1, Jogador* p_jogad
 	}
 }
 
+// Atualiza os alvos dos inimigos ja criados.
 void Fases::Fase::Setar_Jogadores_Inimigos(Jogador* p_jogador1, Jogador* p_jogador2)
 {
 	std::list<int>::iterator itr = lista_id_inimigos.begin();
@@ -104,29 +111,35 @@ void Fases::Fase::Setar_Jogadores_Inimigos(Jogador* p_jogador1, Jogador* p_jogad
 	}
 }
 
+// Permite que fases derivadas removam inimigos de listas auxiliares proprias.
 void Fases::Fase::remover_Inimigo_Das_Listas_Auxiliares(Inimigo* pInimigo)
 {
+	(void)pInimigo;
 }
 
+// Permite que fases derivadas criem obstaculos depois do chao e das plataformas.
 void Fases::Fase::Cria_Obstaculos_Restantes()
 {
 }
 
+// Gancho usado por fases derivadas antes da lista de entidades executar.
 void Fases::Fase::executar_Antes_Entidades()
 {
 }
 
+// Gancho usado por fases derivadas depois da lista de entidades executar.
 void Fases::Fase::executar_Depois_Entidades()
 {
 }
 
+// Verifica se uma posicao de spawn ja foi usada por outra entidade.
 bool Fases::Fase::posicao_Spawn_Ja_Usada(float x, float y_referencia)
 {
 	const float tolerancia = 1.0f;
 	float diferenca_x;
 	float diferenca_y;
 
-	for (int i = 0; i < posicoes_spawn_usadas.size(); i++) {
+	for (int i = 0; i < static_cast<int>(posicoes_spawn_usadas.size()); i++) {
 		diferenca_x = posicoes_spawn_usadas[i].x - x;
 		diferenca_y = posicoes_spawn_usadas[i].y - y_referencia;
 
@@ -145,11 +158,13 @@ bool Fases::Fase::posicao_Spawn_Ja_Usada(float x, float y_referencia)
 	return false;
 }
 
+// Guarda uma posicao usada para os proximos spawns conseguirem desviar dela.
 void Fases::Fase::registrar_Posicao_Spawn(float x, float y_referencia)
 {
 	posicoes_spawn_usadas.push_back(sf::Vector2f(x, y_referencia));
 }
 
+// Ajusta o x do spawn para evitar duas entidades exatamente no mesmo lugar.
 float Fases::Fase::ajustar_X_Spawn(float x, float y_referencia)
 {
 	const int max_tentativas = 10;
@@ -171,24 +186,27 @@ float Fases::Fase::ajustar_X_Spawn(float x, float y_referencia)
 	return x_spawn;
 }
 
+// Decide se ainda pode criar uma entidade na plataforma sem esvaziar o chao.
 bool Fases::Fase::pode_Criar_Na_Plataforma(int total_restante, int minimo_no_chao)
 {
 	return total_restante > minimo_no_chao;
 }
 
-void Fases::Fase::Cria_Pirata(float x, float y, float patrulha_ate_a, float patrula_ate_b)
+// Cria um pirata, define sua patrulha e registra ele na fase.
+void Fases::Fase::Cria_Pirata(float x, float y, float patrulha_ate_a, float patrulha_ate_b)
 {
 	Pirata* pirata = new Pirata;
 	float x_spawn = ajustar_X_Spawn(x, y);
 
 	pirata->setar_Pos(x_spawn, y - pirata->get_Altura());
-	pirata->setar_Patrulha(patrulha_ate_a, patrula_ate_b);
+	pirata->setar_Patrulha(patrulha_ate_a, patrulha_ate_b);
 
 	lista_id_inimigos.push_front(pirata->getId());
 	gerenciador_colisoes.Incluir_Inimigo(pirata);
 	lista_Entidades.adicionar(static_cast<Entidade*>(pirata));
 }
 
+// Cria no chao os piratas que nao foram colocados em plataformas.
 void Fases::Fase::Cria_Piratas_Restantes()
 {
 	sf::Vector2f aux;
@@ -203,18 +221,23 @@ void Fases::Fase::Cria_Piratas_Restantes()
 	num_restante_piratas = 0;
 }
 
-void Fases::Fase::Cria_Plataforma(float alt, float larg, float origem_x, float origem_y)
+// Instancia uma plataforma e devolve o ponteiro para registro na fase.
+Plataforma* Fases::Fase::Cria_Plataforma(float alt, float larg, float origem_x, float origem_y)
 {
-	plataforma = new Plataforma;
-	plataforma->seta_Obstaculo(alt, larg, origem_x, origem_y,"Assets/Imagens/Plataforma.png");
-	plataforma->seta_Origem(origem_x,origem_y);
+	Plataforma* pPlataforma = new Plataforma;
+	pPlataforma->seta_Obstaculo(alt, larg, origem_x, origem_y,"Assets/Imagens/Plataforma.png");
+	pPlataforma->seta_Origem(origem_x,origem_y);
+
+	return pPlataforma;
 }
 
-bool Fases::Fase::get_Ganhou()
+// Retorna se todos os inimigos da fase ja foram neutralizados.
+bool Fases::Fase::get_Ganhou() const
 {
 	return ganhou;
 }
 
+// Executa a fase enquanto ela ainda nao foi vencida.
 void Fases::Fase::executar()
 {
 	verifica_Inimigos_Neutralizados();
@@ -231,24 +254,25 @@ void Fases::Fase::executar()
 	}
 }
 
+// Cria o chao e registra ele na lista de entidades e nas colisoes.
 void Fases::Fase::Cria_Piso()
 {
 	chao = new Chao;
 	chao->configurar_Chao(tam_Piso_Fase.y, tam_Piso_Fase.x, pos_Piso.x, pos_Piso.y, "Assets/Imagens/Chao.png");
 	chao->setar_Limite_Abismo(pos_Piso.y + tam_Piso_Fase.y);
 
-	std::cout << "tamanho do chao:" << tam_Piso_Fase.x << "," << tam_Piso_Fase.y << std::endl;
-
 	gerenciador_colisoes.Incluir_Chao(chao);
 	lista_Entidades.adicionar(static_cast<Entidade*>(chao));
 }
 
+// Cria os inimigos especificos da fase e completa os piratas restantes.
 void Fases::Fase::Cria_Inimigos()
 {
 	Cria_Inimigos_Especificos();
 	Cria_Piratas_Restantes();
 }
 
+// Cria chao, plataformas e depois os obstaculos proprios da fase.
 void Fases::Fase::Cria_Obstaculos()
 {
 	Cria_Piso();
@@ -256,6 +280,7 @@ void Fases::Fase::Cria_Obstaculos()
 	Cria_Obstaculos_Restantes();
 }
 
+// Ajusta o fundo para cobrir a area atual da camera.
 void Fases::Fase::ajustar_Fundo_A_Camera()
 {
 	if (!fundo_carregado) {
@@ -275,8 +300,12 @@ void Fases::Fase::ajustar_Fundo_A_Camera()
 	fundo.setScale(tam_camera.x / static_cast<float>(tam_fundo.x), tam_camera.y / static_cast<float>(tam_fundo.y));
 }
 
+// Atualiza a posicao da camera usada pela fase.
 void Fases::Fase::atualiza_Camera_Fase(Jogador* p_jogador1, Jogador* p_jogador2)
 {
+	(void)p_jogador1;
+	(void)p_jogador2;
+
 	sf::Vector2f pos_camera;
 
 	pos_camera.x = tam_Piso_Fase.x/2;
@@ -286,11 +315,13 @@ void Fases::Fase::atualiza_Camera_Fase(Jogador* p_jogador1, Jogador* p_jogador2)
 	ajustar_Fundo_A_Camera();
 }
 
+// Aplica o zoom base da fase na camera.
 void Fases::Fase::setar_Camera_Fase()
 {
 	pGG->getCamera()->zoom(zoom_camera);
 }
 
+// Define tamanho e espacamento horizontal das plataformas de um andar.
 void Fases::Fase::seta_Tamanho_Plataformas(int n_plataformas)
 {
 	if(n_plataformas == 1){
@@ -315,6 +346,7 @@ void Fases::Fase::seta_Tamanho_Plataformas(int n_plataformas)
 	}
 }
 
+// Sorteia e distribui a quantidade total de plataformas entre os andares.
 void Fases::Fase::seta_Num_Plataformas()
 {
 	if (num_plataformas_totais < 5) {
@@ -344,11 +376,13 @@ void Fases::Fase::seta_Num_Plataformas()
 	}
 }
 
+// Posiciona as plataformas e chama a fase derivada para preencher cada uma.
 void Fases::Fase::Posiciona_plataforma()
 {
 	seta_Num_Plataformas();
 
 	sf::Vector2f pos_plataforma;
+	Plataforma* pPlataforma;
 	float posicao_da_ultima_plataforma = 0.f;
 	
 	for(int i = 0; i < num_max_andares; i++) {
@@ -359,11 +393,11 @@ void Fases::Fase::Posiciona_plataforma()
 			pos_plataforma.x = posicao_da_ultima_plataforma + espaco_vazio_x;
 			posicao_da_ultima_plataforma = pos_plataforma.x + tam_plataforma.x;
 
-			Cria_Plataforma(tam_plataforma.y, tam_plataforma.x, pos_plataforma.x, pos_plataforma.y);
+			pPlataforma = Cria_Plataforma(tam_plataforma.y, tam_plataforma.x, pos_plataforma.x, pos_plataforma.y);
 			criar_Entidades_em_Plataforma(tam_plataforma, pos_plataforma, pos_plataforma.x, pos_plataforma.x + tam_plataforma.x);
 
-			gerenciador_colisoes.Incluir_Obstaculo(static_cast<Obstaculo*>(plataforma));
-			lista_Entidades.adicionar(static_cast<Entidade*>(plataforma));
+			gerenciador_colisoes.Incluir_Obstaculo(static_cast<Obstaculo*>(pPlataforma));
+			lista_Entidades.adicionar(static_cast<Entidade*>(pPlataforma));
 		}
 
 		pos_plataforma.x = 0.f;
@@ -371,33 +405,34 @@ void Fases::Fase::Posiciona_plataforma()
 	}
 }
 
+// Remove inimigos derrotados e pune os que cairem no abismo.
 void Fases::Fase::verifica_Inimigos_Neutralizados()
 {
 	std::list<int>::iterator itr = lista_id_inimigos.begin();
 
-    while (itr != lista_id_inimigos.end() && !(lista_id_inimigos.empty())) {
+    while (itr != lista_id_inimigos.end()) {
         int id = *itr;
-        Entidade* ent = lista_Entidades.get_Entidade_Por_Id(id);
+        Entidade* pEntidade = lista_Entidades.get_Entidade_Por_Id(id);
 
-        if (ent == nullptr) {
+        if (pEntidade == nullptr) {
             itr = lista_id_inimigos.erase(itr);
             continue;
         }
 
-        Inimigo* inim = dynamic_cast<Inimigo*>(ent);
-        if (inim == nullptr) {
+        Inimigo* pInimigo = dynamic_cast<Inimigo*>(pEntidade);
+        if (pInimigo == nullptr) {
             ++itr;
             continue;
         }
 
-		if(verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(inim))){
-			inim->diminuir_Vitalidade(200);
+		if(verifica_Se_Caiu_No_Abismo(static_cast<Entidade*>(pInimigo))){
+			pInimigo->diminuir_Vitalidade(200);
 		}
 
-        if (inim->get_Eliminado()) {
-			remover_Inimigo_Das_Listas_Auxiliares(inim);
-			gerenciador_colisoes.Inimigo_neutralizado(inim);
-            lista_Entidades.remover(ent);
+        if (pInimigo->get_Eliminado()) {
+			remover_Inimigo_Das_Listas_Auxiliares(pInimigo);
+			gerenciador_colisoes.Inimigo_neutralizado(pInimigo);
+            lista_Entidades.remover(pEntidade);
             itr = lista_id_inimigos.erase(itr);
         } else {
             ++itr;
@@ -407,9 +442,10 @@ void Fases::Fase::verifica_Inimigos_Neutralizados()
     if (gerenciador_colisoes.verifica_Lista_Inimigos_Vazia() && lista_id_inimigos.empty()) {
         std::cout << "todos os inimigos foram eliminados!" << std::endl;
         ganhou = true;
-    }
+	}
 }
 
+// Pergunta ao chao se uma entidade passou do limite do abismo.
 bool Fases::Fase::verifica_Se_Caiu_No_Abismo(Entidade* pEntidade)
 {
 	if (chao == nullptr || pEntidade == nullptr) {

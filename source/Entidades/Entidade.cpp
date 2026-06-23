@@ -2,159 +2,102 @@
 
 
 using namespace Entidades;
-using namespace std;
 using namespace sf;
-/*
-Entidade::Entidade(int semente, Vector2f p, RectangleShape corpo, Vector2f tam):
-    Ente(semente),
-    body(corpo),
-    pos(p),
-    size(tam),
-    direita(1), cima(2),
-    esquerda(3), baixo(4)
-*/
-Entidade::Entidade(int semente, Vector2f p, Vector2f tam):
-    Ente(semente),
-    pos(p),
-    tamanho(tam),
-    direita(1), cima(2),
-    esquerda(3), baixo(4)
-{
-    //aceleracao = Vector2f(0.f, 0.f);
-    velocidade = Vector2f(0.f, 0.f);
-    gravidade = 6.0f;
 
-    //pFigura = corpo;
-    pFigura->setSize(tam);
-    //pFigura->setSize(pos);
-    pFigura->setPosition(pos);
-    //body.setSize(tam);
-    //body.setPosition(pos);
+// Inicializa posicao, tamanho, lados de colisao e figura da entidade.
+Entidade::Entidade(int semente, Vector2f p, Vector2f tam):
+	Ente(semente),
+	pos(p),
+	tamanho(tam),
+	direita(1), cima(2),
+	esquerda(3), baixo(4)
+{
+	velocidade = Vector2f(0.f, 0.f);
+	gravidade = 6.0f;
+
+	pFigura->setSize(tam);
+	pFigura->setPosition(pos);
 }
 
+// Destrutor virtual para permitir destruicao correta pelas classes filhas.
 Entidade::~Entidade()
 {
 }
 
-float Entidade::get_Gravidade() const
-{
-    return gravidade;
-}
-
-void Entidade::setar_Gravidade(float grav)
-{
-    gravidade = grav;
-}
-
+// Aumenta a velocidade vertical ate o limite de queda e move a entidade.
 void Entidade::executar_Gravidade()
 {
-    
-    //velocidade.y += gravidade;
-    //setar_Pos(pos.x, pos.y + gravidade);
-
-    //acelera até bater o teto da gravidade.
-    if (velocidade.y <= gravidade) {
-		//pos.y += velocidade.y;
+	if (velocidade.y <= gravidade) {
 		velocidade.y += 0.3f;
-		//velocidade.y = gravidade;
 	}
-    //limita a velocidade a gravidade definida anteriormente, 6.0f
+
 	if (velocidade.y > gravidade) {
 		velocidade.y = gravidade;
 	}
-    
 
 	pos.y += velocidade.y;
 }
 
-//Em relação a posição global.
+// Calcula o centro usando a posicao atual e o tamanho da figura.
 Vector2f Entidade::get_Centro()
 {
-    centro_glob.x = pos.x + (get_Largura() / 2);
-    centro_glob.y = pos.y + (get_Altura() / 2);
-
-    return sf::Vector2f(centro_glob);
+	return Vector2f(pos.x + (get_Largura() / 2), pos.y + (get_Altura() / 2));
 }
 
-
-Vector2f Entidade::get_Tamanho()
-{
-    return tamanho;
-}
-
+// Retorna a largura atual da figura da entidade.
 float Entidade::get_Largura()
 {
-    return pFigura->getLocalBounds().width;
+	return pFigura->getLocalBounds().width;
 }
 
+// Retorna a altura atual da figura da entidade.
 float Entidade::get_Altura()
 {
-    return pFigura->getLocalBounds().height;
+	return pFigura->getLocalBounds().height;
 }
 
+// Retorna o limite inferior da entidade.
 float Entidade::get_Comprimento_A()
 {
-    return get_Y() + get_Altura();
+	return get_Y() + get_Altura();
 }
 
+// Retorna o limite direito da entidade.
 float Entidade::get_Comprimento_L()
 {
-    return get_X() + get_Largura();
+	return get_X() + get_Largura();
 }
 
-Vector2f Entidade::getPos()
-{
-    return pos;
-}
-
+// Retorna a coordenada x atual.
 float Entidade::get_X() const
 {
-    return pos.x;
+	return pos.x;
 }
 
+// Retorna a coordenada y atual.
 float Entidade::get_Y() const
 {
-    return pos.y;
+	return pos.y;
 }
 
-float Entidade::get_Vel_X() const {
-    return velocidade.x;
-}
-
-float Entidade::get_Vel_Y() const {
-    return velocidade.y;
-}
-
+// Atualiza a posicao interna e sincroniza a figura.
 void Entidade::setar_Pos(float pos_x, float pos_y)
 {
-    pos.x = pos_x;
-    pos.y = pos_y;
+	pos.x = pos_x;
+	pos.y = pos_y;
 
-    pFigura->setPosition(pos);
-    //body.setPosition(pos);
+	pFigura->setPosition(pos);
 }
 
+// Sobrecarga para atualizar a posicao usando um vetor.
 void Entidade::setar_Pos(Vector2f p)
 {
-    setar_Pos(p.x, p.y);
+	setar_Pos(p.x, p.y);
 }
 
+// Define a velocidade usada por movimento, gravidade e impulso.
 void Entidade::setar_velocidade(float vel_x, float vel_y)
 {
-    velocidade.x = vel_x;
-    velocidade.y = vel_y;
+	velocidade.x = vel_x;
+	velocidade.y = vel_y;
 }
-
-/*
-void Entidade::setar_aceleracao(float ace_x, float ace_y){
-    wd.x=ace_x;
-    aceleracao.y=ace_y;
-}
-*/
-
-/*
-RectangleShape Entidade::getBody()
-{
-    return body;
-}
-*/

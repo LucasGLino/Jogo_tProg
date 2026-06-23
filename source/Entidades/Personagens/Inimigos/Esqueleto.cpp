@@ -1,15 +1,20 @@
 #include "Entidades/Personagens/Inimigos/Esqueleto.h"
 
-Entidades::Personagens::Esqueleto::Esqueleto()
+#include <cstdlib>
+#include <ctime>
+
+using namespace Entidades;
+using namespace Personagens;
+
+// Configura vida, patrulha, investida e textura do esqueleto.
+Esqueleto::Esqueleto()
 {
-    srand(static_cast<unsigned int>(time(0)));
+	srand(static_cast<unsigned int>(time(0)));
 
 	nivel_maldade = (rand() % 3);
 	forca = 0;
-
-	//num_vitalidade = 100;
-	vitalidade = 80;
-	dano = 5*nivel_maldade;
+	num_vidas = 80;
+	dano = 5 * nivel_maldade;
 
 	patrulha_esq_concluida = false;
 	patrulha_dir_concluida = true;
@@ -17,23 +22,19 @@ Entidades::Personagens::Esqueleto::Esqueleto()
 	preparando_investida = false;
 	investindo = false;
 
-	tamanho.x = 25.0;
-	tamanho.y = 55.0;
+	tamanho.x = 25.0f;
+	tamanho.y = 55.0f;
 
 	pos_inicial.x = 200.f;
 	pos_inicial.y = 159.f;
-
 	pos_final = pos_inicial;
 
 	velocidade.x = 0.5f;
-
 	velocidade_maxima = 3 * velocidade.x;
 	pos_inicio_investida = pos.x;
 	investidas_restantes = 0;
 
 	relogio_parada.restart();
-
-	//pFigura->setFillColor(sf::Color::Red);
 
 	pFigura->setSize(tamanho);
 	if (!textura.loadFromFile("Assets/Imagens/Esqueleto.png")) {
@@ -49,25 +50,20 @@ Entidades::Personagens::Esqueleto::Esqueleto()
 	setar_Pontos_Por_Eliminacao(400);
 }
 
-void Entidades::Personagens::Esqueleto::andar_ate(float em_x, float em_y)
-{
-    pos_final.x = em_x;
-	pos_final.y = em_y;
-}
-
-Entidades::Personagens::Esqueleto::~Esqueleto()
+// Nao precisa liberar nada alem do que a classe base ja cuida.
+Esqueleto::~Esqueleto()
 {
 }
 
-void Entidades::Personagens::Esqueleto::salvar()
+// Salvar ainda nao foi implementado para esqueleto.
+void Esqueleto::salvar()
 {
 }
 
-void Entidades::Personagens::Esqueleto::executar()
+// Atualiza queda, desenho, patrulha e investida.
+void Esqueleto::executar()
 {
-
 	executar_Gravidade();
-	
 	desenhar();
 	setar_Pos(pos.x, pos.y);
 
@@ -80,22 +76,21 @@ void Entidades::Personagens::Esqueleto::executar()
 
 		if(!parar){
 			if (pos_final.x != pos.x) {
-
 				if (pos_final.x > pos.x) {
 					pos.x += velocidade.x;
 				}
 				else if (pos_final.x < pos.x) {
 					pos.x -= velocidade.x;
 				}
-
 			}
 		}
 	}
 }
 
-void Entidades::Personagens::Esqueleto::setar_Patrulha(float patrulha_esq, float patrulha_dir)
+// Define as pontas onde o esqueleto vai patrulhar.
+void Esqueleto::setar_Patrulha(float patrulha_esq, float patrulha_dir)
 {
-    if(rand()%2 == 1){
+	if(rand()%2 == 1){
 		patrulha_dir_concluida = false;
 		patrulha_esq_concluida = true;
 	}
@@ -110,38 +105,33 @@ void Entidades::Personagens::Esqueleto::setar_Patrulha(float patrulha_esq, float
 	parar = false;
 }
 
-void Entidades::Personagens::Esqueleto::mover()
+// Aumenta o dano extra quando o esqueleto sobrevive a um ataque.
+void Esqueleto::aumentar_Forca()
 {
-    if(patrulhando) {
+	forca += 5;
+}
 
-		if(!patrulha_esq_concluida && patrulha_dir_concluida){
+// Jogador causa dano pelo lado fraco, senao toma dano com bonus de forca.
+void Esqueleto::danificar(int lado, Jogador* pJogador)
+{
+	if (lado == lado_fraco) {
+		pJogador->colidir(static_cast<Personagem*>(this));
+		aumentar_Forca();
 
-			pos_final.x = patrulha_esquerda;
+		if(get_Eliminado()){
+			pJogador->aumentar_Pontuacao(pontos_de_eliminacao);
 		}
-		else if(patrulha_esq_concluida && !patrulha_dir_concluida){
-
-			pos_final.x = patrulha_direita;
+		else {
+			iniciar_Investida_Apos_Dano(pJogador);
 		}
-
-		if(pos.x <= patrulha_esquerda){
-
-			patrulha_esq_concluida = true;
-			patrulha_dir_concluida = false;
-		}
-		else if(pos.x >= patrulha_direita ){
-			
-			patrulha_esq_concluida = false;
-			patrulha_dir_concluida = true;
-		}
+	}
+	else {
+		pJogador->diminuir_Vitalidade(dano + forca);
 	}
 }
 
-void Entidades::Personagens::Esqueleto::aumentar_Forca()
-{
-    forca += 5;
-}
-
-void Entidades::Personagens::Esqueleto::colidiu_Obstaculo(int lado)
+// Inverte o sentido da patrulha quando bate de lado.
+void Esqueleto::colidiu_Obstaculo(int lado)
 {
 	if(lado == direita){
 		patrulha_esq_concluida = false;
@@ -153,26 +143,8 @@ void Entidades::Personagens::Esqueleto::colidiu_Obstaculo(int lado)
 	}
 }
 
-void Entidades::Personagens::Esqueleto::danificar(int lado, Entidades::Personagens::Jogador *pJogador)
-{
-    if (lado == lado_fraco) {
-		pJogador->colidir(static_cast<Personagem*>(this));
-        aumentar_Forca();
-
-		if(get_Eliminado()){
-			pJogador->aumentar_Pontuacao(pontos_de_eliminacao);
-		}
-		else {
-			iniciar_Investida_Apos_Dano(pJogador);
-		}
-	}
-	else {
-
-		pJogador->diminuir_Vitalidade(dano);
-	}
-}
-
-void Entidades::Personagens::Esqueleto::preparar_Investida()
+// Comeca a preparacao antes da investida.
+void Esqueleto::preparar_Investida()
 {
 	if(!preparando_investida && !investindo){
 		preparando_investida = true;
@@ -184,7 +156,8 @@ void Entidades::Personagens::Esqueleto::preparar_Investida()
 	}
 }
 
-void Entidades::Personagens::Esqueleto::iniciar_Investida_Apos_Dano(Entidades::Personagens::Jogador *pJogador)
+// Escolhe a direcao e prepara duas investidas seguidas.
+void Esqueleto::iniciar_Investida_Apos_Dano(Jogador* pJogador)
 {
 	if(pJogador != nullptr && !preparando_investida && !investindo){
 		if(pJogador->get_X() > pos.x){
@@ -199,7 +172,30 @@ void Entidades::Personagens::Esqueleto::iniciar_Investida_Apos_Dano(Entidades::P
 	}
 }
 
-void Entidades::Personagens::Esqueleto::executar_Investida()
+// Atualiza o destino da patrulha normal.
+void Esqueleto::mover()
+{
+	if(patrulhando) {
+		if(!patrulha_esq_concluida && patrulha_dir_concluida){
+			pos_final.x = patrulha_esquerda;
+		}
+		else if(patrulha_esq_concluida && !patrulha_dir_concluida){
+			pos_final.x = patrulha_direita;
+		}
+
+		if(pos.x <= patrulha_esquerda){
+			patrulha_esq_concluida = true;
+			patrulha_dir_concluida = false;
+		}
+		else if(pos.x >= patrulha_direita ){
+			patrulha_esq_concluida = false;
+			patrulha_dir_concluida = true;
+		}
+	}
+}
+
+// Controla o tempo de preparo e o avanco rapido da investida.
+void Esqueleto::executar_Investida()
 {
 	const float tempo_preparo_investida = 0.6f;
 	const float distancia_maxima_investida = 140.f;
@@ -250,7 +246,8 @@ void Entidades::Personagens::Esqueleto::executar_Investida()
 	}
 }
 
-void Entidades::Personagens::Esqueleto::encerrar_Investida()
+// Volta o esqueleto para a patrulha normal.
+void Esqueleto::encerrar_Investida()
 {
 	preparando_investida = false;
 	investindo = false;
@@ -260,7 +257,8 @@ void Entidades::Personagens::Esqueleto::encerrar_Investida()
 	relogio_parada.restart();
 }
 
-void Entidades::Personagens::Esqueleto::verificar_Parada()
+// Sorteia pausas curtas para quebrar o movimento repetido.
+void Esqueleto::verificar_Parada()
 {
 	const float intervalo_sorteio = 2.0f;
 	const float duracao_parada = 0.7f;
@@ -284,7 +282,8 @@ void Entidades::Personagens::Esqueleto::verificar_Parada()
 	}
 }
 
-void Entidades::Personagens::Esqueleto::setar_Pontos_Por_Eliminacao(int pontos)
+// Guarda a pontuacao dada ao jogador quando o esqueleto morre.
+void Esqueleto::setar_Pontos_Por_Eliminacao(int pontos)
 {
-    pontos_de_eliminacao = pontos;
+	pontos_de_eliminacao = pontos;
 }

@@ -4,9 +4,6 @@
 namespace Entidades {
 
 	namespace Personagens {
-		class Capitao;
-	}
-	namespace Personagens {
 		class Jogador;
 	}
 
@@ -14,39 +11,42 @@ namespace Entidades {
 	class Projetil : public Entidade
 	{
 		private:
+			// Identificador base usado pelos projeteis.
 			static const int id_base;
+
+			// Controla se o projetil deve mover, colidir e ser desenhado.
 			bool ativo;
+
+			// Guarda direcao e dano definidos pelo capitao no disparo.
 			int lado;
 			int dano;
-			int tempo_de_vida;
-			int tempo_ativo;
-			bool atingiu_jogador;
 
-			Entidades::Personagens::Capitao* cap;
-
-		//const int direita, cima, esquerda, baixo;
+			// Aplica o ajuste vertical proprio do projetil durante o voo.
+			void executar_Empuxo();
 
 	public:
 
 		Projetil();
-		Projetil(float saida_x, float saida_y, int lado);
-
-		~Projetil();
+		virtual ~Projetil();
 
 
+		// Define o estado usado pelo gerenciador de colisoes.
 		void setar_Ativo(bool atv);
+
+		// Configura os dados recebidos do capitao ao disparar.
 		void setar_Dano(int dan);
 		void setar_Direcao(int direcao);
-		void setar_Proprietario(Entidades::Personagens::Capitao* propriet);
 
-		int get_Dano();
+		// Informa se o projetil ainda participa do jogo.
 		bool get_Ativo();
+
+		// Aplica dano ao jogador atingido.
 		void Atingiu_Jogador(Entidades::Personagens::Jogador* pJogador);
 
-		void executar_Empuxo();
+		// Move e desenha o projetil quando estiver ativo.
 		void executar();
-		void salvar();
 
-		void setar_Cor(sf::Color cor);
+		// Salvar ainda nao foi implementado para projetil.
+		void salvar();
 	};
 }

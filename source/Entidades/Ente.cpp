@@ -1,39 +1,32 @@
 #include "Entidades/Ente.h"
 
 
-Ente::Ente(int semente = 0):id(semente + (id_contador++))
+// Contador compartilhado por todos os entes criados.
+int Ente::id_contador = 1;
+
+// Inicializa o id, o gerenciador grafico e a figura base do ente.
+Ente::Ente(int semente):id(semente + (id_contador++))
 {
 	pGG = Gerenciadores::Gerenciador_Grafico::getInstancia();
-
-	//operator++();
-
-	//id = id_contador;
 	pFigura = new sf::RectangleShape;
-
-	std::cout<<id<<std::endl;
 }
 
-Ente::~Ente(){
-
-	operator--();
-	if(pFigura){
-
+// Libera a figura alocada pelo ente.
+Ente::~Ente()
+{
+	if(pFigura) {
 		delete pFigura;
 	}
 }
 
-void Ente::desenhar() { 
-
+// Envia a figura base para o gerenciador grafico desenhar.
+void Ente::desenhar()
+{
 	pGG->desenhar(pFigura);
 }
 
-int Ente::getId() const {
+// Retorna o id usado para localizar o ente nas listas.
+int Ente::getId() const
+{
 	return id;
 }
-
-void Ente::operator--() {
-	id_contador--;
-}
-
-int Ente::id_contador = 1;
-

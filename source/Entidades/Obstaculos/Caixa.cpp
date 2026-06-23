@@ -1,94 +1,91 @@
 #include "Entidades/Obstaculos/Caixa.h"
 
+using namespace Entidades;
+using namespace Obstaculos;
+using namespace Personagens;
 
-Entidades::Obstaculos::Caixa::Caixa(): sendo_empurrada(false), empurrar_esquerda(false), distancia_percorrida(0.f)
+// Comeca parada e pronta para receber empurrao.
+Caixa::Caixa(): sendo_empurrada(false), empurrao_para_esquerda(false), distancia_percorrida(0.f)
 {
-    densidade_superficial = 0.02f;
-
-    velocidade.x = 1.f;
-    velocidade.y = 1.f;
-
-    relogio_empurrao.restart();
-}
-Entidades::Obstaculos::Caixa::~Caixa()
-{
-}
-
-void Entidades::Obstaculos::Caixa::executar()
-{
-    desenhar();
-    executar_Gravidade();
-
-    if(sendo_empurrada){
-        executar_Empurrao();
-    }
-
-    setar_Pos(pos.x, pos.y);
+	densidade_superficial = 0.02f;
+	velocidade.x = 1.f;
+	velocidade.y = 1.f;
+	relogio_empurrao.restart();
 }
 
-void Entidades::Obstaculos::Caixa::seta_Caixa(float origem_x, float origem_y)
+// Nao precisa liberar nada alem do que a classe base ja cuida.
+Caixa::~Caixa()
 {
-    tamanho.x = 64.f;
-	tamanho.y = 64.f;
+}
 
-	//pFigura->setFillColor(sf::Color::Green);
-	pFigura->setSize(tamanho);
-	if (!textura.loadFromFile("Assets/Imagens/Caixa.png")) {
-		std::cout << "Erro ao carregar textura da plataforma." << std::endl;
-		pFigura->setFillColor(sf::Color::Green);
+// Desenha, aplica gravidade e executa empurrao se estiver ativo.
+void Caixa::executar()
+{
+	desenhar();
+	executar_Gravidade();
+
+	if(sendo_empurrada){
+		executar_Empurrao();
 	}
-	else {
-		pFigura->setFillColor(sf::Color::White);
-		pFigura->setTexture(&textura);
+
+	setar_Pos(pos.x, pos.y);
+}
+
+// Usa a configuracao padrao de obstaculo para montar a caixa.
+void Caixa::seta_Caixa(float origem_x, float origem_y)
+{
+	seta_Obstaculo(64.f, 64.f, origem_x, origem_y, "Assets/Imagens/Caixa.png");
+}
+
+// So empurra quando o jogador bate dos lados.
+void Caixa::obstacular(Jogador* p, int lado)
+{
+	if(lado == esquerda || lado == direita){
+		iniciar_Empurrao(lado);
 	}
-	this->setar_Pos(origem_x, origem_y);
-
-	massa = (densidade_superficial * calcula_Densidade_de_Area(*pFigura,50,50));
 }
-void Entidades::Obstaculos::Caixa::obstacular(Entidades::Personagens::Jogador *p, int lado)
+
+// Comeca o empurrao se a recarga ja passou.
+void Caixa::iniciar_Empurrao(int lado)
 {
-    if(lado == esquerda || lado == direita){
-        iniciar_Empurrao(lado);
-    }
+	const float tempo_recarga = 0.35f;
+
+	if(!sendo_empurrada && relogio_empurrao.getElapsedTime().asSeconds() >= tempo_recarga){
+		sendo_empurrada = true;
+		empurrao_para_esquerda = (lado == esquerda);
+		distancia_percorrida = 0.f;
+	}
 }
 
-void Entidades::Obstaculos::Caixa::iniciar_Empurrao(int lado)
+// Move a caixa ate atingir a distancia maxima.
+void Caixa::executar_Empurrao()
 {
-    const float tempo_recarga = 0.35f;
+	const float distancia_maxima = 24.f;
+	const float velocidade_empurrao = 1.5f;
 
-    if(!sendo_empurrada && relogio_empurrao.getElapsedTime().asSeconds() >= tempo_recarga){
-        sendo_empurrada = true;
-        empurrar_esquerda = (lado == esquerda);
-        distancia_percorrida = 0.f;
-    }
+	if(empurrao_para_esquerda){
+		pos.x -= velocidade_empurrao;
+	}
+	else{
+		pos.x += velocidade_empurrao;
+	}
+
+	distancia_percorrida += velocidade_empurrao;
+
+	if(distancia_percorrida >= distancia_maxima){
+		parar_Empurrao();
+	}
 }
 
-void Entidades::Obstaculos::Caixa::executar_Empurrao()
+// Encerra o empurrao e reinicia a recarga.
+void Caixa::parar_Empurrao()
 {
-    const float distancia_maxima = 24.f;
-    const float velocidade_empurrao = 1.5f;
-
-    if(empurrar_esquerda){
-        pos.x -= velocidade_empurrao;
-    }
-    else{
-        pos.x += velocidade_empurrao;
-    }
-
-    distancia_percorrida += velocidade_empurrao;
-
-    if(distancia_percorrida >= distancia_maxima){
-        parar_Empurrao();
-    }
+	sendo_empurrada = false;
+	distancia_percorrida = 0.f;
+	relogio_empurrao.restart();
 }
 
-void Entidades::Obstaculos::Caixa::parar_Empurrao()
-{
-    sendo_empurrada = false;
-    distancia_percorrida = 0.f;
-    relogio_empurrao.restart();
-}
-
-void Entidades::Obstaculos::Caixa::salvar()
+// Salvar ainda nao foi implementado para caixa.
+void Caixa::salvar()
 {
 }

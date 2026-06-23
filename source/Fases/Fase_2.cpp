@@ -1,17 +1,21 @@
 #include "Fases/Fase_2.h"
+#include "Entidades/Obstaculos/Espinho.h"
+#include "Entidades/Personagens/Inimigos/Capitao.h"
+#include "Entidades/Projetil.h"
+#include <cstdlib>
 
 using namespace Entidades;
 using namespace Personagens;
 using namespace Fases;
 using namespace Obstaculos;
-using namespace Gerenciadores;
 
+// Sorteia as quantidades da fase 2 e monta chao, plataformas, obstaculos e inimigos.
 Fases::Fase_2::Fase_2()
 {
-	// entre 4 e 6
+	// Entre 4 e 6 capitaes.
 	num_capitoes = (rand() % 3) + 4;
 
-	// entre 3 a 7
+	// Entre 3 e 7 espinhos.
 	num_espinhos = (rand()%5) + 3;
 
 	num_restante_capitoes = num_capitoes;
@@ -25,11 +29,13 @@ Fases::Fase_2::Fase_2()
 	Cria_Inimigos();
 }
 
+// Limpa a lista auxiliar de capitaes.
 Fases::Fase_2::~Fase_2()
 {
 	lista_cap.clear();
 }
 
+// Remove um capitao da lista auxiliar quando ele e neutralizado.
 void Fases::Fase_2::remover_Inimigo_Das_Listas_Auxiliares(Inimigo* pInimigo)
 {
 	for (std::vector<Capitao*>::iterator itr = lista_cap.begin(); itr != lista_cap.end();) {
@@ -42,6 +48,7 @@ void Fases::Fase_2::remover_Inimigo_Das_Listas_Auxiliares(Inimigo* pInimigo)
 	}
 }
 
+// Cria no chao os capitaes que nao foram colocados em plataformas.
 void Fases::Fase_2::Cria_Inimigos_Especificos()
 {
 	sf::Vector2f aux;
@@ -56,31 +63,36 @@ void Fases::Fase_2::Cria_Inimigos_Especificos()
 	num_restante_capitoes = 0;
 }
 
+// Preenche uma plataforma com inimigos e espinhos da fase 2.
 void Fases::Fase_2::criar_Entidades_em_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat, float ponta_esq, float ponta_dir)
 {
 	cria_Inimigos_Nas_Plataformas(ponta_esq, ponta_dir, pos_plat);
 	cria_Espinhos_na_Plataforma(tam_plat, pos_plat);
 }
 
+// Cria os espinhos que precisam ficar no chao.
 void Fases::Fase_2::Cria_Obstaculos_Restantes()
 {
 	Cria_Espinhos_Restantes();
 }
 
+// Limpa projeteis inativos antes das entidades executarem.
 void Fases::Fase_2::executar_Antes_Entidades()
 {
 	verifica_Projeteis_Destroidos();
 }
 
+// Cria projeteis novos para capitaes que terminaram a recarga.
 void Fases::Fase_2::executar_Depois_Entidades()
 {
-	for (int i = 0; i < lista_cap.size(); i++) {
+	for (int i = 0; i < static_cast<int>(lista_cap.size()); i++) {
 		if (lista_cap[i]->get_Disparou() && !(lista_cap[i]->get_Eliminado())) {
 			lista_cap[i]->incluir_Projetil(Cria_Projetil());
 		}
 	}
 }
 
+// Cria um capitao e registra ele nas listas da fase.
 void Fase_2::Cria_Capitao(float x, float y)
 {
 	Capitao* capitao = new Capitao;
@@ -93,6 +105,7 @@ void Fase_2::Cria_Capitao(float x, float y)
 	lista_id_inimigos.push_front(capitao->getId());
 }
 
+// Cria um projetil e registra ele na lista principal e nas colisoes.
 Projetil* Fases::Fase_2::Cria_Projetil()
 {
 	Projetil* proj = new Projetil;
@@ -103,35 +116,26 @@ Projetil* Fases::Fase_2::Cria_Projetil()
 	return proj;
 }
 
+// Remove projeteis inativos sem pular itens quando o vetor muda de tamanho.
 void Fases::Fase_2::verifica_Projeteis_Destroidos()
 {
 	Projetil* projetil_deletado;
+	std::vector<Projetil*>* pProjeteis;
 
-	for(int i = 0; i < lista_cap.size(); i++) {
-		for(int j = 0; j < lista_cap[i]->get_Vetor_De_Projetis()->size(); j++) {
-			if (!((*lista_cap[i]->get_Vetor_De_Projetis())[j]->get_Ativo())) {
-				projetil_deletado = (*(lista_cap[i]->get_Vetor_De_Projetis()))[j];
+	for(int i = 0; i < static_cast<int>(lista_cap.size()); i++) {
+		pProjeteis = lista_cap[i]->get_Vetor_De_Projetis();
 
-				if (projetil_deletado) {
-					gerenciador_colisoes.projetil_Destruido(projetil_deletado);
-				}
-				else {
-					std::cout << "Erro ao remover projetil (Gerenciador_colisoes)" << std::endl;
-				}
+		for(int j = 0; j < static_cast<int>(pProjeteis->size());) {
+			projetil_deletado = (*pProjeteis)[j];
 
-				if (projetil_deletado) {
-					lista_cap[i]->remover_Projetil(projetil_deletado);
-				}
-				else {
-					std::cout << "Erro ao remover projetil (Capitao)" << std::endl;
-				}
-
-				if (projetil_deletado) {
-					lista_Entidades.remover(static_cast<Entidade*>(projetil_deletado));
-				}
-				else {
-					std::cout << "Erro ao remover projetil (Lista_Entidades)" << std::endl;
-				}
+			if (projetil_deletado != nullptr && !projetil_deletado->get_Ativo()) {
+				// Nao incrementa o indice depois de remover, pois o vetor desloca os itens.
+				gerenciador_colisoes.projetil_Destruido(projetil_deletado);
+				lista_cap[i]->remover_Projetil(projetil_deletado);
+				lista_Entidades.remover(static_cast<Entidade*>(projetil_deletado));
+			}
+			else {
+				j++;
 			}
 		}
 
@@ -139,18 +143,20 @@ void Fases::Fase_2::verifica_Projeteis_Destroidos()
 	}
 }
 
+// Cria um espinho, ajusta o spawn e registra ele nas colisoes.
 void Fases::Fase_2::Cria_Espinhos(float pos_plat_x, float pos_plat_y)
 {
-	Espinho* espinhos = new Espinho;
+	Espinho* espinho = new Espinho;
 
-	espinhos->seta_Obstaculo(32.0, 80.0, pos_plat_x, pos_plat_y, "Assets/Imagens/Espinhos.png");
-	float x_spawn = ajustar_X_Spawn(pos_plat_x, pos_plat_y + espinhos->get_Altura());
-	espinhos->setar_Pos(x_spawn, pos_plat_y);
+	espinho->seta_Obstaculo(32.0, 80.0, pos_plat_x, pos_plat_y, "Assets/Imagens/Espinhos.png");
+	float x_spawn = ajustar_X_Spawn(pos_plat_x, pos_plat_y + espinho->get_Altura());
+	espinho->setar_Pos(x_spawn, pos_plat_y);
 
-	gerenciador_colisoes.Incluir_Obstaculo(espinhos);
-	lista_Entidades.adicionar(static_cast<Entidade*>(espinhos));
+	gerenciador_colisoes.Incluir_Obstaculo(espinho);
+	lista_Entidades.adicionar(static_cast<Entidade*>(espinho));
 }
 
+// Deixa no maximo dois espinhos no chao e zera o restante depois da criacao.
 void Fases::Fase_2::Cria_Espinhos_Restantes()
 {
 	sf::Vector2f aux;
@@ -171,11 +177,13 @@ void Fases::Fase_2::Cria_Espinhos_Restantes()
 	num_restante_espinhos = 0;
 }
 
+// Distribui ate dois inimigos por plataforma, priorizando completar 4 de cada tipo.
 void Fases::Fase_2::cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, float ponta_dir_plataforma, sf::Vector2f pos_plat)
 {
 	const int max_inimigos_por_tipo_em_plataformas = 4;
 	const int max_inimigos_por_plataforma = 2;
 	int inimigos_criados = 0;
+	int intervalo_spawn = 0;
 	float pos_inimigo_x = 0.f;
 	float limite_esquerdo = ponta_esq_plataforma + 10.f;
 	float limite_direito = ponta_dir_plataforma - 35.f;
@@ -190,8 +198,9 @@ void Fases::Fase_2::cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, fl
 			return;
 		}
 
-		if(limite_direito > limite_esquerdo){
-			pos_inimigo_x = limite_esquerdo + (rand() % static_cast<int>(limite_direito - limite_esquerdo));
+		intervalo_spawn = static_cast<int>(limite_direito - limite_esquerdo);
+		if(intervalo_spawn > 0){
+			pos_inimigo_x = limite_esquerdo + (rand() % intervalo_spawn);
 		}
 		else{
 			pos_inimigo_x = pos_plat.x + ((ponta_dir_plataforma - ponta_esq_plataforma)/2);
@@ -212,6 +221,7 @@ void Fases::Fase_2::cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, fl
 	}
 }
 
+// Cria espinhos nas plataformas enquanto ainda sobram espinhos alem do minimo do chao.
 void Fases::Fase_2::cria_Espinhos_na_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat)
 {
 	const int minimo_espinhos_no_chao = 2;
@@ -228,8 +238,8 @@ void Fases::Fase_2::cria_Espinhos_na_Plataforma(sf::Vector2f tam_plat, sf::Vecto
 		if(pos_na_plataforma <= 30.0f){
 			pos_na_plataforma = 30.0f;
 		}
-		else if(pos_na_plataforma >= (pos_plat.x+tam_plat.x)){
-			pos_na_plataforma -= 80.0f;
+		else if(pos_na_plataforma >= tam_plat.x - 80.0f){
+			pos_na_plataforma = tam_plat.x - 80.0f;
 		}
 		
 		Cria_Espinhos((pos_plat.x + pos_na_plataforma),(pos_plat.y-32.0f));

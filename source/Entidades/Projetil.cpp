@@ -1,38 +1,21 @@
 #include "Entidades/Projetil.h"
-#include "Entidades/Personagens/Inimigos/Capitao.h"
+#include "Entidades/Personagens/Jogador/Jogador.h"
 
 using namespace Entidades;
 
-/*
-Projetil::Projetil(): Entidade(id_base) {
-*/
-Projetil::Projetil(): Entidade(id_base, sf::Vector2f(0.f, 0.f), sf::Vector2f(10.f, 15.f)) {
+const int Projetil::id_base(10000);
 
-	//setId(semente_id_entidade);
+// Inicializa o projetil inativo ate ser configurado pelo capitao.
+Projetil::Projetil(): Entidade(id_base, sf::Vector2f(0.f, 0.f), sf::Vector2f(10.f, 15.f))
+{
 	dano = 0;
-
-	cap = nullptr;
-
-	sf::Vector2f tamanho;
-	tamanho.x = 10.f;
-	tamanho.y = 15.f;
-
-	atingiu_jogador = false;
-
-	tempo_ativo = 0;
-	tempo_de_vida = 180;
-
-	pos.x = 0;
-	pos.y = 0;
-
 	ativo = false;
 	lado = 0;
+
 	velocidade.x = 0.5f;
 	velocidade.y = 0.f;
-	
 
 	pFigura->setSize(tamanho);
-	//pFigura->setFillColor(sf::Color(222, 120, 31));
 	if (!textura.loadFromFile("Assets/Imagens/Projetil.png")) {
 		std::cout << "Erro ao carregar textura do projetil." << std::endl;
 		pFigura->setFillColor(sf::Color(222, 120, 31));
@@ -44,142 +27,78 @@ Projetil::Projetil(): Entidade(id_base, sf::Vector2f(0.f, 0.f), sf::Vector2f(10.
 	pFigura->setPosition(pos.x, pos.y);
 }
 
-
-/*
-Projetil::Projetil(float saida_x, float saida_y, int direcao) : Entidade(id_base) {
-*/
-Projetil::Projetil(float saida_x, float saida_y, int direcao) : Entidade(id_base, sf::Vector2f(saida_x, saida_y), sf::Vector2f(5.f, 10.f)) {
-
-	//setId(semente_id_entidade);
-	dano = 0;
-
-	cap = nullptr;
-
-	sf::Vector2f tamanho;
-	tamanho.x = 5.f;
-	tamanho.y = 10.f;
-
-	tempo_ativo = 0;
-	tempo_de_vida = 180;
-
-	velocidade.x = 0.f;
-	velocidade.y = 0.f;
-
-	pos.x = saida_x;
-	pos.y = saida_y;
-
-	ativo = false;
-	lado = direcao;
-
-	pFigura->setSize(tamanho);
-	//pFigura->setFillColor(sf::Color(222, 120, 31));
-	if (!textura.loadFromFile("Assets/Imagens/Projetil.png")) {
-		std::cout << "Erro ao carregar textura do projetil." << std::endl;
-		pFigura->setFillColor(sf::Color(222, 120, 31));
-	}
-	else {
-		pFigura->setFillColor(sf::Color::White);
-		pFigura->setTexture(&textura);
-	}
-	pFigura->setPosition(pos.x, pos.y);
-}
-
-Projetil::~Projetil(){
-
+// Desativa o projetil antes da destruicao.
+Projetil::~Projetil()
+{
 	ativo = false;
 }
 
-void Projetil::setar_Ativo(bool atv){
+// Atualiza se o projetil participa do movimento e das colisoes.
+void Projetil::setar_Ativo(bool atv)
+{
 	ativo = atv;
 }
 
-void Projetil::setar_Dano(int dan){
+// Define o dano aplicado ao jogador atingido.
+void Projetil::setar_Dano(int dan)
+{
 	dano = dan;
 }
 
-void Projetil::setar_Direcao(int direcao) {
+// Define para qual lado o projetil deve se mover.
+void Projetil::setar_Direcao(int direcao)
+{
 	lado = direcao;
 }
 
-void Entidades::Projetil::setar_Proprietario(Entidades::Personagens::Capitao* propriet)
-{
-	cap = propriet;
-}
-
-int Projetil::get_Dano() {
-	return dano;
-}
-
+// Retorna se o projetil ainda deve ser processado.
 bool Entidades::Projetil::get_Ativo()
 {
 	return ativo;
 }
 
-/*
-void Projetil::executar_Gravidade() {
-	pos.y += gravidade;
-	pos.y -= gravidade;
-}
-*/
-
-void Projetil::executar() {
-
-	executar_Gravidade();
-	executar_Empuxo();
-	
-
-	setar_Pos(pos.x, pos.y);
-
-	if (ativo) {
-
-		//tempo_ativo++;
-
-		if (lado == direita) {
-			pos.x += velocidade.x;
-		}
-		else if (lado == cima) {
-			pos.y -= velocidade.y;
-		}
-		else if (lado == esquerda) {
-			pos.x -= velocidade.x;
-		}
-		else if (lado == baixo) {
-			pos.y += velocidade.y;
-		}
-
-		desenhar();
-	}
-	else {
-
-		//std::cout << "Projetil ID " << getId() << " inativo na pos (" << pos.x << "," << pos.y << ")" << std::endl;
-	}
-
-	/*
-	if(tempo_ativo >= tempo_de_vida){
-		ativo = false;
-		tempo_ativo = 0;
-	}
-	*/
-}
-
-void Projetil::salvar() {
-}
-
+// Aplica dano apenas quando o projetil ainda esta ativo.
 void Projetil::Atingiu_Jogador(Entidades::Personagens::Jogador* pJogador)
 {
-	if(ativo){
+	if (ativo) {
 		pJogador->diminuir_Vitalidade(dano);
 	}
 }
 
-void Projetil::executar_Empuxo(){
+// Move o projetil ativo e atualiza sua posicao na tela.
+void Projetil::executar()
+{
+	if (!ativo) {
+		return;
+	}
 
+	executar_Gravidade();
+	executar_Empuxo();
+	
+	if (lado == direita) {
+		pos.x += velocidade.x;
+	}
+	else if (lado == cima) {
+		pos.y -= velocidade.y;
+	}
+	else if (lado == esquerda) {
+		pos.x -= velocidade.x;
+	}
+	else if (lado == baixo) {
+		pos.y += velocidade.y;
+	}
+
+	setar_Pos(pos.x, pos.y);
+	desenhar();
+}
+
+// Salvar ainda nao foi implementado para projetil.
+void Projetil::salvar()
+{
+}
+
+// Compensa parte da gravidade para dar uma queda leve ao disparo.
+void Projetil::executar_Empuxo()
+{
 	pos.y -= (velocidade.y - 0.3f);
 }
-
-void Projetil::setar_Cor(sf::Color cor){
-
-	pFigura->setFillColor(cor);
-}
-
-const int Projetil::id_base(10000);

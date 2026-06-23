@@ -1,40 +1,34 @@
 #include "Entidades/Personagens/Inimigos/Pirata.h"
+
 #include <cstdlib>
 #include <ctime>
-
 
 using namespace Entidades;
 using namespace Personagens;
 
-Pirata::Pirata() {
-
+// Configura vida, raiva, patrulha e textura do pirata.
+Pirata::Pirata()
+{
 	srand(static_cast<unsigned int>(time(0)));
 
 	nivel_maldade = (rand() % 6);
-
 	raiva = 0;
-
-	//num_vitalidade = 100;
-	vitalidade = 100;
+	num_vidas = 100;
 	dano = 20;
 
 	patrulha_esq_concluida = false;
 	patrulha_dir_concluida = true;
 	patrulhando = true;
 
-	tamanho.x = 25.0;
-	tamanho.y = 55.0;
+	tamanho.x = 25.0f;
+	tamanho.y = 55.0f;
 
 	pos_inicial.x = 200.f;
 	pos_inicial.y = 159.f;
-
 	pos_final = pos_inicial;
 
 	velocidade.x = 1.0f;
-
 	velocidade_maxima = 2 * velocidade.x;
-
-	//pFigura->setFillColor(sf::Color::Red);
 
 	pFigura->setSize(tamanho);
 	if (!textura.loadFromFile("Assets/Imagens/Pirata_Inimigo.png")) {
@@ -50,28 +44,31 @@ Pirata::Pirata() {
 	setar_Pontos_Por_Eliminacao(200);
 }
 
-Pirata::~Pirata() {
-
+// Nao precisa liberar nada alem do que a classe base ja cuida.
+Pirata::~Pirata()
+{
 }
 
-void Pirata::executar() {
+// Salvar ainda nao foi implementado para pirata.
+void Pirata::salvar()
+{
+}
 
+// Atualiza queda, desenho, movimento e bonus de raiva.
+void Pirata::executar()
+{
 	executar_Gravidade();
-	
 	desenhar();
 	setar_Pos(pos.x, pos.y);
-	
 
 	if(!parar){
 		if (pos_final.x != pos.x) {
-
 			if (pos_final.x > pos.x) {
 				pos.x += velocidade.x;
 			}
 			else if (pos_final.x < pos.x) {
 				pos.x -= velocidade.x;
 			}
-
 		}
 	}
 
@@ -79,50 +76,9 @@ void Pirata::executar() {
 	bonus_De_Irritabilidade();
 }
 
-void Pirata::andar_ate(float em_x, float em_y){
-
-	pos_final.x = em_x;
-	pos_final.y = em_y;
-	
-}
-
-void Pirata::salvar()
+// Define as pontas onde o pirata vai patrulhar.
+void Pirata::setar_Patrulha(float patrulha_esq, float patrulha_dir)
 {
-
-}
-
-void Pirata::danificar(int lado, Jogador* pJogador) {
-
-	if (lado == lado_fraco) {
-		pJogador->colidir(static_cast<Personagem*>(this));
-
-		if(get_Eliminado()){
-			pJogador->aumentar_Pontuacao(pontos_de_eliminacao);
-		}
-	}
-	else {
-
-		pJogador->diminuir_Vitalidade(dano);
-		raiva += 5;
-	}
-}
-
-void Pirata::bonus_De_Irritabilidade(){
-
-	dano += raiva;
-	set_Vitalidade(get_Vitalidade() + (5 * raiva));
-	//velocidade.x += (nivel_maldade*0,1);
-	velocidade.x += (nivel_maldade * 0.1f);
-
-	if(velocidade.x >= velocidade_maxima){
-		velocidade.x = velocidade_maxima;
-	}
-
-	raiva = 0;
-	regeneracao = 0;
-}
-void Pirata::setar_Patrulha(float patrulha_esq, float patrulha_dir){
-
 	if(rand()%2 == 1){
 		patrulha_dir_concluida = false;
 		patrulha_esq_concluida = true;
@@ -138,35 +94,61 @@ void Pirata::setar_Patrulha(float patrulha_esq, float patrulha_dir){
 	parar = false;
 }
 
-void Pirata::mover(){
-
-	
+// Atualiza o destino da patrulha normal.
+void Pirata::mover()
+{
 	if(patrulhando) {
-
 		if(!patrulha_esq_concluida && patrulha_dir_concluida){
-
 			pos_final.x = patrulha_esquerda;
 		}
 		else if(patrulha_esq_concluida && !patrulha_dir_concluida){
-
 			pos_final.x = patrulha_direita;
 		}
 
 		if(pos.x <= patrulha_esquerda){
-
 			patrulha_esq_concluida = true;
 			patrulha_dir_concluida = false;
 		}
 		else if(pos.x >= patrulha_direita ){
-			
 			patrulha_esq_concluida = false;
 			patrulha_dir_concluida = true;
 		}
 	}
 }
 
-void Pirata::colidiu_Obstaculo(int lado){
+// Usa a raiva para curar, aumentar dano e acelerar o pirata.
+void Pirata::bonus_De_Irritabilidade()
+{
+	dano += raiva;
+	set_Vitalidade(get_Vitalidade() + (5 * raiva));
+	velocidade.x += (nivel_maldade * 0.1f);
 
+	if(velocidade.x >= velocidade_maxima){
+		velocidade.x = velocidade_maxima;
+	}
+
+	raiva = 0;
+}
+
+// Jogador causa dano pelo lado fraco, senao toma dano e irrita o pirata.
+void Pirata::danificar(int lado, Jogador* pJogador)
+{
+	if (lado == lado_fraco) {
+		pJogador->colidir(static_cast<Personagem*>(this));
+
+		if(get_Eliminado()){
+			pJogador->aumentar_Pontuacao(pontos_de_eliminacao);
+		}
+	}
+	else {
+		pJogador->diminuir_Vitalidade(dano);
+		raiva += 5;
+	}
+}
+
+// Inverte o sentido da patrulha quando bate de lado.
+void Pirata::colidiu_Obstaculo(int lado)
+{
 	if(lado == direita){
 		patrulha_esq_concluida = false;
 		patrulha_dir_concluida = true;
@@ -177,7 +159,8 @@ void Pirata::colidiu_Obstaculo(int lado){
 	}
 }
 
-void Pirata::setar_Pontos_Por_Eliminacao(int pontos){
-	
+// Guarda a pontuacao dada ao jogador quando o pirata morre.
+void Pirata::setar_Pontos_Por_Eliminacao(int pontos)
+{
 	pontos_de_eliminacao = pontos;
 }

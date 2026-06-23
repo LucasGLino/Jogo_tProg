@@ -2,65 +2,62 @@
 
 #include "Entidades/Ente.h"
 
-//using namespace std;
-//using namespace sf;
-
 namespace Entidades 
 {
-    
-    class Entidade: public Ente{
-        protected:
-            //sf::RectangleShape body;
-            sf::Vector2f tamanho;
-            sf::Texture textura;
+	class Entidade: public Ente
+	{
+	protected:
+		// Tamanho logico usado para configurar a figura.
+		sf::Vector2f tamanho;
 
+		// Textura aplicada na figura da entidade.
+		sf::Texture textura;
 
-            sf::Vector2f pos;
-            //sf::Vector2f aceleracao;
-            sf::Vector2f velocidade;
-            sf::Vector2f centro_glob;
+		// Posicao atual da entidade no mundo.
+		sf::Vector2f pos;
 
-            float gravidade;
+		// Velocidade usada por movimento e gravidade.
+		sf::Vector2f velocidade;
 
-            const int direita, cima, esquerda, baixo;
+		// Limite de queda usado pela gravidade.
+		float gravidade;
 
-        public:
-            Entidade(int semente, sf::Vector2f p, sf::Vector2f tam);
-            
-            virtual ~Entidade();
+		// Constantes para padronizar os lados de colisao.
+		const int direita, cima, esquerda, baixo;
 
-            float get_Gravidade() const;
-            void setar_Gravidade(float grav);
-            virtual void executar_Gravidade();
+	public:
+		Entidade(int semente, sf::Vector2f p, sf::Vector2f tam);
+		virtual ~Entidade();
 
-            sf::Vector2f get_Centro();
-            sf::Vector2f get_Tamanho();
+		// Aplica queda vertical limitada pela gravidade.
+		virtual void executar_Gravidade();
 
-            float get_Largura();
-            float get_Altura();
+		// Retorna o ponto central da entidade.
+		sf::Vector2f get_Centro();
 
-            float get_Comprimento_A();
-            float get_Comprimento_L();
+		// Retorna as dimensoes atuais da figura.
+		float get_Largura();
+		float get_Altura();
 
-            sf::Vector2f getPos();
-            float get_X() const;
-            float get_Y() const;
+		// Retorna os limites inferior e direito da entidade.
+		float get_Comprimento_A();
+		float get_Comprimento_L();
 
-            float get_Vel_X() const;
-            float get_Vel_Y() const;
+		// Retorna as coordenadas atuais da entidade.
+		float get_X() const;
+		float get_Y() const;
 
-            void setar_Pos(float pos_x, float pos_y);
-            void setar_Pos(sf::Vector2f p);
-            //virtual void setPos(sf::Vector2f p) = 0;
+		// Atualiza a posicao logica e a posicao da figura.
+		void setar_Pos(float pos_x, float pos_y);
+		void setar_Pos(sf::Vector2f p);
 
-            void setar_velocidade(float vel_x, float vel_y);
-            void setar_aceleracao(float ace_x, float ace_y);
+		// Define a velocidade base da entidade.
+		void setar_velocidade(float vel_x, float vel_y);
 
-            //sf::RectangleShape getBody();
-            
-            virtual void salvar() = 0;
-            virtual void executar() = 0;
-            //virtual void executar(float dt) = 0;
-            
-         };
+		// Salva o estado especifico de cada entidade filha.
+		virtual void salvar() = 0;
+
+		// Executa o comportamento especifico de cada entidade filha.
+		virtual void executar() = 0;
+	};
 }

@@ -1,26 +1,23 @@
 #include "Listas/ListaEnt.h"
 
-using namespace std;
 using namespace Listas;
 using namespace Entidades;
 
-//void Listas::ListaEnt::add(Entidades::Entidade* pEntidade)
+// Adiciona entidade se o ponteiro for valido.
 void ListaEnt::adicionar(Entidade* pEntidade)
 {
 	if (pEntidade) {
-		//pLista.push(pEntidade);
-		listaEntidades.adicionar(pEntidade);
+		listaEntidades.incluir(pEntidade);
 	}
 	else {
-		cout << "Ponteiro Nulo/adicionar" << endl;
+		std::cout << "Ponteiro Nulo/adicionar" << std::endl;
 	}
 }
 
-//void Listas::ListaEnt::remove(Entidades::Entidade* pEntidade)
+// Remove a entidade da lista e deleta o objeto removido.
 void ListaEnt::remover(Entidade* pEntidade)
 {
 	if (pEntidade) {
-		//Entidades::Entidade* aux = pLista.pop(pEntidade);
 		Entidade* auxiliar = listaEntidades.remover(pEntidade);
 		if(auxiliar != nullptr){
 			delete(auxiliar);
@@ -28,38 +25,37 @@ void ListaEnt::remover(Entidade* pEntidade)
 		
 	}
 	else {
-		cout << "Ponteiro Nulo/remover" << endl;
+		std::cout << "Ponteiro Nulo/remover" << std::endl;
 	}
 }
 
-//void Listas::ListaEnt::remove(int i)
+// Remove a entidade pelo indice e deleta o objeto removido.
 void ListaEnt::remover(int i)
 {
-	//if (i >= 0 && i < pLista.size()) {
 	if (i >= 0 && i < listaEntidades.getTamanho()) {
-		//Entidades::Entidade* aux = pLista.pop(i);
 		Entidade* auxiliar = listaEntidades.remover(i);
 		if(auxiliar != nullptr){
 			delete(auxiliar);
 		}
 	}
 	else {
-		cout << "Indice Invalido" << endl;
+		std::cout << "Indice Invalido" << std::endl;
 	}
 }
 
+// Acessa uma entidade pelo indice sem remover.
 Entidade* ListaEnt::operator[](int i)
 {
-	//if (i >= 0 && i < pLista.size()) {
 	if (i >= 0 && i < listaEntidades.getTamanho()) {
 		return listaEntidades[i];
 	}
 	else {
-		cout << "Indice Invalido" << endl;
+		std::cout << "Indice Invalido" << std::endl;
 		return nullptr;
 	}
 }
 
+// Percorre a lista ate encontrar a entidade com o id informado.
 Entidade* ListaEnt::get_Entidade_Por_Id(int id)
 {
 	Lista<Entidade>::Iterador* iterador = criarIterador();
@@ -78,6 +74,7 @@ Entidade* ListaEnt::get_Entidade_Por_Id(int id)
 	return pEntidade_Encontrada;
 }
 
+// Chama executar em todas as entidades registradas.
 void ListaEnt::percorrer()
 {
 	Lista<Entidade>::Iterador* iterador = criarIterador();
