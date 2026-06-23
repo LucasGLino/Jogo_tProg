@@ -4,6 +4,7 @@
 #include "Entidades/Personagens/Inimigos/Inimigo.h"
 #include "Entidades/Obstaculos/Obstaculo.h"
 #include "Entidades/Projetil.h"
+#include "Entidades/Chao.h"
 #include <iostream>
 #include <vector>
 #include <list>
@@ -16,6 +17,7 @@ namespace Gerenciadores {
 	private:
 		std::vector<Entidades::Personagens::Inimigo*> lista_Inimigos;
 		std::list<Entidades::Obstaculos::Obstaculo*> lista_Obstaculos;
+		std::list<Entidades::Chao*> lista_Chaos;
 		std::set<Entidades::Projetil*> lista_Projeteis;
 		Entidades::Personagens::Jogador* pJogador1;
 		Entidades::Personagens::Jogador* pJogador2;
@@ -30,11 +32,13 @@ namespace Gerenciadores {
 
 		void tratar_Colisoes_Projeteis();
 		void tratar_Colisoes_Inimigos();
+		void tratar_Colisoes_Chao();
 		void tratar_Colisoes_Obstaculo_Obstaculo();
 		void tratar_Colisoes_Inimigo_Obstaculo(Entidades::Entidade* pEntidadeRef);
 		void tratar_Colisoes_Jogador_Inimigos(Entidades::Personagens::Jogador* p_Jogador, Entidades::Personagens::Inimigo* pInimigo);
 		void tratar_Colisoes_Jogador_Obstaculo(Entidades::Personagens::Jogador* p_Jogador);
 		void tratar_Colisoes_Jogador_Projeteis(Entidades::Personagens::Jogador* p_Jogador);
+		void corrigir_Posicao_Chao(Entidades::Entidade* pEntidade, Entidades::Chao* pChao, int lado);
 		
 
 		const int verifica_Tipo_De_Colisao(Entidades::Entidade* pEntidade_Ref, Entidades::Entidade* pEntidade2);
@@ -50,6 +54,7 @@ namespace Gerenciadores {
 		~Gerenciador_colisoes();
 
 		void Incluir_Obstaculo(Entidades::Obstaculos::Obstaculo* p_Obstaculo);
+		void Incluir_Chao(Entidades::Chao* p_Chao);
 		void Incluir_Inimigo(Entidades::Personagens::Inimigo* p_Inimigo);
 		void Incluir_Projetil(Entidades::Projetil* p_Projetil);
 		void Setar_Jogador(Entidades::Personagens::Jogador* p_Jogador1, Entidades::Personagens::Jogador* p_Jogador2);

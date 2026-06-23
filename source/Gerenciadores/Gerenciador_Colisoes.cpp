@@ -15,6 +15,7 @@ Gerenciador_colisoes::Gerenciador_colisoes() : direita(1),cima(2),esquerda(3),ba
 
 	lista_Inimigos.clear();
 	lista_Obstaculos.clear();
+	lista_Chaos.clear();
 	lista_Projeteis.clear();
 	
 	pJogador1 = nullptr;
@@ -27,6 +28,7 @@ Gerenciador_colisoes::~Gerenciador_colisoes(){
 
 	lista_Inimigos.clear();
 	lista_Obstaculos.clear();
+	lista_Chaos.clear();
 	lista_Projeteis.clear();
 
 	pJogador1 = nullptr;
@@ -35,6 +37,12 @@ Gerenciador_colisoes::~Gerenciador_colisoes(){
 
 void Gerenciador_colisoes::Incluir_Obstaculo(Obstaculo* p_Obstaculo){
 	lista_Obstaculos.push_back(p_Obstaculo);
+}
+
+void Gerenciador_colisoes::Incluir_Chao(Chao* p_Chao){
+	if (p_Chao != nullptr) {
+		lista_Chaos.push_back(p_Chao);
+	}
 }
 
 void Gerenciador_colisoes::Incluir_Inimigo(Inimigo* p_Inimigo){
@@ -90,6 +98,90 @@ bool Gerenciador_colisoes::verifica_Lista_Inimigos_Vazia()
 	}
 	else {
 		return false;
+	}
+}
+
+void Gerenciador_colisoes::corrigir_Posicao_Chao(Entidade* pEntidade, Chao* pChao, int lado)
+{
+	if (pEntidade == nullptr || pChao == nullptr || lado == 0) {
+		return;
+	}
+
+	if (lado == direita) {
+		pEntidade->setar_Pos((pChao->get_X() - pEntidade->get_Largura()), pEntidade->get_Y());
+	}
+	else if (lado == cima) {
+		pEntidade->setar_Pos(pEntidade->get_X(), pChao->get_Comprimento_A());
+	}
+	else if (lado == esquerda) {
+		pEntidade->setar_Pos(pChao->get_Comprimento_L(), pEntidade->get_Y());
+	}
+	else if (lado == baixo) {
+		pEntidade->setar_Pos(pEntidade->get_X(), (pChao->get_Y() - pEntidade->get_Altura()));
+
+		Jogador* pJogador = dynamic_cast<Jogador*>(pEntidade);
+		if (pJogador != nullptr) {
+			pJogador->setar_Pode_Pular();
+		}
+	}
+}
+
+void Gerenciador_colisoes::tratar_Colisoes_Chao()
+{
+	std::list<Chao*>::iterator itr_chao;
+
+	for (itr_chao = lista_Chaos.begin(); itr_chao != lista_Chaos.end(); itr_chao++) {
+		Chao* pChao = *itr_chao;
+
+		if (pChao == nullptr) {
+			continue;
+		}
+
+		if (pJogador1 != nullptr && !(pJogador1->get_Eliminado())) {
+			int lado = verifica_Tipo_De_Colisao(static_cast<Entidade*>(pJogador1), static_cast<Entidade*>(pChao));
+			corrigir_Posicao_Chao(static_cast<Entidade*>(pJogador1), pChao, lado);
+		}
+
+		if (pJogador2 != nullptr && pJogador2->get_Dois_Jogadores() && !(pJogador2->get_Eliminado())) {
+			int lado = verifica_Tipo_De_Colisao(static_cast<Entidade*>(pJogador2), static_cast<Entidade*>(pChao));
+			corrigir_Posicao_Chao(static_cast<Entidade*>(pJogador2), pChao, lado);
+		}
+
+		int i;
+		for (i = 0; i < lista_Inimigos.size(); i++) {
+			if (lista_Inimigos[i] != nullptr) {
+				int lado = verifica_Tipo_De_Colisao(static_cast<Entidade*>(lista_Inimigos[i]), static_cast<Entidade*>(pChao));
+				corrigir_Posicao_Chao(static_cast<Entidade*>(lista_Inimigos[i]), pChao, lado);
+			}
+		}
+
+		std::list<Obstaculo*>::iterator itr_obst;
+		for (itr_obst = lista_Obstaculos.begin(); itr_obst != lista_Obstaculos.end(); itr_obst++) {
+			if (*itr_obst != nullptr) {
+				int lado = verifica_Tipo_De_Colisao(static_cast<Entidade*>(*itr_obst), static_cast<Entidade*>(pChao));
+				corrigir_Posicao_Chao(static_cast<Entidade*>(*itr_obst), pChao, lado);
+			}
+		}
+
+		std::set<Projetil*>::iterator itr_proj = lista_Projeteis.begin();
+		while (itr_proj != lista_Projeteis.end()) {
+			Projetil* projetil = *itr_proj;
+
+			if (projetil != nullptr && projetil->get_Ativo()) {
+				int lado = verifica_Tipo_De_Colisao(static_cast<Entidade*>(projetil), static_cast<Entidade*>(pChao));
+
+				if (lado != 0) {
+					projetil->setar_Ativo(false);
+					itr_proj = lista_Projeteis.erase(itr_proj);
+				}
+				else {
+					itr_proj++;
+				}
+			}
+			else {
+				itr_proj++;
+			}
+		}
 	}
 }
 
@@ -627,6 +719,8 @@ const bool Gerenciador_colisoes::verifica_Colisao_Direita(Entidade* pEntidade_Re
 }
 
 void Gerenciador_colisoes::Executar(){
+
+	tratar_Colisoes_Chao();
 
 	if (pJogador1 && !(pJogador1->get_Eliminado())) {
 

@@ -23,9 +23,8 @@ Ente::~Ente(){
 }
 
 void Ente::desenhar() { 
-	pGG->desenhar(pFigura);
 
-	
+	pGG->desenhar(pFigura);
 }
 
 int Ente::getId() const {

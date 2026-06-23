@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entidades/Ente.h"
+#include "Entidades/Chao.h"
 #include "Listas/ListaEnt.h"
 #include "Entidades/Obstaculos/Obstaculo.h"
 #include "Entidades/Obstaculos/Plataforma.h"
@@ -19,7 +20,7 @@ namespace Fases {
 
 		bool ganhou;
 		Listas::ListaEnt lista_Entidades;
-		Entidades::Obstaculos::Plataforma* piso;
+		Entidades::Chao* chao;
 		Entidades::Obstaculos::Plataforma* plataforma;
 		Gerenciadores::Gerenciador_colisoes gerenciador_colisoes;
 		std::list<int> lista_id_inimigos;

@@ -16,7 +16,7 @@ Fase::Fase(): Ente(base_Id)
 	}
 
 	ganhou = false;
-	piso = nullptr;
+	chao = nullptr;
 	plataforma = nullptr;
 	lista_id_inimigos.clear();
 
@@ -51,7 +51,7 @@ Fase::~Fase()
 {
 	num_plataformas_por_andar.clear();
 	plataforma = nullptr;
-	piso = nullptr;
+	chao = nullptr;
 }
 
 void Fases::Fase::Setar_Jogadores(Jogador* p_jogador1,Jogador* p_jogador2)
@@ -151,12 +151,14 @@ void Fases::Fase::executar()
 
 void Fases::Fase::Cria_Piso()
 {
-	piso = new Plataforma;
-	piso->seta_Obstaculo(tam_Piso_Fase.y, tam_Piso_Fase.x, pos_Piso.x, pos_Piso.y,"Assets/Imagens/Plataforma.png");
-	piso->determinar_chao();
+	chao = new Chao;
+	chao->configurar_Chao(tam_Piso_Fase.y, tam_Piso_Fase.x, pos_Piso.x, pos_Piso.y, "Assets/Imagens/Chao.png");
+	chao->setar_Limite_Abismo(pos_Piso.y + tam_Piso_Fase.y);
 
-	gerenciador_colisoes.Incluir_Obstaculo(static_cast<Obstaculo*>(piso));
-	lista_Entidades.adicionar(static_cast<Entidade*>(piso));
+	std::cout << "tamanho do chao:" << tam_Piso_Fase.x << "," << tam_Piso_Fase.y << std::endl;
+
+	gerenciador_colisoes.Incluir_Chao(chao);
+	lista_Entidades.adicionar(static_cast<Entidade*>(chao));
 }
 
 void Fases::Fase::Cria_Inimigos()
@@ -289,7 +291,7 @@ void Fases::Fase::Posiciona_plataforma()
 
 void Fases::Fase::verifica_Inimigos_Neutralizados()
 {
-	auto itr = lista_id_inimigos.begin();
+	std::list<int>::iterator itr = lista_id_inimigos.begin();
 
     while (itr != lista_id_inimigos.end() && !(lista_id_inimigos.empty())) {
         int id = *itr;
@@ -344,5 +346,9 @@ void Fases::Fase::executar_Depois_Entidades()
 
 bool Fases::Fase::verifica_Se_Caiu_No_Abismo(Entidade* pEntidade)
 {
-	return (pEntidade->get_Y() > (pos_Piso.y * 2));
+	if (chao == nullptr || pEntidade == nullptr) {
+		return false;
+	}
+
+	return chao->entidade_Caiu_No_Abismo(pEntidade);
 }
