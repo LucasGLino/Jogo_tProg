@@ -31,13 +31,11 @@ void Fase_Estado::executar_fase()
 
 void Fase_Estado::cria_jogadores()
 {
-    if(!Jogadores){
-        pJogo->cria_jogador_1();
-        pJogo->set_pJog2_Dois_Jogadores(Jogadores);
-    }else{
-        pJogo->cria_jogador_1();
+    pJogo->cria_jogador_1();
+
+    if(Jogadores){
         pJogo->cria_jogador_2();
-        pJogo->set_pJog2_Dois_Jogadores(Jogadores);
+        pJogo->set_pJog2_Dois_Jogadores(true);
     }
 }
 

@@ -216,7 +216,8 @@ void Capitao::mover(){ // era sondagem por jogador
 	}
 
 	//verifica se está dentro da visão em X
-	else if((ponteiro_jogador2->get_X() > (get_Centro().x - visao.x)) && (ponteiro_jogador2->get_X() < (get_Centro().x + visao.x)) &&
+	else if(ponteiro_jogador2 != nullptr &&
+	        (ponteiro_jogador2->get_X() > (get_Centro().x - visao.x)) && (ponteiro_jogador2->get_X() < (get_Centro().x + visao.x)) &&
 	        (ponteiro_jogador2->get_Y() > (get_Centro().y - visao.y)) && (ponteiro_jogador2->get_Y() < (get_Centro().y + tamanho.y/2))){
 
 		// verifica se está na mesma altura, apartir do seu pé até o alcance de visão em Y para cima.

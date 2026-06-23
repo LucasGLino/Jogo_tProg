@@ -6,12 +6,13 @@
 !CMakeLists.txt
 
 # Mantem os diretorios principais do projeto
-!SFML-2.6.2
+!SFML-2.6.2/
+!SFML-2.6.2/**
 !Include/
 !Include/**
 !source/
 !source/**
-!assets/
-!assets/**
-!diagrama/
-!diagrama/**
+!Assets/
+!Assets/**
+!Diagrama/
+!Diagrama/**

@@ -54,6 +54,7 @@ Menu_Estado::Menu_Estado(Gerenciador_Estado *pGe):
     centroX(pGG->getLarguraJanela() / 2.0f),
     centroY(pGG->getAlturaJanela() / 2.0f),
     menu(false),
+    dois_Jogadores(false),
     tamanho(500.f, 500.f)
 {
     carregar();

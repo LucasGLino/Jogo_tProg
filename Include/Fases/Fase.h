@@ -37,12 +37,14 @@ namespace Fases {
 		int num_piratas;
 		int num_restante_piratas;
 		int num_max_andares;
+		int num_piratas_em_plataformas;
 
 		float zoom_camera;
 		float tamanho_da_tela_x;
 		float espaco_vazio_x;
 
 		std::vector<int> num_plataformas_por_andar;
+		std::vector<sf::Vector2f> posicoes_spawn_usadas;
 
 		virtual void remover_Inimigo_Das_Listas_Auxiliares(Entidades::Personagens::Inimigo* pInimigo);
 		virtual void Cria_Inimigos_Especificos() = 0;
@@ -50,6 +52,10 @@ namespace Fases {
 		virtual void Cria_Obstaculos_Restantes();
 		virtual void executar_Antes_Entidades();
 		virtual void executar_Depois_Entidades();
+		bool posicao_Spawn_Ja_Usada(float x, float y_referencia);
+		void registrar_Posicao_Spawn(float x, float y_referencia);
+		float ajustar_X_Spawn(float x, float y_referencia);
+		bool pode_Criar_Na_Plataforma(int total_restante, int minimo_no_chao);
 
 		void Cria_Pirata(float x, float y, float patrulha_ate_a, float patrulha_ate_b);
 		void Cria_Piratas_Restantes();

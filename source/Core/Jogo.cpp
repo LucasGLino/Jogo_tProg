@@ -102,11 +102,17 @@ void Jogo::cria_jogador_2()
 
 void Jogo::set_pJog2_Dois_Jogadores(bool valor)
 {
-    jogador_2->setar_Dois_Jogadores(valor);
+    if (jogador_2 != nullptr) {
+        jogador_2->setar_Dois_Jogadores(valor);
+    }
 }
 
 bool Jogo::get_pJog2_Dois_Jogadores() {
-    return jogador_2->get_Dois_Jogadores();
+    if (jogador_2 != nullptr) {
+        return jogador_2->get_Dois_Jogadores();
+    }
+
+    return false;
 }
 
 void Jogo::setar_Fase()
@@ -141,11 +147,18 @@ void Jogo::verifica_Fim_De_Jogo()
 
 
     if(pFase){
-        if (pFase->get_Ganhou() || (jogador_1->get_Eliminado() && jogador_2->get_Eliminado()))
+        bool jogador_1_eliminado = (jogador_1 != nullptr && jogador_1->get_Eliminado());
+        bool jogador_2_eliminado = (jogador_2 == nullptr || jogador_2->get_Eliminado());
+
+        if (pFase->get_Ganhou() || (jogador_1_eliminado && jogador_2_eliminado))
         {
             
-            std::cout << "pontuacao jogador 1:" << jogador_1->get_Pontuacao() << std::endl;
-            std::cout << "pontuacao jogador 2:" << jogador_2->get_Pontuacao() << std::endl;
+            if (jogador_1 != nullptr) {
+                std::cout << "pontuacao jogador 1:" << jogador_1->get_Pontuacao() << std::endl;
+            }
+            if (jogador_2 != nullptr) {
+                std::cout << "pontuacao jogador 2:" << jogador_2->get_Pontuacao() << std::endl;
+            }
 
             
             delete(pFase);

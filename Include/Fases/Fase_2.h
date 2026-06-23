@@ -12,6 +12,7 @@ namespace Fases{
 	private:
 		int num_capitoes;
 		int num_restante_capitoes;
+		int num_capitoes_em_plataformas;
 		int num_espinhos;
 		int num_restante_espinhos;
 

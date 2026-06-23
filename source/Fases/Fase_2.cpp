@@ -8,14 +8,15 @@ using namespace Gerenciadores;
 
 Fases::Fase_2::Fase_2()
 {
-	// entre 3 e 6
-	num_capitoes = (rand() % 3) + 3;
+	// entre 4 e 6
+	num_capitoes = (rand() % 3) + 4;
 
 	// entre 3 a 7
 	num_espinhos = (rand()%5) + 3;
 
 	num_restante_capitoes = num_capitoes;
 	num_restante_espinhos = num_espinhos;
+	num_capitoes_em_plataformas = 0;
 	lista_cap.clear();
 	
 	setar_Camera_Fase();
@@ -83,8 +84,9 @@ void Fases::Fase_2::executar_Depois_Entidades()
 void Fase_2::Cria_Capitao(float x, float y)
 {
 	Capitao* capitao = new Capitao;
+	float x_spawn = ajustar_X_Spawn(x, y);
 
-	capitao->setar_Pos(x, y - capitao->get_Altura());
+	capitao->setar_Pos(x_spawn, y - capitao->get_Altura());
 	gerenciador_colisoes.Incluir_Inimigo(capitao);
 	lista_Entidades.adicionar(static_cast<Entidade*>(capitao));
 	lista_cap.push_back(capitao);
@@ -137,32 +139,14 @@ void Fases::Fase_2::verifica_Projeteis_Destroidos()
 	}
 }
 
-void Fases::Fase_2::cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, float ponta_dir_plataforma, sf::Vector2f pos_plat)
-{
-	int gerar_ou_nao = (rand() % 100);
-	int gerar_cap_ou_pirata = (rand() % 100);
-
-	//50% de chance
-	int gerar_cap = 50;
-
-	//70% de chance
-	if(gerar_ou_nao<= 70) {
-		if(gerar_cap_ou_pirata < gerar_cap && num_restante_capitoes > 0) {
-			Cria_Capitao(pos_plat.x + ((ponta_dir_plataforma - ponta_esq_plataforma)/2), pos_plat.y);
-			num_restante_capitoes--;
-		}
-		else if(gerar_cap_ou_pirata >= gerar_cap && num_restante_piratas > 0){
-			Cria_Pirata(pos_plat.x + ((ponta_dir_plataforma - ponta_esq_plataforma)/2), pos_plat.y, ponta_esq_plataforma, ponta_dir_plataforma);
-			num_restante_piratas--;
-		}
-	}
-}
-
 void Fases::Fase_2::Cria_Espinhos(float pos_plat_x, float pos_plat_y)
 {
 	Espinho* espinhos = new Espinho;
 
 	espinhos->seta_Obstaculo(32.0, 80.0, pos_plat_x, pos_plat_y, "Assets/Imagens/Espinhos.png");
+	float x_spawn = ajustar_X_Spawn(pos_plat_x, pos_plat_y + espinhos->get_Altura());
+	espinhos->setar_Pos(x_spawn, pos_plat_y);
+
 	gerenciador_colisoes.Incluir_Obstaculo(espinhos);
 	lista_Entidades.adicionar(static_cast<Entidade*>(espinhos));
 }
@@ -170,8 +154,14 @@ void Fases::Fase_2::Cria_Espinhos(float pos_plat_x, float pos_plat_y)
 void Fases::Fase_2::Cria_Espinhos_Restantes()
 {
 	sf::Vector2f aux;
+	const int max_espinhos_no_chao = 2;
+	int espinhos_no_chao = num_restante_espinhos;
 
-	for(int i = 0; i < num_restante_espinhos; i++){
+	if (espinhos_no_chao > max_espinhos_no_chao) {
+		espinhos_no_chao = max_espinhos_no_chao;
+	}
+
+	for(int i = 0; i < espinhos_no_chao; i++){
 		aux.x = pos_Piso.x + (rand() % static_cast<int>(tam_Piso_Fase.x));
 		aux.y = pos_Piso.y;
 
@@ -181,24 +171,68 @@ void Fases::Fase_2::Cria_Espinhos_Restantes()
 	num_restante_espinhos = 0;
 }
 
+void Fases::Fase_2::cria_Inimigos_Nas_Plataformas(float ponta_esq_plataforma, float ponta_dir_plataforma, sf::Vector2f pos_plat)
+{
+	const int max_inimigos_por_tipo_em_plataformas = 4;
+	const int max_inimigos_por_plataforma = 2;
+	int inimigos_criados = 0;
+	float pos_inimigo_x = 0.f;
+	float limite_esquerdo = ponta_esq_plataforma + 10.f;
+	float limite_direito = ponta_dir_plataforma - 35.f;
+	bool precisa_criar_pirata;
+	bool precisa_criar_capitao;
+
+	while (inimigos_criados < max_inimigos_por_plataforma) {
+		precisa_criar_pirata = (num_piratas_em_plataformas < max_inimigos_por_tipo_em_plataformas && num_restante_piratas > 0);
+		precisa_criar_capitao = (num_capitoes_em_plataformas < max_inimigos_por_tipo_em_plataformas && num_restante_capitoes > 0);
+
+		if (!precisa_criar_pirata && !precisa_criar_capitao) {
+			return;
+		}
+
+		if(limite_direito > limite_esquerdo){
+			pos_inimigo_x = limite_esquerdo + (rand() % static_cast<int>(limite_direito - limite_esquerdo));
+		}
+		else{
+			pos_inimigo_x = pos_plat.x + ((ponta_dir_plataforma - ponta_esq_plataforma)/2);
+		}
+
+		if(precisa_criar_pirata && (num_piratas_em_plataformas <= num_capitoes_em_plataformas || !precisa_criar_capitao)){
+			Cria_Pirata(pos_inimigo_x, pos_plat.y, ponta_esq_plataforma, ponta_dir_plataforma);
+			num_restante_piratas--;
+			num_piratas_em_plataformas++;
+		}
+		else if(precisa_criar_capitao) {
+			Cria_Capitao(pos_inimigo_x, pos_plat.y);
+			num_restante_capitoes--;
+			num_capitoes_em_plataformas++;
+		}
+
+		inimigos_criados++;
+	}
+}
+
 void Fases::Fase_2::cria_Espinhos_na_Plataforma(sf::Vector2f tam_plat, sf::Vector2f pos_plat)
 {
-	int gerar_ou_nao = rand() % 100;
+	const int minimo_espinhos_no_chao = 2;
+
+	if (!pode_Criar_Na_Plataforma(num_restante_espinhos, minimo_espinhos_no_chao)) {
+		return;
+	}
+
 	float pos_na_plataforma = 0.f;
 
 	if(num_restante_espinhos > 0) {
-		if(gerar_ou_nao < 60){
-			pos_na_plataforma = ((tam_plat.x/(rand() % 5 + 2) ));
+		pos_na_plataforma = ((tam_plat.x/(rand() % 5 + 2) ));
 
-			if(pos_na_plataforma <= 30.0f){
-				pos_na_plataforma = 30.0f;
-			}
-			else if(pos_na_plataforma >= (pos_plat.x+tam_plat.x)){
-				pos_na_plataforma -= 80.0f;
-			}
-			
-			Cria_Espinhos((pos_plat.x + pos_na_plataforma),(pos_plat.y-32.0f));
-			num_restante_espinhos--;
+		if(pos_na_plataforma <= 30.0f){
+			pos_na_plataforma = 30.0f;
 		}
+		else if(pos_na_plataforma >= (pos_plat.x+tam_plat.x)){
+			pos_na_plataforma -= 80.0f;
+		}
+		
+		Cria_Espinhos((pos_plat.x + pos_na_plataforma),(pos_plat.y-32.0f));
+		num_restante_espinhos--;
 	}
 }

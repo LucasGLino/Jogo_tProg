@@ -19,11 +19,18 @@ Fase::Fase(): Ente(base_Id)
 	chao = nullptr;
 	plataforma = nullptr;
 	lista_id_inimigos.clear();
+	posicoes_spawn_usadas.clear();
+
 
 	num_plataformas_totais = rand() % 10;
-	num_piratas = (rand() % 5) + 3;
+
+	//entre 4 e 6
+	num_piratas = (rand() % 3) + 4;
+
+
 	num_restante_piratas = num_piratas;
 	num_max_andares = 4;
+	num_piratas_em_plataformas = 0;
 
 	zoom_camera = 1.3f;
 	tamanho_da_tela_x = pGG->getCamera()->getSize().x * zoom_camera;
@@ -50,6 +57,7 @@ Fase::Fase(): Ente(base_Id)
 Fase::~Fase()
 {
 	num_plataformas_por_andar.clear();
+	posicoes_spawn_usadas.clear();
 	plataforma = nullptr;
 	chao = nullptr;
 }
@@ -96,10 +104,84 @@ void Fases::Fase::Setar_Jogadores_Inimigos(Jogador* p_jogador1, Jogador* p_jogad
 	}
 }
 
+void Fases::Fase::remover_Inimigo_Das_Listas_Auxiliares(Inimigo* pInimigo)
+{
+}
+
+void Fases::Fase::Cria_Obstaculos_Restantes()
+{
+}
+
+void Fases::Fase::executar_Antes_Entidades()
+{
+}
+
+void Fases::Fase::executar_Depois_Entidades()
+{
+}
+
+bool Fases::Fase::posicao_Spawn_Ja_Usada(float x, float y_referencia)
+{
+	const float tolerancia = 1.0f;
+	float diferenca_x;
+	float diferenca_y;
+
+	for (int i = 0; i < posicoes_spawn_usadas.size(); i++) {
+		diferenca_x = posicoes_spawn_usadas[i].x - x;
+		diferenca_y = posicoes_spawn_usadas[i].y - y_referencia;
+
+		if (diferenca_x < 0.f) {
+			diferenca_x *= -1.f;
+		}
+		if (diferenca_y < 0.f) {
+			diferenca_y *= -1.f;
+		}
+
+		if (diferenca_x <= tolerancia && diferenca_y <= tolerancia) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void Fases::Fase::registrar_Posicao_Spawn(float x, float y_referencia)
+{
+	posicoes_spawn_usadas.push_back(sf::Vector2f(x, y_referencia));
+}
+
+float Fases::Fase::ajustar_X_Spawn(float x, float y_referencia)
+{
+	const int max_tentativas = 10;
+	const float deslocamento = 40.f;
+
+	float x_spawn = x;
+	int tentativa = 0;
+
+	while (posicao_Spawn_Ja_Usada(x_spawn, y_referencia) && tentativa < max_tentativas) {
+		x_spawn += deslocamento;
+		tentativa++;
+	}
+
+	while (posicao_Spawn_Ja_Usada(x_spawn, y_referencia)) {
+		x_spawn += 3.f;
+	}
+
+	registrar_Posicao_Spawn(x_spawn, y_referencia);
+	return x_spawn;
+}
+
+bool Fases::Fase::pode_Criar_Na_Plataforma(int total_restante, int minimo_no_chao)
+{
+	return total_restante > minimo_no_chao;
+}
+
 void Fases::Fase::Cria_Pirata(float x, float y, float patrulha_ate_a, float patrula_ate_b)
 {
 	Pirata* pirata = new Pirata;
-	pirata->setar_Pos(x, y - pirata->get_Altura());
+	float x_spawn = ajustar_X_Spawn(x, y);
+
+	pirata->setar_Pos(x_spawn, y - pirata->get_Altura());
 	pirata->setar_Patrulha(patrulha_ate_a, patrula_ate_b);
 
 	lista_id_inimigos.push_front(pirata->getId());
@@ -326,22 +408,6 @@ void Fases::Fase::verifica_Inimigos_Neutralizados()
         std::cout << "todos os inimigos foram eliminados!" << std::endl;
         ganhou = true;
     }
-}
-
-void Fases::Fase::remover_Inimigo_Das_Listas_Auxiliares(Inimigo* pInimigo)
-{
-}
-
-void Fases::Fase::Cria_Obstaculos_Restantes()
-{
-}
-
-void Fases::Fase::executar_Antes_Entidades()
-{
-}
-
-void Fases::Fase::executar_Depois_Entidades()
-{
 }
 
 bool Fases::Fase::verifica_Se_Caiu_No_Abismo(Entidade* pEntidade)

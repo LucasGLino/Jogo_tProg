@@ -42,11 +42,11 @@ void Plataforma::flutuar(){
 
 	if(subindo){
 
-		// -0.1f
+		// anula a gravidade para -0.1f
 		pos.y -= velocidade.y + (velocidade.y / 60);
 	}
 	else{
-		// 0.1f
+		// limita a gravidade a 0.1f
 		pos.y -= velocidade.y - (velocidade.y / 60);
 	}
 
@@ -80,7 +80,7 @@ void Plataforma::obstacular(Jogador* p, int lado) {
 		p->setar_Bateu_A_Cabeca();
 	}
 	if(lado == baixo){
-		
+
 		p->setar_Pode_Pular();
 	}
 	

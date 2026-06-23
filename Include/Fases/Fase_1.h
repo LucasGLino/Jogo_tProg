@@ -11,6 +11,7 @@ namespace Fases{
 	private:
 		int num_esqueletos;
 		int num_restante_esqueletos;
+		int num_esqueletos_em_plataformas;
 		int num_caixas;
 		int num_restante_caixas;
 
