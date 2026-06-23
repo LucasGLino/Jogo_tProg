@@ -11,7 +11,7 @@ Projetil::Projetil(): Entidade(id_base, sf::Vector2f(0.f, 0.f), sf::Vector2f(10.
 	//setId(semente_id_entidade);
 	dano = 0;
 
-	proprietario = nullptr;
+	cap = nullptr;
 
 	sf::Vector2f tamanho;
 	tamanho.x = 10.f;
@@ -53,7 +53,7 @@ Projetil::Projetil(float saida_x, float saida_y, int direcao) : Entidade(id_base
 	//setId(semente_id_entidade);
 	dano = 0;
 
-	proprietario = nullptr;
+	cap = nullptr;
 
 	sf::Vector2f tamanho;
 	tamanho.x = 5.f;
@@ -101,9 +101,9 @@ void Projetil::setar_Direcao(int direcao) {
 	lado = direcao;
 }
 
-void Entidades::Projetil::setar_Proprietario(Entidades::Entidade* propriet)
+void Entidades::Projetil::setar_Proprietario(Entidades::Personagens::Capitao* propriet)
 {
-	proprietario = propriet;
+	cap = propriet;
 }
 
 int Projetil::get_Dano() {

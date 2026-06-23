@@ -1,6 +1,7 @@
 #include "Entidades/Personagens/Jogador/Jogador.h"
 
 
+
 using namespace Entidades;
 using namespace Personagens;
 
@@ -107,6 +108,15 @@ void Jogador::colidir(Personagem* pAtacado) {
 	executando_Pulo();
 }
 
+int Entidades::Personagens::Jogador::get_Vida()
+{
+    return vitalidade;
+}
+
+int Entidades::Personagens::Jogador::get_Pontos()
+{
+    return pontos;
+}
 
 void Jogador::diminuir_Vitalidade(int dano) {
 

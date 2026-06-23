@@ -3,7 +3,7 @@
 
 #define corBotao sf::Color::Transparent
 
-#define bHover sf::Color(150, 150, 150, 255)
+#define bHover sf::Color(10, 150, 150, 255)
 
 
 Botao::Botao(const std::string& stri, const sf::Font& fonte, sf::Vector2f pos):str(stri, fonte, 30), press(false),troca_cor(false)
@@ -11,8 +11,6 @@ Botao::Botao(const std::string& stri, const sf::Font& fonte, sf::Vector2f pos):s
 
     pGg = Gerenciadores::Gerenciador_Grafico::getInstancia();
     
-    this->str.setFillColor(sf::Color::Transparent);
-
     sf::FloatRect tamanhoStr = this->str.getGlobalBounds();
 
     this->str.setOrigin({tamanhoStr.getPosition().x + tamanhoStr.getSize().x / 2.0f, tamanhoStr.getPosition().y + tamanhoStr.getSize().y / 2.0f});
@@ -63,7 +61,7 @@ void Botao::hover_selecionado()
     if(troca_cor){
         this->str.setFillColor(sf::Color::Blue);
     }else{
-        this->str.setFillColor(sf::Color::White);
+        this->str.setFillColor(sf::Color::Yellow);
     }
 }
 void Botao::set_troca_cor(bool c)

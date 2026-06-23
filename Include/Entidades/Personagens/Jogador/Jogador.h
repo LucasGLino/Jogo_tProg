@@ -43,6 +43,9 @@ namespace Entidades{
 				void diminuir_Vitalidade(int dano);
 				void colidir(Personagem* pAtacado);
 
+				int get_Vida();
+				int get_Pontos();
+
 				void aumentar_Pontuacao(int pontos_a_adicionar);
 
 				void mover();

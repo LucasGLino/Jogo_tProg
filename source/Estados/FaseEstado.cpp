@@ -1,6 +1,5 @@
 #include "Estados/FaseEstado.h"
 
-
 Fase_Estado::Fase_Estado(Gerenciador_Estado* pGe,int i, bool j): Estado(nullptr), pGe(pGe) , i(i),Jogadores(j)
 {
     pJogo = pJogo->getInstancia();
@@ -51,6 +50,10 @@ void Fase_Estado::executar()
     pJogo->verifica_Fim_De_Jogo();
 }
 
+void Fase_Estado::desenhar()
+{
+    std::cout << "desenhar" << std::endl;
+}
 void Fase_Estado::tratarInput()
 {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))

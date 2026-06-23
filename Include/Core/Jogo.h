@@ -41,6 +41,12 @@ class Jogo{
 
 		void cria_jogador_2();
 
+		Entidades::Personagens::Jogador* get_Jog_1();
+
+		Entidades::Personagens::Jogador* get_Jog_2();
+
+		Gerenciadores::Gerenciador_Grafico* get_pGG();
+
 		void set_pJog2_Dois_Jogadores(bool valor);
 
 		bool get_pJog2_Dois_Jogadores();

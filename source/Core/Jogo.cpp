@@ -1,5 +1,6 @@
 #include "Core/Jogo.h"
 
+
 using namespace sf;
 using namespace Gerenciadores;
 using namespace Entidades;
@@ -99,6 +100,18 @@ void Jogo::cria_jogador_2()
     jogador_2 = new Entidades::Personagens::Jogador(Vector2f(50.f, 20.f), Vector2f(20.f, 40.f), 100, 3.f, -5.f);
 }
 
+Entidades::Personagens::Jogador *Jogo::get_Jog_1()
+{
+    return jogador_1;
+}
+Entidades::Personagens::Jogador *Jogo::get_Jog_2()
+{
+    return jogador_2;
+}
+Gerenciadores::Gerenciador_Grafico *Jogo::get_pGG()
+{
+    return Ger_Graf;
+}
 void Jogo::set_pJog2_Dois_Jogadores(bool valor)
 {
     jogador_2->setar_Dois_Jogadores(valor);

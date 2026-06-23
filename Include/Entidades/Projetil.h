@@ -22,8 +22,7 @@ namespace Entidades {
 			int tempo_ativo;
 			bool atingiu_jogador;
 
-			Entidades::Entidade* proprietario;
-			//Entidades::Personagens::Capitao* cap;
+			Entidades::Personagens::Capitao* cap;
 
 		//const int direita, cima, esquerda, baixo;
 
@@ -38,7 +37,7 @@ namespace Entidades {
 		void setar_Ativo(bool atv);
 		void setar_Dano(int dan);
 		void setar_Direcao(int direcao);
-		void setar_Proprietario(Entidades::Entidade* propriet);
+		void setar_Proprietario(Entidades::Personagens::Capitao* propriet);
 
 		int get_Dano();
 		bool get_Ativo();

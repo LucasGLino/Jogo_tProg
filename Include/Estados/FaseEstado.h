@@ -23,7 +23,7 @@ class Fase_Estado : public Estado{
         void executar_fase();
         void cria_jogadores(); 
         void executar() override;
-        void desenhar() override {}
+        void desenhar() override;
         void voltarMenu(){ pGe->removerEstado();}
         void tratarInput() override;
 };
