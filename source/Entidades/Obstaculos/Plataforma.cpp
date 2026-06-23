@@ -25,25 +25,6 @@ Plataforma::~Plataforma(){
 
 }
 
-// void Plataforma::seta_Plataforma(float alt, float larg, float origem_x, float origem_y)
-// {
-
-// 	tamanho.x = larg;
-// 	tamanho.y = alt;
-
-// 	//pFigura->setFillColor(sf::Color::Green);
-// 	pFigura->setSize(tamanho);
-// 	if (!textura.loadFromFile("assets/Plataforma.png")) {
-// 		std::cout << "Erro ao carregar textura da plataforma." << std::endl;
-// 		pFigura->setFillColor(sf::Color::Green);
-// 	}
-// 	else {
-// 		pFigura->setFillColor(sf::Color::White);
-// 		pFigura->setTexture(&textura);
-// 	}
-// 	this->setar_Pos(origem_x, origem_y);
-// }
-
 void Plataforma::seta_Origem(float origem_x, float origem_y){
 
 	origem.x = origem_x;
@@ -61,10 +42,11 @@ void Plataforma::flutuar(){
 
 	if(subindo){
 
+		// -0.1f
 		pos.y -= velocidade.y + (velocidade.y / 60);
 	}
 	else{
-		
+		// 0.1f
 		pos.y -= velocidade.y - (velocidade.y / 60);
 	}
 
@@ -94,8 +76,8 @@ void Plataforma::executar() {
 void Plataforma::obstacular(Jogador* p, int lado) {
 
 	if(lado == cima){
-		p->setar_Bateu_A_Cabeca();
 
+		p->setar_Bateu_A_Cabeca();
 	}
 	if(lado == baixo){
 		

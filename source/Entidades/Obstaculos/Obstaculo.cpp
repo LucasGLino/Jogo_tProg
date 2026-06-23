@@ -114,7 +114,7 @@ float Obstaculo::calcula_Densidade_de_Area(const sf::Shape& figura, int divisoes
             }
         }
     }
-
+    
     return area;
 
 }

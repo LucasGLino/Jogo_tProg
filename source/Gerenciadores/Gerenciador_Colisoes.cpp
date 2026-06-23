@@ -113,7 +113,6 @@ void Gerenciador_colisoes::tratar_Colisoes_Jogador_Obstaculo(Jogador* p_Jogador)
 		else if (lado == 2) {
 
 			p_Jogador->setar_Pos(p_Jogador->get_X(), (*itr)->get_Comprimento_A());
-			p_Jogador->setar_Bateu_A_Cabeca();
 			(*itr)->obstacular(p_Jogador, lado);
 		}
 		//esquerda
@@ -126,7 +125,6 @@ void Gerenciador_colisoes::tratar_Colisoes_Jogador_Obstaculo(Jogador* p_Jogador)
 		else if (lado == 4) {
 
 			p_Jogador->setar_Pos(p_Jogador->get_X(), ((*itr)->get_Y() - p_Jogador->get_Altura()));
-			p_Jogador->setar_Pode_Pular();
 			(*itr)->obstacular(p_Jogador, lado);
 		}
 
