@@ -112,7 +112,6 @@ bool Jogo::get_pJog2_Dois_Jogadores() {
 void Jogo::setar_Fase()
 {
     if (pFase) {
-        // pFase->Setar_Jogadores(jogador_1, jogador_2);
         pFase->executar();
         jogador_1->executar();
         if (jogador_2 && jogador_2->get_Dois_Jogadores()) {

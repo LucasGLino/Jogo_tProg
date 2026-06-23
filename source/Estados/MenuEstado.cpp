@@ -208,7 +208,6 @@ void Menu_Estado::tratar_Input_Interno()
                     break;
                 case 4:
                     menu = false;
-                    descarregar_Menu_interno();
                     break;
                 default:
                     break;

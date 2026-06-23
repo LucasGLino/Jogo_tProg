@@ -1,9 +1,9 @@
 #include "Elementos/Botao.h"
 
 
-#define corBotao sf::Color::Transparent
+#define imagem "assets/Imagens/botao_nao_selecionado.png"
 
-#define bHover sf::Color(10, 150, 150, 255)
+#define bHover "assets/Imagens/botao_selecionado.png"
 
 
 Botao::Botao(const std::string& stri, const sf::Font& fonte, sf::Vector2f pos):str(stri, fonte, 30), press(false),troca_cor(false)
@@ -22,12 +22,20 @@ Botao::Botao(const std::string& stri, const sf::Font& fonte, sf::Vector2f pos):s
     float tamanhoBotao = tamanhoStr.getSize().y + paddingY;
 
     this->botao.setSize({larguraBotao, tamanhoBotao});
-    this->botao.setFillColor(corBotao);
 
     this->botao.setOrigin({larguraBotao / 2.0f, tamanhoBotao / 2.0f});
 
     this->botao.setPosition(pos);
     this->str.setPosition(pos);
+
+    if (!corBotao.loadFromFile(imagem)) {
+		std::cout << "Erro ao carregar textura do botao." << std::endl;
+	}
+    if (!corBotao2.loadFromFile(bHover)) {
+		std::cout << "Erro ao carregar textura do hover." << std::endl;
+	}
+	this->botao.setTexture(&corBotao);
+
 
 }
 
@@ -51,17 +59,17 @@ void Botao::hover()
     sf::Vector2f mousePosMundo = (sf::Vector2f)mousePos;
    
     if(this->botao.getGlobalBounds().contains(mousePosMundo)){
-        this->botao.setFillColor(bHover);
+        this->botao.setTexture(&corBotao2);
     }else{
-        this->botao.setFillColor(corBotao);
+        this->botao.setTexture(&corBotao);
     }
 }
 void Botao::hover_selecionado()
 {
     if(troca_cor){
-        this->str.setFillColor(sf::Color::Blue);
+        this->botao.setTexture(&corBotao2);
     }else{
-        this->str.setFillColor(sf::Color::Yellow);
+        hover();
     }
 }
 void Botao::set_troca_cor(bool c)

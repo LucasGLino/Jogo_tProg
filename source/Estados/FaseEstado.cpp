@@ -52,7 +52,6 @@ void Fase_Estado::executar()
 
 void Fase_Estado::desenhar()
 {
-    std::cout << "desenhar" << std::endl;
 }
 void Fase_Estado::tratarInput()
 {

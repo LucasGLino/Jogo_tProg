@@ -12,9 +12,9 @@ class Botao{
 
         sf::Text str;
 
-        sf::Color corBotao;
+        sf::Texture corBotao;
 
-        sf::Color bHover;
+        sf::Texture corBotao2;
 
         Gerenciadores::Gerenciador_Grafico* pGg;
 
